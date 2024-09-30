@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23822CAB251800D1D961 /* ShopPlant.swift */; };
+		23BE23A82CAB270400D1D961 /* UserPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23A72CAB270100D1D961 /* UserPlant.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
 		8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E72CA9F65B0062563F /* ContentView.swift */; };
 		8298A0EA2CA9F65B0062563F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8298A0E92CA9F65B0062563F /* Assets.xcassets */; };
@@ -38,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		23BE23822CAB251800D1D961 /* ShopPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPlant.swift; sourceTree = "<group>"; };
+		23BE23A72CAB270100D1D961 /* UserPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlant.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8298A0E52CA9F65B0062563F /* LilyPathApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LilyPathApp.swift; sourceTree = "<group>"; };
 		8298A0E72CA9F65B0062563F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -86,6 +90,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		23BE23812CAB250700D1D961 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				23BE23A72CAB270100D1D961 /* UserPlant.swift */,
+				23BE23822CAB251800D1D961 /* ShopPlant.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8298A0D92CA9F65B0062563F = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +124,7 @@
 			children = (
 				8298A0E52CA9F65B0062563F /* LilyPathApp.swift */,
 				23BE237F2CAA981900D1D961 /* Components */,
+				23BE23812CAB250700D1D961 /* Models */,
 				8298A10F2CAA03460062563F /* Views */,
 				8298A0E92CA9F65B0062563F /* Assets.xcassets */,
 				8298A0EB2CA9F65B0062563F /* Preview Content */,
@@ -309,10 +323,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23BE23A82CAB270400D1D961 /* UserPlant.swift in Sources */,
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
+				23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
 			);
