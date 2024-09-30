@@ -79,6 +79,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23BE237F2CAA981900D1D961 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		8298A0D92CA9F65B0062563F = {
 			isa = PBXGroup;
 			children = (
@@ -103,9 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				8298A0E52CA9F65B0062563F /* LilyPathApp.swift */,
-				8298A11A2CAA04B10062563F /* SplashScreenView.swift */,
-				8298A0E72CA9F65B0062563F /* ContentView.swift */,
-				8298A1102CAA034F0062563F /* Components */,
+				23BE237F2CAA981900D1D961 /* Components */,
 				8298A10F2CAA03460062563F /* Views */,
 				8298A0E92CA9F65B0062563F /* Assets.xcassets */,
 				8298A0EB2CA9F65B0062563F /* Preview Content */,
@@ -141,42 +146,37 @@
 		8298A10F2CAA03460062563F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8298A1112CAA03670062563F /* Home Journey */,
-				8298A1122CAA037D0062563F /* Garden Journey */,
-				8298A1132CAA03870062563F /* Statistics Journey */,
+				8298A1112CAA03670062563F /* Home */,
+				8298A1122CAA037D0062563F /* Garden */,
+				8298A1132CAA03870062563F /* Statistics */,
+				8298A11A2CAA04B10062563F /* SplashScreenView.swift */,
+				8298A0E72CA9F65B0062563F /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8298A1102CAA034F0062563F /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		8298A1112CAA03670062563F /* Home Journey */ = {
+		8298A1112CAA03670062563F /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				8298A1142CAA03D40062563F /* HomeView.swift */,
 			);
-			path = "Home Journey";
+			path = Home;
 			sourceTree = "<group>";
 		};
-		8298A1122CAA037D0062563F /* Garden Journey */ = {
+		8298A1122CAA037D0062563F /* Garden */ = {
 			isa = PBXGroup;
 			children = (
 				8298A1162CAA04340062563F /* GardenView.swift */,
 			);
-			path = "Garden Journey";
+			path = Garden;
 			sourceTree = "<group>";
 		};
-		8298A1132CAA03870062563F /* Statistics Journey */ = {
+		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
 			);
-			path = "Statistics Journey";
+			path = Statistics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
