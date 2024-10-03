@@ -15,10 +15,10 @@ extension Color {
     static let lightBlue = Color(hex: "#DEE6EB")
     static let waterBlue = Color(hex: "#A9B1CD")
     static let darkerBlue = Color(hex: "#6F7AA2")
-    static let customBrown = Color(hex: "#674430")
+    static let customBrown = Color(hex: "#674330")
     static let customPink = Color(hex: "#D0B0B0")
     static let redButton = Color(hex: "#A45B5B")
-    static let greyDarkenBg = Color(hex: "#5E5E5E").opacity(0.3)
+    static let greyDarkenBg = Color(hex: "#5E5E5E")/*.opacity(0.3)*/
 }
 
 extension Color {
