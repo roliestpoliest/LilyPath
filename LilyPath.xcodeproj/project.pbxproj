@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2306B1532CADD30B00ECC155 /* ThemeColors.swift */; };
+		231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E92002CAEFEA700964175 /* FontSizes.swift */; };
 		23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23822CAB251800D1D961 /* ShopPlant.swift */; };
 		23BE23A82CAB270400D1D961 /* UserPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23A72CAB270100D1D961 /* UserPlant.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		2306B1532CADD30B00ECC155 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
+		231E92002CAEFEA700964175 /* FontSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizes.swift; sourceTree = "<group>"; };
 		23BE23822CAB251800D1D961 /* ShopPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPlant.swift; sourceTree = "<group>"; };
 		23BE23A72CAB270100D1D961 /* UserPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlant.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 		2306B1522CADD2FB00ECC155 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				231E92002CAEFEA700964175 /* FontSizes.swift */,
 				2306B1532CADD30B00ECC155 /* ThemeColors.swift */,
 			);
 			path = Utilities;
@@ -341,6 +344,7 @@
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
+				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
 				2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */,
 			);
