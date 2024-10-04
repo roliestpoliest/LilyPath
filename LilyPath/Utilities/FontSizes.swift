@@ -21,6 +21,10 @@ extension Font {
         return .system(size: 14, weight: .semibold, design: .rounded)
     }
     
+    static var rewards: Font {
+        return .system(size: 14, weight: .medium, design: .rounded)
+    }
+    
     static var statsCard: Font {
         return .system(size: 20, weight: .medium, design: .rounded)
     }
