@@ -13,15 +13,19 @@ struct PlantShopView: View {
     var body: some View {
         VStack {
             Text("Plant Shop")
-                .font(.custom("SF Pro Rounded", size: 36))
-                .fontWeight(.bold)
+                .font(Font.viewTitle)
+                .foregroundStyle(Color.customBrown)
+                .padding(.vertical)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+            
             ScrollView (showsIndicators: false){
                 VStack(spacing: 40) {
                     ForEach(0..<plants.count / 2, id: \.self) { index in
-                        HStack(alignment: .center, spacing: 40) {
+                        HStack(alignment: .center) {
                             PlantCard(plantName: plants[index * 2].name, plantImage: plants[index * 2].image, locked: plants[index * 2].locked)
+                            
+                            Spacer()
+                            
                             PlantCard(plantName: plants[index * 2 + 1].name, plantImage: plants[index * 2 + 1].image, locked: plants[index * 2 + 1].locked)
                         }
                     }
@@ -34,7 +38,6 @@ struct PlantShopView: View {
                 UIScrollView.appearance().bounces = true
             }
         }
-        .padding(16) //hardcoding TODO fix later
     }
 }
 
@@ -49,4 +52,6 @@ struct PlantShopView: View {
         (name: "Petunia", image: "Petunia Stage 5", locked: true),
         (name: "Carnation", image: "Carnation Stage 5", locked: true)
     ])
+    .padding(.horizontal, 30)
+    .background(Color.mainBackground)
 }

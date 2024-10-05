@@ -32,8 +32,7 @@ struct PlantCard: View {
                             .frame(width: 62, height: 62)
                         
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
-                            .colorMultiply(Color.greyDarkenBg.opacity(locked ? 0.3 : 0.0))
-                        
+                            .colorMultiply(Color.lockGrey.opacity(locked ? 0.3 : 0.0))
                     }
                     
                     .frame(width: 125, height: 125)
@@ -44,7 +43,7 @@ struct PlantCard: View {
                         if locked { Image(systemName: "lock.fill") }
                         Text(plantName)
                     }
-                    .font(.system(size: 18))
+                    .font(Font.statsCard)
                     .foregroundStyle(.white)
                     .bold()
                     
