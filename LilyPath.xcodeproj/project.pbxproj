@@ -10,8 +10,8 @@
 		2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2306B1532CADD30B00ECC155 /* ThemeColors.swift */; };
 		231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E92002CAEFEA700964175 /* FontSizes.swift */; };
 		238719432CAF090F00305DFA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 238719422CAF090F00305DFA /* .gitignore */; };
-		23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23822CAB251800D1D961 /* ShopPlant.swift */; };
-		23BE23A82CAB270400D1D961 /* UserPlant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE23A72CAB270100D1D961 /* UserPlant.swift */; };
+		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
+		822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */; };
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
 		828897652CAE40D10089C5DD /* PlantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828897642CAE40D10089C5DD /* PlantCard.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
@@ -48,8 +48,8 @@
 		2306B1532CADD30B00ECC155 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		231E92002CAEFEA700964175 /* FontSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizes.swift; sourceTree = "<group>"; };
 		238719422CAF090F00305DFA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		23BE23822CAB251800D1D961 /* ShopPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPlant.swift; sourceTree = "<group>"; };
-		23BE23A72CAB270100D1D961 /* UserPlant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlant.swift; sourceTree = "<group>"; };
+		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
+		822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlantModel.swift; sourceTree = "<group>"; };
 		827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopView.swift; sourceTree = "<group>"; };
 		828897642CAE40D10089C5DD /* PlantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCard.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,8 +113,8 @@
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				23BE23A72CAB270100D1D961 /* UserPlant.swift */,
-				23BE23822CAB251800D1D961 /* ShopPlant.swift */,
+				822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */,
+				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -347,18 +347,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23BE23A82CAB270400D1D961 /* UserPlant.swift in Sources */,
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
-				23BE23832CAB252100D1D961 /* ShopPlant.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				828897652CAE40D10089C5DD /* PlantCard.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
 				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
 				2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */,
+				822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */,
+				822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
