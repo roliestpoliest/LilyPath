@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PlantShopView: View {
-    let plants: [(name: String, image: String, locked: Bool)]
-
+    let plants: [BasePlantModel]
+    
     var body: some View {
         VStack {
             Text("Plant Shop")
@@ -18,15 +18,22 @@ struct PlantShopView: View {
                 .padding(.vertical)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            ScrollView (showsIndicators: false){
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 40) {
-                    ForEach(0..<plants.count / 2, id: \.self) { index in
+                    ForEach(0..<(plants.count + 1) / 2, id: \.self) { index in
                         HStack(alignment: .center) {
-                            PlantCard(plantName: plants[index * 2].name, plantImage: plants[index * 2].image, locked: plants[index * 2].locked)
+                            let firstPlant = plants[index * 2]
+                            PlantCard(PlantModel: firstPlant)
                             
                             Spacer()
                             
-                            PlantCard(plantName: plants[index * 2 + 1].name, plantImage: plants[index * 2 + 1].image, locked: plants[index * 2 + 1].locked)
+                            if index * 2 + 1 < plants.count {
+                                let secondPlant = plants[index * 2 + 1]
+                                PlantCard(PlantModel: secondPlant)
+                            } else {
+                                Spacer()
+                                    .frame(width: 150)
+                            }
                         }
                     }
                 }
@@ -40,17 +47,16 @@ struct PlantShopView: View {
         }
     }
 }
-
 #Preview {
     PlantShopView(plants: [
-        (name: "Delphinium", image: "Delphinium Stage 5", locked: false),
-        (name: "Buttercup", image: "Buttercup Stage 5", locked: false),
-        (name: "Rose", image: "Rose Stage 5", locked: false),
-        (name: "Chamomile", image: "Chamomile Stage 5", locked: true),
-        (name: "Petunia", image: "Petunia Stage 5", locked: true),
-        (name: "Petunia", image: "Petunia Stage 5", locked: true),
-        (name: "Petunia", image: "Petunia Stage 5", locked: true),
-        (name: "Carnation", image: "Carnation Stage 5", locked: true)
+        BasePlantModel.lily,
+        BasePlantModel.delphinium,
+        BasePlantModel.buttercup,
+        BasePlantModel.rose,
+        BasePlantModel.chamomile,
+        BasePlantModel.petunia,
+        BasePlantModel.carnation,
+        BasePlantModel.lotus
     ])
     .padding(.horizontal, 30)
     .background(Color.mainBackground)

@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct PlantCard: View {
-    var plantName: String
-    var plantImage: String
-    var locked: Bool
+    var PlantModel: BasePlantModel
+    
+    //TODO remove on implementation
+    var userLevel: Int = 1
+    var isLocked: Bool {
+        return userLevel < PlantModel.requiredLevelToBuy
+    }
     
     var body: some View {        
         VStack {
@@ -26,13 +30,13 @@ struct PlantCard: View {
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
                             .fill(Color.lightBlue)
                         
-                        Image(plantImage)
+                        Image(PlantModel.stageImages[4])
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 62, height: 62)
                         
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
-                            .colorMultiply(Color.lockGrey.opacity(locked ? 0.3 : 0.0))
+                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.3 : 0.0))
                     }
                     
                     .frame(width: 125, height: 125)
@@ -40,8 +44,8 @@ struct PlantCard: View {
                     Spacer()
                     
                     HStack {
-                        if locked { Image(systemName: "lock.fill") }
-                        Text(plantName)
+                        if isLocked { Image(systemName: "lock.fill") }
+                        Text(PlantModel.species)
                     }
                     .font(Font.statsCard)
                     .foregroundStyle(.white)
@@ -56,5 +60,5 @@ struct PlantCard: View {
 }
 
 #Preview {
-    PlantCard(plantName: "Delphinium", plantImage: "Delphinium Stage 5", locked: true)
+    PlantCard(PlantModel: BasePlantModel.delphinium)
 }

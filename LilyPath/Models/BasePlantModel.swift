@@ -62,7 +62,7 @@ final class BasePlantModel {
     
     static let lily = BasePlantModel(
         species: "Lily",
-        requiredLevelToBuy: 2,
+        requiredLevelToBuy: 0,
         price: 100,
         stageStepGoals: [100, 200, 300, 400, 500]
     )
