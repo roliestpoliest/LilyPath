@@ -22,7 +22,7 @@ extension Font {
     }
     
     static var statsCard: Font {
-        return .system(size: 20, weight: .medium, design: .rounded)
+        return .system(size: 18, weight: .medium, design: .rounded)
     }
     
     static var statsCategory: Font {
