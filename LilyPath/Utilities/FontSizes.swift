@@ -37,6 +37,14 @@ extension Font {
         return .system(size: 20, weight: .bold, design: .rounded)
     }
     
+    static var popupBody: Font {
+        return .system(size: 16, weight: .semibold, design: .rounded)
+    }
+
+    static var popupDetails: Font {
+        return .system(size: 14, weight: .medium, design: .rounded)
+    }
+    
     static var tabLabel: Font {
         return .system(size: 12, weight: .semibold, design: .rounded)
     }
