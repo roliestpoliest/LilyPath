@@ -26,7 +26,7 @@ extension Font {
     }
     
     static var statsCard: Font {
-        return .system(size: 20, weight: .medium, design: .rounded)
+        return .system(size: 18, weight: .medium, design: .rounded)
     }
     
     static var statsCategory: Font {
@@ -39,6 +39,14 @@ extension Font {
     
     static var popupTitle: Font {
         return .system(size: 20, weight: .bold, design: .rounded)
+    }
+    
+    static var popupBody: Font {
+        return .system(size: 16, weight: .semibold, design: .rounded)
+    }
+
+    static var popupDetails: Font {
+        return .system(size: 14, weight: .medium, design: .rounded)
     }
     
     static var tabLabel: Font {
