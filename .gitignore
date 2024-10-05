@@ -1,3 +1,18 @@
-# ignore xcode user data
-*.xcuserdata/
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcworkspace/
+xcuserdata/
 *.xcuserstate
+*.xcuserdatad
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Archives
+*.xcarchive
