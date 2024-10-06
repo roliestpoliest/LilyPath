@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+// TODO: disable area behind the pop
+// TODO: blur/darken background
+// TODO: add popup functionality
+
 enum PopUpType: String {
     case purchase = "Purchase"
     case locked = "Womp Womp"
@@ -17,11 +21,15 @@ enum PopUpType: String {
 struct PlantPopUp: View {
     @State private var showPopOver = true
     
-    var PopUpType: PopUpType
-    var PlantModel: BasePlantModel
+    var popUpType: PopUpType
+    var plantModel: BasePlantModel
     
     var body: some View {
         ZStack {
+//            Color.black.opacity(0.4)
+//                .edgesIgnoringSafeArea(.all)
+//                .allowsHitTesting(false) // Disable interactions with the background
+
             VStack {
                 ZStack {
                     UnevenRoundedRectangle(topLeadingRadius: 17, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 17)
@@ -29,7 +37,7 @@ struct PlantPopUp: View {
                         .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
                     
                     ZStack {
-                        Text(PopUpType.rawValue.uppercased())
+                        Text(popUpType.rawValue.uppercased())
                             .font(Font.popupTitle)
                             .foregroundColor(Color.customBrown)
                         
@@ -42,36 +50,109 @@ struct PlantPopUp: View {
                 }
                 .frame(height: 50)
                 
-                HStack (spacing: 30) {
-                    Image(PlantModel.stageImages[4])
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 75, height: 75)
-                    
-                    VStack(spacing: 15) {
-                        Text(PlantModel.species)
-                            .font(Font.popupBody)
-                            .foregroundColor(Color.customBrown)
+                Spacer()
+                switch popUpType {
+                case .purchase:
+                    HStack (spacing: 30) {
+                        Image(plantModel.stageImages[4])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 75, height: 75)
                         
-                        HStack(spacing: 10) {
-                            IconImage(icon: .gem, height: 20, color: .waterBlue)
+                        VStack(spacing: 15) {
+                            Text(plantModel.species)
+                                .font(Font.popupBody)
+                                .foregroundColor(Color.customBrown)
                             
-                            Text(String(PlantModel.price))
-                                .font(.popupDetails)
-                                .foregroundColor(.white)
-                            
+                            HStack(spacing: 10) {
+                                IconImage(icon: .gem, height: 20, color: .waterBlue)
+                                Text(String(plantModel.price))
+                                    .font(.popupDetails)
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color.customBrown)
+                            .cornerRadius(20)
+                            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 20)
-                        .background(Color.customBrown)
-                        .cornerRadius(20)
-                        .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
-                        
                     }
+                case .locked:
+                    HStack (spacing: 20) {
+                        Image(plantModel.stageImages[4])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 75, height: 75)
+                        
+                        VStack(alignment: .center, spacing: 15) {
+                            Text("\(plantModel.species) is locked!\nUnlock at level \(plantModel.requiredLevelToBuy)")
+                                .multilineTextAlignment(.center)
+                                .font(Font.popupBody)
+                                .foregroundColor(Color.customBrown)
+                        }
+                    }
+                    
+                case .wilt:
+                    HStack (spacing: 10) {
+                        Image(plantModel.stageImages[4])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 75, height: 75)
+                        
+                        VStack(spacing: 15) {
+                            Text("Your \(plantModel.species) is wilting!")
+                                .multilineTextAlignment(.center)
+                                .font(Font.popupBody)
+                                .foregroundColor(Color.customBrown)
+                            
+                            HStack(spacing: 10) {
+                                Text("Revive?")
+                                    .font(.popupDetails)
+                                    .foregroundColor(.white)
+                                IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
+                                Text("-1000")
+                                    .font(.popupDetails)
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color.customBrown)
+                            .cornerRadius(20)
+                            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
+                        }
+                    }
+                    
+                case .levelUp:
+                    HStack (spacing: 10) {
+                        Image(plantModel.stageImages[2])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 75, height: 75)
+                        
+                        VStack(spacing: 15) {
+                            Text("Your \(plantModel.species) is growing!")
+                                .multilineTextAlignment(.center)
+                                .font(Font.popupBody)
+                                .foregroundColor(Color.customBrown)
+                            
+                            HStack(spacing: 10) {
+                                IconImage(icon: .gem, height: 20, color: .waterBlue)
+                                Text("+1")
+                                    .font(.popupDetails)
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 20)
+                            .background(Color.customBrown)
+                            .cornerRadius(20)
+                            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
+                        }
+                    }
+                    
                 }
-                .padding(32)
+                Spacer()
             }
-            .frame(width: 275, height: 200)
+            .frame(width: 300, height: 200)
             .padding()
             .background(Color.mainBackground)
             .cornerRadius(25)
@@ -80,15 +161,15 @@ struct PlantPopUp: View {
                     .stroke(Color.customBrown, lineWidth: 5)
             )
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.opacity(0.4))
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .background(Color.black.opacity(0.4))
         .zIndex(1)
-        
     }
 }
 
 #Preview {
     ZStack {
+        // The main PlantShopView
         PlantShopView(plants: [
             BasePlantModel.lily,
             BasePlantModel.delphinium,
@@ -102,7 +183,11 @@ struct PlantPopUp: View {
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
         
+        // Add the blur effect view behind the pop-up
+//        BlurEffectView(style: .dark)
+//            .edgesIgnoringSafeArea(.all) // Make sure the blur covers the whole screen
         
-        PlantPopUp(PopUpType: PopUpType.purchase, PlantModel: BasePlantModel.delphinium)
+        // The pop-up on top
+        PlantPopUp(popUpType: PopUpType.purchase, plantModel: BasePlantModel.delphinium)
     }
 }
