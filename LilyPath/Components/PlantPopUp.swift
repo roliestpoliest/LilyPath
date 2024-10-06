@@ -19,17 +19,17 @@ enum PopUpType: String {
 }
 
 struct PlantPopUp: View {
-    @State private var showPopOver = true
+    @State private var showPopUp = true
     
     var popUpType: PopUpType
     var plantModel: BasePlantModel
     
     var body: some View {
         ZStack {
-//            Color.black.opacity(0.4)
-//                .edgesIgnoringSafeArea(.all)
-//                .allowsHitTesting(false) // Disable interactions with the background
-
+            //            Color.black.opacity(0.4)
+            //                .edgesIgnoringSafeArea(.all)
+            //                .allowsHitTesting(false) // Disable interactions with the background
+            
             VStack {
                 ZStack {
                     UnevenRoundedRectangle(topLeadingRadius: 17, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 17)
@@ -43,7 +43,12 @@ struct PlantPopUp: View {
                         
                         HStack {
                             Spacer()
-                            IconImage(icon: .x, height: 20, color: .darkPink)
+                            Button(action: {
+                                print("Close button tapped")
+                                showPopUp.toggle()
+                            }) {
+                                IconImage(icon: .x, height: 20, color: .darkPink)
+                            }
                         }
                     }
                     .padding()
@@ -65,10 +70,16 @@ struct PlantPopUp: View {
                                 .foregroundColor(Color.customBrown)
                             
                             HStack(spacing: 10) {
-                                IconImage(icon: .gem, height: 20, color: .waterBlue)
-                                Text(String(plantModel.price))
-                                    .font(.popupDetails)
-                                    .foregroundColor(.white)
+                                Button(action: {
+                                    print("Purchase button tapped")
+                                }) {
+                                    HStack(spacing: 10) {
+                                        IconImage(icon: .gem, height: 20, color: .waterBlue)
+                                        Text(String(plantModel.price))
+                                            .font(.popupDetails)
+                                            .foregroundColor(.white)
+                                    }
+                                }
                             }
                             .padding(.vertical, 10)
                             .padding(.horizontal, 20)
@@ -105,14 +116,18 @@ struct PlantPopUp: View {
                                 .font(Font.popupBody)
                                 .foregroundColor(Color.customBrown)
                             
-                            HStack(spacing: 10) {
-                                Text("Revive?")
-                                    .font(.popupDetails)
-                                    .foregroundColor(.white)
-                                IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
-                                Text("-1000")
-                                    .font(.popupDetails)
-                                    .foregroundColor(.white)
+                            Button(action: {
+                                print("Revive button tapped")
+                            }) {
+                                HStack(spacing: 10) {
+                                    Text("Revive?")
+                                        .font(.popupDetails)
+                                        .foregroundColor(.white)
+                                    IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
+                                    Text("-1000")
+                                        .font(.popupDetails)
+                                        .foregroundColor(.white)
+                                }
                             }
                             .padding(.vertical, 10)
                             .padding(.horizontal, 20)
@@ -135,11 +150,15 @@ struct PlantPopUp: View {
                                 .font(Font.popupBody)
                                 .foregroundColor(Color.customBrown)
                             
-                            HStack(spacing: 10) {
-                                IconImage(icon: .gem, height: 20, color: .waterBlue)
-                                Text("+1")
-                                    .font(.popupDetails)
-                                    .foregroundColor(.white)
+                            Button(action: {
+                                print("Level Up button tapped")
+                            }) {
+                                HStack(spacing: 10) {
+                                    IconImage(icon: .gem, height: 20, color: .waterBlue)
+                                    Text("+1")
+                                        .font(.popupDetails)
+                                        .foregroundColor(.white)
+                                }
                             }
                             .padding(.vertical, 10)
                             .padding(.horizontal, 20)
@@ -161,33 +180,35 @@ struct PlantPopUp: View {
                     .stroke(Color.customBrown, lineWidth: 5)
             )
         }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .background(Color.black.opacity(0.4))
+        //        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        //        .background(Color.black.opacity(0.4))
         .zIndex(1)
     }
+    
+    
 }
 
 #Preview {
     ZStack {
         // The main PlantShopView
-        PlantShopView(plants: [
-            BasePlantModel.lily,
-            BasePlantModel.delphinium,
-            BasePlantModel.buttercup,
-            BasePlantModel.rose,
-            BasePlantModel.chamomile,
-            BasePlantModel.petunia,
-            BasePlantModel.carnation,
-            BasePlantModel.lotus
-        ])
-        .padding(.horizontal, 30)
-        .background(Color.mainBackground)
+//        PlantShopView(plants: [
+//            BasePlantModel.lily,
+//            BasePlantModel.delphinium,
+//            BasePlantModel.buttercup,
+//            BasePlantModel.rose,
+//            BasePlantModel.chamomile,
+//            BasePlantModel.petunia,
+//            BasePlantModel.carnation,
+//            BasePlantModel.lotus
+//        ])
+//        .padding(.horizontal, 30)
+//        .background(Color.mainBackground)
         
         // Add the blur effect view behind the pop-up
 //        BlurEffectView(style: .dark)
 //            .edgesIgnoringSafeArea(.all) // Make sure the blur covers the whole screen
         
         // The pop-up on top
-        PlantPopUp(popUpType: PopUpType.purchase, plantModel: BasePlantModel.delphinium)
+        PlantPopUp(popUpType: PopUpType.levelUp, plantModel: BasePlantModel.delphinium)
     }
 }

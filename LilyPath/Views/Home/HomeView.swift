@@ -10,11 +10,14 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         VStack {
-            Text("Home View!")
+            ViewTitle(title: "Home")
+            Spacer()
         }
     }
 }
 
 #Preview {
     HomeView()
+        .padding(.horizontal, 30)
+        .background(Color.mainBackground)
 }

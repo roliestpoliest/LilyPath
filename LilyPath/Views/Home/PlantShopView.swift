@@ -12,11 +12,7 @@ struct PlantShopView: View {
     
     var body: some View {
         VStack {
-            Text("Plant Shop")
-                .font(Font.viewTitle)
-                .foregroundStyle(Color.customBrown)
-                .padding(.vertical)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            ViewTitle(title: "Plant Shop")
             
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 40) {
