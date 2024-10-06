@@ -13,7 +13,7 @@ enum Icon: String {
     case gem = "gem"
     
     // X
-    case x = "x.circle.fill"
+    case x = "xmark.circle.fill"
     
     // Tab bar
     case home = "home"
