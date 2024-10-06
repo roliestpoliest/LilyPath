@@ -19,7 +19,7 @@ struct PlantShopView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 40) {
+                LazyVStack(spacing: 40) {
                     ForEach(0..<(plants.count + 1) / 2, id: \.self) { index in
                         HStack(alignment: .center) {
                             let firstPlant = plants[index * 2]
@@ -47,6 +47,7 @@ struct PlantShopView: View {
         }
     }
 }
+
 #Preview {
     PlantShopView(plants: [
         BasePlantModel.lily,
