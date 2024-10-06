@@ -26,18 +26,4 @@ enum Icon: String {
     case climbed = "figure.stairs"
     case slept = "bed.double.fill"
     case cycled = "figure.outdoor.cycle"
-    
-    private static let customIcons: Set<Icon> = [.home, .gem]
-    
-    var image: Image {
-        if isCustomIcon {
-            return Image(rawValue)
-        } else {
-            return Image(systemName: rawValue)
-        }
-    }
-    
-    var isCustomIcon: Bool {
-        return Icon.customIcons.contains(self)
-    }
 }

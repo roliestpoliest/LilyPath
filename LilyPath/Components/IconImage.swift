@@ -13,7 +13,15 @@ struct IconImage: View {
     let color: Color
 
     var body: some View {
-        icon.image
+        let image: Image
+        
+        if let _ = UIImage(systemName: icon.rawValue) {
+            image = Image(systemName: icon.rawValue)
+        } else {
+            image = Image(icon.rawValue)
+        }
+        
+        return image
             .resizable()
             .scaledToFit()
             .frame(height: height)

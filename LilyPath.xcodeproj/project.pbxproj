@@ -112,6 +112,7 @@
 		2306B1522CADD2FB00ECC155 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				233A0B6C2CB2007100570652 /* Icons.swift */,
 				238719952CB06A9D00305DFA /* GenerateRandomTasks.swift */,
 				231E92002CAEFEA700964175 /* FontSizes.swift */,
 				2306B1532CADD30B00ECC155 /* ThemeColors.swift */,
@@ -134,7 +135,6 @@
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				233A0B6C2CB2007100570652 /* Icons.swift */,
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
