@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TaskCard: View {
-    @State var task: TaskModel
-    @State var userProgress: Double = 0
+    @StateObject var task: TaskModel
     
     var body: some View {
         HStack (spacing: 16) {
@@ -22,7 +21,7 @@ struct TaskCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .layoutPriority(1)
                 
-                ProgressView(value: userProgress, total: Double(task.goal))
+                ProgressView(value: Double(task.userProgress), total: Double(task.goal))
                     .progressViewStyle(LinearProgressViewStyle(tint: .darkGreen))
                     .scaleEffect(x: 1, y: 2, anchor: .center)
                     .frame(maxWidth: .infinity, maxHeight: 12)
@@ -36,7 +35,7 @@ struct TaskCard: View {
                     HStack (spacing: 3) {
                         IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
                         
-                        Text("+" + String(task.waterPointReward))
+                        Text("+ \(String(task.waterPointReward))")
                             .font(.rewards)
                             .foregroundColor(.white)
                     }
@@ -46,24 +45,14 @@ struct TaskCard: View {
                     HStack (spacing: 3) {
                         IconImage(icon: .gem, height: 20, color: .waterBlue)
                         
-                        Text("+" + String(task.gemReward))
+                        Text("+ \(task.gemReward)")
                             .font(.rewards)
                             .foregroundColor(.white)
                     }
                 }
                 .padding(.horizontal)
                 
-                Button(action: {
-                    print("Button pressed")
-                }) {
-                    Text("In Progress")
-                        .font(.customBody)
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(.gray)
-                        .padding(10)
-                        .background(Color.greyDarkenBg)
-                        .cornerRadius(10)
-                }
+                TaskButton(status: $task.status)
             }
         }
         .padding()
@@ -74,7 +63,7 @@ struct TaskCard: View {
 }
 
 #Preview {
-    TaskCard(task: generateRandomTasks()[0], userProgress: 1000)
+    TaskCard(task: TaskModel(type: .walk, goal: 12000, waterPointReward: 1000, gemReward: 3, userProgress: 1, status: TaskModel.TaskStatus.collect))
         .padding(30)
         .background(Color.mainBackground)
 }

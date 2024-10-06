@@ -21,6 +21,7 @@ struct TaskType {
     private func formatNumberWithCommas(_ number: Int) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
+        
         return numberFormatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
 
@@ -36,32 +37,46 @@ struct TaskType {
     static let all: [TaskType] = [.walk, .climb, .sleep, .stand]
 }
 
-class TaskModel {
+class TaskModel: ObservableObject {
     enum TaskStatus: String {
         case inProgress = "In Progress"
+        case collect = "Collect"
         case completed = "Completed"
-        case collected = "Collected"
     }
     
     let type: TaskType
-    var goal: Int
-    var waterPointReward: Int
-    var gemReward: Int
-    var status: TaskStatus
-
-    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, status: TaskStatus = .inProgress) {
+    let goal: Int
+    let waterPointReward: Int
+    let gemReward: Int
+    @Published var userProgress: Int
+    @Published var status: TaskStatus
+    
+    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, userProgress: Int = 0, status: TaskStatus = .inProgress) {
         self.type = type
         self.goal = goal
         self.waterPointReward = waterPointReward
         self.gemReward = gemReward
+        self.userProgress = userProgress
         self.status = status
     }
 
     var taskName: String {
-        return type.description(for: goal)
+        return type.description(for: self.goal)
     }
 
-    func updateStatus(status: TaskStatus) {
+    func updateStatus(to status: TaskStatus) {
         self.status = status
+    }
+    
+    func checkProgress() {
+        if self.userProgress >= self.goal {
+            updateStatus(to: .completed)
+        }
+    }
+    
+    // TODO: update functionality
+    func updateUserProgress(to newProgress: Int) {
+        self.userProgress = newProgress
+        checkProgress()
     }
 }

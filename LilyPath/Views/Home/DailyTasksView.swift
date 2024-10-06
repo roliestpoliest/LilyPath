@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct DailyTasksView: View {
-    // TODO: figure out  how to randomize once a day
+    // TODO: figure out how to randomize once a day
     @State var tasks: [TaskModel]
-    // TODO: Replace with user's actual progress
-    @State var userProgess: [Double]
     
     var body: some View {
         VStack {
@@ -19,11 +17,7 @@ struct DailyTasksView: View {
                         
             ScrollView(showsIndicators: false) {
                 ForEach(tasks.indices, id: \.self) { index in
-                    TaskCard(task: tasks[index], userProgress: userProgess[index])
-                        .padding(.vertical, 8)
-                }
-                ForEach(tasks.indices, id: \.self) { index in
-                    TaskCard(task: tasks[index], userProgress: userProgess[index])
+                    TaskCard(task: tasks[index])
                         .padding(.vertical, 8)
                 }
             }
@@ -35,7 +29,16 @@ struct DailyTasksView: View {
 }
 
 #Preview {
-    return DailyTasksView(tasks: generateRandomTasks(), userProgess: [5000, 5, 6, 0])
+    let tasks = [TaskModel(type: .walk, goal: 15000, waterPointReward: 2000, gemReward: 4, userProgress: 1, status: .collect),
+                 TaskModel(type: .climb, goal: 20, waterPointReward: 1500, gemReward: 3, userProgress: 2),
+                 TaskModel(type: .sleep, goal: 8, waterPointReward: 1400, gemReward: 2, userProgress: 3, status: .completed),
+                 TaskModel(type: .stand, goal: 4, waterPointReward: 1000, gemReward: 1, userProgress: 4, status: .collect)]
+    
+    return DailyTasksView(tasks: tasks)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
+    
+//    return DailyTasksView(tasks: generateRandomTasks())
+//        .padding(.horizontal, 30)
+//        .background(Color.mainBackground)
 }
