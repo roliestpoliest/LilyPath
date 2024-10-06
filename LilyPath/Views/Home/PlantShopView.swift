@@ -38,12 +38,7 @@ struct PlantShopView: View {
                     }
                 }
             }
-            .onAppear {
-                UIScrollView.appearance().bounces = false
-            }
-            .onDisappear {
-                UIScrollView.appearance().bounces = true
-            }
+            .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
         }
     }
 }

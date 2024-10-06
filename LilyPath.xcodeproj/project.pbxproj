@@ -11,6 +11,7 @@
 		231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E92002CAEFEA700964175 /* FontSizes.swift */; };
 		233A0B6D2CB2007300570652 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B6C2CB2007100570652 /* Icons.swift */; };
 		233A0B6F2CB2095B00570652 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B6E2CB2095300570652 /* IconImage.swift */; };
+		233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B712CB2486200570652 /* ShadowConstants.swift */; };
 		238719432CAF090F00305DFA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 238719422CAF090F00305DFA /* .gitignore */; };
 		238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719482CAF172A00305DFA /* DailyTasksView.swift */; };
 		238719942CB0635200305DFA /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719932CB0634A00305DFA /* TaskModel.swift */; };
@@ -57,6 +58,7 @@
 		231E92002CAEFEA700964175 /* FontSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizes.swift; sourceTree = "<group>"; };
 		233A0B6C2CB2007100570652 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		233A0B6E2CB2095300570652 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
+		233A0B712CB2486200570652 /* ShadowConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowConstants.swift; sourceTree = "<group>"; };
 		238719422CAF090F00305DFA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		238719482CAF172A00305DFA /* DailyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTasksView.swift; sourceTree = "<group>"; };
 		238719932CB0634A00305DFA /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		2306B1522CADD2FB00ECC155 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				233A0B712CB2486200570652 /* ShadowConstants.swift */,
 				233A0B6C2CB2007100570652 /* Icons.swift */,
 				231E92002CAEFEA700964175 /* FontSizes.swift */,
 				2306B1532CADD30B00ECC155 /* ThemeColors.swift */,
@@ -390,6 +393,7 @@
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
+				233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */,
 				828897652CAE40D10089C5DD /* PlantCard.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
 				822FF7022CB118EC00F8F5DC /* PlantPopUp.swift in Sources */,
