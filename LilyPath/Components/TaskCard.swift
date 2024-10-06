@@ -70,7 +70,6 @@ struct TaskCard: View {
         .frame(width: .infinity, height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
-        .shadow(radius: 3, y: 5)
     }
 }
 

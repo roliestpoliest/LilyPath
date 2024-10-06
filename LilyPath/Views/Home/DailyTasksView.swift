@@ -17,10 +17,17 @@ struct DailyTasksView: View {
         VStack {
             ViewTitle(title: "Daily Tasks")
                         
-            ForEach(tasks.indices, id: \.self) { index in
-                TaskCard(task: tasks[index], userProgress: userProgess[index])
-                    .padding(.vertical, 8)
+            ScrollView(showsIndicators: false) {
+                ForEach(tasks.indices, id: \.self) { index in
+                    TaskCard(task: tasks[index], userProgress: userProgess[index])
+                        .padding(.vertical, 8)
+                }
+                ForEach(tasks.indices, id: \.self) { index in
+                    TaskCard(task: tasks[index], userProgress: userProgess[index])
+                        .padding(.vertical, 8)
+                }
             }
+            .shadow(radius: 3, y: 5)
             
             Spacer()
         }
