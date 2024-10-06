@@ -28,7 +28,7 @@ struct DailyTasksView: View {
 }
 
 #Preview {
-    DailyTasksView(tasks: generateRandomTasks(), userProgess: [5000, 5, 6, 0])
+    return DailyTasksView(tasks: generateRandomTasks(), userProgess: [5000, 5, 6, 0])
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
 }
