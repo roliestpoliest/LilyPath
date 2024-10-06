@@ -34,11 +34,7 @@ struct TaskCard: View {
             VStack {
                 HStack {
                     HStack (spacing: 3) {
-                        Image(systemName: "drop.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 20)
-                            .foregroundColor(.waterBlue)
+                        IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
                         
                         Text("+" + String(task.taskWaterPointsReward))
                             .font(.rewards)
@@ -48,11 +44,7 @@ struct TaskCard: View {
                     Spacer()
                     
                     HStack (spacing: 3) {
-                        Image("Gem")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 20)
-                            .foregroundColor(.gray)
+                        IconImage(icon: .gem, height: 20, color: .waterBlue)
                         
                         Text("+" + String(task.taskGemsReward))
                             .font(.rewards)
