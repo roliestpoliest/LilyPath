@@ -22,7 +22,7 @@ struct TaskCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .layoutPriority(1)
                 
-                ProgressView(value: userProgress, total: Double(task.taskGoal))
+                ProgressView(value: userProgress, total: Double(task.goal))
                     .progressViewStyle(LinearProgressViewStyle(tint: .darkGreen))
                     .scaleEffect(x: 1, y: 2, anchor: .center)
                     .frame(maxWidth: .infinity, maxHeight: 12)
@@ -36,7 +36,7 @@ struct TaskCard: View {
                     HStack (spacing: 3) {
                         IconImage(icon: .waterDrop, height: 20, color: .waterBlue)
                         
-                        Text("+" + String(task.taskWaterPointsReward))
+                        Text("+" + String(task.waterPointReward))
                             .font(.rewards)
                             .foregroundColor(.white)
                     }
@@ -46,7 +46,7 @@ struct TaskCard: View {
                     HStack (spacing: 3) {
                         IconImage(icon: .gem, height: 20, color: .waterBlue)
                         
-                        Text("+" + String(task.taskGemsReward))
+                        Text("+" + String(task.gemReward))
                             .font(.rewards)
                             .foregroundColor(.white)
                     }
@@ -72,4 +72,10 @@ struct TaskCard: View {
         .cornerRadius(20)
         .shadow(radius: 3, y: 5)
     }
+}
+
+#Preview {
+    TaskCard(task: generateRandomTasks()[0], userProgress: 1000)
+        .padding(30)
+        .background(Color.mainBackground)
 }

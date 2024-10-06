@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct DailyTasksView: View {
-    @State private var rewardWaterPoints: Int = 1000
-    @State private var rewardGems: Int = 3
     // TODO: figure out  how to randomize once a day
-    @State private var tasks: [TaskModel] = generateRandomTasks()
+    @State var tasks: [TaskModel]
     // TODO: Replace with user's actual progress
-    @State private var userProgess: [Double] = [5000, 5, 5, 2]
+    @State var userProgess: [Double]
     
     var body: some View {
         VStack {
@@ -30,7 +28,7 @@ struct DailyTasksView: View {
 }
 
 #Preview {
-    DailyTasksView()
+    DailyTasksView(tasks: generateRandomTasks(), userProgess: [5000, 5, 6, 0])
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
 }
