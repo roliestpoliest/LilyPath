@@ -49,7 +49,7 @@ struct ProgressBar: View {
         ProgressBar(value: 50, total: 100)
         ProgressBar(value: 75, total: 100)
         ProgressBar(value: 1, total: 1)
-        ProgressBar(value: 2, total: 2)
+        ProgressBar(value: 2, total: 1)
     }
     .padding()
 }

@@ -21,7 +21,6 @@ class UserPlantModel:Identifiable {
         guard currentStage > 1, currentStage <= basePlant.stageStepGoals.count else {
             return stepsCollected
         }
-        
         let previousStagesSteps = basePlant.stageStepGoals.prefix(currentStage - 1).reduce(0, +)
         return stepsCollected - previousStagesSteps
     }

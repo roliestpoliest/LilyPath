@@ -32,6 +32,12 @@ struct PlantGalleryCard: View {
                                 .aspectRatio(contentMode: .fit)
                             // .scaleEffect(0.45)
                                 .frame(width: 62, height: 62)
+                            
+                            Text("Stage \(userPlantModel.currentStage)")
+                                .font(.caption)
+                                .padding(.top, 100)
+                                .padding(.trailing, 70)
+
                         }
                         .padding(.top, 5)
                         
@@ -39,8 +45,10 @@ struct PlantGalleryCard: View {
                         
                         VStack {
                             Text(userPlantModel.basePlant.species)
-                            ProgressBar(value: Double(userPlantModel.stepsInCurrentStage), total: Double(userPlantModel.currentStageGoal))
-                                .padding(.horizontal, 10)
+
+                                ProgressBar(value: Double(userPlantModel.stepsInCurrentStage), total: Double(userPlantModel.currentStageGoal))
+
+                                .padding(.horizontal, 15)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .font(Font.statsCard)
@@ -62,6 +70,7 @@ struct PlantGalleryCard: View {
 
 #Preview {
     VStack{
+        PlantGalleryCard(userPlantModel: UserPlantModel(basePlant: BasePlantModel.buttercup, currentStage: 3, stepsCollected: [100, 200, 100].reduce(0,+)))
         PlantGalleryCard(userPlantModel: UserPlantModel(basePlant: BasePlantModel.buttercup, currentStage: 3, stepsCollected: [100, 200, 100].reduce(0,+)))
         PlantGalleryCard(userPlantModel: UserPlantModel(basePlant: BasePlantModel.lavender, currentStage: 5, stepsCollected: [110, 210, 310, 410, 0].reduce(0,+)))
     }
