@@ -21,7 +21,7 @@ struct PlantShopView: View {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 40) {
                     ForEach(plants) { plant in
-                        PlantCard(plantModel: plant)
+                        PlantShopCard(plantModel: plant)
                     }
                 }
                 .padding(.horizontal)

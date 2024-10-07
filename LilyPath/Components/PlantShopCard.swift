@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlantCard: View {
+struct PlantShopCard: View {
     var plantModel: BasePlantModel
     
     //TODO remove on implementation
@@ -60,5 +60,5 @@ struct PlantCard: View {
 }
 
 #Preview {
-    PlantCard(plantModel: BasePlantModel.delphinium)
+    PlantShopCard(plantModel: BasePlantModel.delphinium)
 }
