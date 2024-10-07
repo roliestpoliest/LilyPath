@@ -8,8 +8,12 @@
 import SwiftUI
 
 enum Icon: String {
+    // Currency
     case waterDrop = "drop.fill"
     case gem = "gem"
+    
+    // X
+    case x = "xmark.circle.fill"
     
     // Tab bar
     case home = "home"

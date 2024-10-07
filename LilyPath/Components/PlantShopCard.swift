@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-struct PlantCard: View {
-    var PlantModel: BasePlantModel
+struct PlantShopCard: View {
+    var plantModel: BasePlantModel
     
-    //TODO remove on implementation
+    // TODO: remove on implementation
     var userLevel: Int = 1
     var isLocked: Bool {
-        return userLevel < PlantModel.requiredLevelToBuy
+        return userLevel < plantModel.requiredLevelToBuy
     }
     
-    var body: some View {        
+    var body: some View {
         VStack {
-            ZStack (alignment:.center){
+            ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.customBrown)
                     .cornerRadius(15)
@@ -26,26 +26,25 @@ struct PlantCard: View {
                 VStack {
                     Spacer()
                     
-                    ZStack{
+                    ZStack {
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
                             .fill(Color.lightBlue)
                         
-                        Image(PlantModel.stageImages[4])
+                        Image(plantModel.stageImages[4])
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 62, height: 62)
                         
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
-                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.3 : 0.0))
+                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.4 : 0.0))
                     }
-                    
                     .frame(width: 125, height: 125)
                     
                     Spacer()
                     
                     HStack {
                         if isLocked { Image(systemName: "lock.fill") }
-                        Text(PlantModel.species)
+                        Text(plantModel.species)
                     }
                     .font(Font.statsCard)
                     .foregroundStyle(.white)
@@ -56,9 +55,30 @@ struct PlantCard: View {
             }
             .frame(width: 150, height: 180)
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            print("Plant Shop Card \(plantModel.species) tapped")
+        }
     }
 }
 
 #Preview {
-    PlantCard(PlantModel: BasePlantModel.delphinium)
+    VStack {
+        HStack {
+            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: -1)
+        }
+        HStack{
+            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: -1)
+        }
+        HStack{
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: -1)
+        }
+    }
+    .padding(30)
 }
