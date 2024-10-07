@@ -65,6 +65,10 @@ struct PlantPopUp: View {
                 case .wilt:
                     HStack (spacing: 10) {
                         plantImage(image: plantModel.stageImages[4])
+                            .brightness(0.15)
+                            .saturation(0.4)
+                            .colorMultiply(Color(hex: "bd8b68"))
+
                         
                         VStack(spacing: 15) {
                             Text("Your \(plantModel.species) is wilting!")
@@ -184,15 +188,15 @@ struct PlantPopUp: View {
         //        .background(Color.mainBackground)
         
         ScrollView (showsIndicators: false) {
-            VStack { // Adding a VStack to manage spacing between pop-ups
-                PlantPopUp(popUpType: PopUpType.purchase, plantModel: BasePlantModel.delphinium)
+            VStack {
+//                PlantPopUp(popUpType: PopUpType.purchase, plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
+//                PlantPopUp(popUpType: PopUpType.locked, plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
+                PlantPopUp(popUpType: PopUpType.wilt, plantModel: BasePlantModel.lavender)
                     .frame(height: 250)
-                PlantPopUp(popUpType: PopUpType.locked, plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PlantPopUp(popUpType: PopUpType.wilt, plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PlantPopUp(popUpType: PopUpType.levelUp, plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
+//                PlantPopUp(popUpType: PopUpType.levelUp, plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
             }
             .padding(.horizontal)
         }
