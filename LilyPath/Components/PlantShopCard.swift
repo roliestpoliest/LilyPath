@@ -10,7 +10,7 @@ import SwiftUI
 struct PlantShopCard: View {
     var plantModel: BasePlantModel
     
-    //TODO remove on implementation
+    // TODO: remove on implementation
     var userLevel: Int = 1
     var isLocked: Bool {
         return userLevel < plantModel.requiredLevelToBuy
@@ -36,7 +36,7 @@ struct PlantShopCard: View {
                             .frame(width: 62, height: 62)
                         
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
-                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.3 : 0.0))
+                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.4 : 0.0))
                     }
                     .frame(width: 125, height: 125)
                     
@@ -63,5 +63,22 @@ struct PlantShopCard: View {
 }
 
 #Preview {
-    PlantShopCard(plantModel: BasePlantModel.delphinium)
+    VStack {
+        HStack {
+            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: -1)
+        }
+        HStack{
+            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: -1)
+        }
+        HStack{
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: 100)
+            Spacer()
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: -1)
+        }
+    }
+    .padding(30)
 }
