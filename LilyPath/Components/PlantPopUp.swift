@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// TODO: disable area behind the pop
+// TODO: disable view behind the pop
 // TODO: blur/darken background
 // TODO: add popup functionality
 
@@ -59,7 +59,7 @@ struct PlantPopUp: View {
                 switch popUpType {
                 case .purchase:
                     HStack (spacing: 30) {
-                        Image(plantModel.stageImages[4])
+                        Image(plantModel.stageImages[4]) //THIS IS HARDCODED
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 75, height: 75)
@@ -90,7 +90,7 @@ struct PlantPopUp: View {
                     }
                 case .locked:
                     HStack (spacing: 20) {
-                        Image(plantModel.stageImages[4])
+                        Image(plantModel.stageImages[4]) //THIS IS HARDCODED
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 75, height: 75)
@@ -105,7 +105,7 @@ struct PlantPopUp: View {
                     
                 case .wilt:
                     HStack (spacing: 10) {
-                        Image(plantModel.stageImages[4])
+                        Image(plantModel.stageImages[4]) //THIS IS HARDCODED
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 75, height: 75)
@@ -139,7 +139,7 @@ struct PlantPopUp: View {
                     
                 case .levelUp:
                     HStack (spacing: 10) {
-                        Image(plantModel.stageImages[2])
+                        Image(plantModel.stageImages[4]) //THIS IS HARDCODED
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 75, height: 75)
@@ -171,7 +171,7 @@ struct PlantPopUp: View {
                 }
                 Spacer()
             }
-            .frame(width: 300, height: 200)
+            .frame(width: 275, height: 200)
             .padding()
             .background(Color.mainBackground)
             .cornerRadius(25)
@@ -184,13 +184,11 @@ struct PlantPopUp: View {
         //        .background(Color.black.opacity(0.4))
         .zIndex(1)
     }
-    
-    
 }
 
 #Preview {
-    ZStack {
-        // The main PlantShopView
+    ZStack{
+//        The main PlantShopView
 //        PlantShopView(plants: [
 //            BasePlantModel.lily,
 //            BasePlantModel.delphinium,
@@ -204,11 +202,18 @@ struct PlantPopUp: View {
 //        .padding(.horizontal, 30)
 //        .background(Color.mainBackground)
         
-        // Add the blur effect view behind the pop-up
-//        BlurEffectView(style: .dark)
-//            .edgesIgnoringSafeArea(.all) // Make sure the blur covers the whole screen
-        
-        // The pop-up on top
-        PlantPopUp(popUpType: PopUpType.levelUp, plantModel: BasePlantModel.delphinium)
+        ScrollView (showsIndicators: false) {
+            VStack { // Adding a VStack to manage spacing between pop-ups
+                PlantPopUp(popUpType: PopUpType.purchase, plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250) // Set a fixed height
+                PlantPopUp(popUpType: PopUpType.locked, plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250) // Set a fixed height
+                PlantPopUp(popUpType: PopUpType.wilt, plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250) // Set a fixed height
+                PlantPopUp(popUpType: PopUpType.levelUp, plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250) // Set a fixed height
+            }
+            .padding(.horizontal)
+        }
     }
 }

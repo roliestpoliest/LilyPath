@@ -9,36 +9,22 @@ import SwiftUI
 
 struct PlantShopView: View {
     let plants: [BasePlantModel]
+    let columns = [
+        GridItem(.flexible(), spacing: 50),
+        GridItem(.flexible(), spacing: 50)
+    ]
     
     var body: some View {
         VStack {
             ViewTitle(title: "Plant Shop")
             
             ScrollView(showsIndicators: false) {
-                LazyVStack(spacing: 40) {
-                    ForEach(0..<(plants.count + 1) / 2, id: \.self) { index in
-                        HStack(alignment: .center) {
-                            let firstPlant = plants[index * 2]
-                            PlantCard(PlantModel: firstPlant)
-                            
-                            Spacer()
-                            
-                            if index * 2 + 1 < plants.count {
-                                let secondPlant = plants[index * 2 + 1]
-                                PlantCard(PlantModel: secondPlant)
-                            } else {
-                                Spacer()
-                                    .frame(width: 150)
-                            }
-                        }
+                LazyVGrid(columns: columns, spacing: 40) {
+                    ForEach(plants) { plant in
+                        PlantCard(plantModel: plant)
                     }
                 }
-            }
-            .onAppear {
-                UIScrollView.appearance().bounces = false
-            }
-            .onDisappear {
-                UIScrollView.appearance().bounces = true
+                .padding(.horizontal)
             }
         }
     }
