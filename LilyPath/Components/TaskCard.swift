@@ -21,14 +21,7 @@ struct TaskCard: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .layoutPriority(1)
-                
-                ProgressView(value: userProgress, total: Double(task.taskGoal))
-                    .progressViewStyle(LinearProgressViewStyle(tint: .darkGreen))
-                    .scaleEffect(x: 1, y: 2, anchor: .center)
-                    .frame(maxWidth: .infinity, maxHeight: 12)
-                    .padding(.horizontal, 2)
-                    .background(Color.lightGreen)
-                    .cornerRadius(10)
+                ProgressBar(value: userProgress, total: Double(task.taskGoal))
             }
             
             VStack {
@@ -72,4 +65,10 @@ struct TaskCard: View {
         .cornerRadius(20)
         .shadow(radius: 3, y: 5)
     }
+}
+
+
+#Preview {
+    TaskCard(task: generateRandomTasks()[0], userProgress: [5000, 5, 5, 2][0])
+        .padding()
 }
