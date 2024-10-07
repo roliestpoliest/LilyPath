@@ -138,11 +138,11 @@
 			children = (
 				233A0B6E2CB2095300570652 /* IconImage.swift */,
 				2387199E2CB0715A00305DFA /* ViewTitle.swift */,
-				2387199C2CB0709600305DFA /* TaskCard.swift */,
-				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
-				822FF7012CB118EC00F8F5DC /* PlantPopUp.swift */,
-				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
 				822948AE2CB356EA003BD934 /* ProgressBar.swift */,
+				2387199C2CB0709600305DFA /* TaskCard.swift */,
+				822FF7012CB118EC00F8F5DC /* PlantPopUp.swift */,
+				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
+				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

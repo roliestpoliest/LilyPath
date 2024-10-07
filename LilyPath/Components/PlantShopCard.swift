@@ -16,9 +16,9 @@ struct PlantShopCard: View {
         return userLevel < plantModel.requiredLevelToBuy
     }
     
-    var body: some View {        
+    var body: some View {
         VStack {
-            ZStack (alignment:.center){
+            ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.customBrown)
                     .cornerRadius(15)
@@ -26,7 +26,7 @@ struct PlantShopCard: View {
                 VStack {
                     Spacer()
                     
-                    ZStack{
+                    ZStack {
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
                             .fill(Color.lightBlue)
                         
@@ -38,7 +38,6 @@ struct PlantShopCard: View {
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
                             .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.3 : 0.0))
                     }
-                    
                     .frame(width: 125, height: 125)
                     
                     Spacer()
@@ -55,6 +54,10 @@ struct PlantShopCard: View {
                 }
             }
             .frame(width: 150, height: 180)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            print("Plant Shop Card \(plantModel.species) tapped")
         }
     }
 }

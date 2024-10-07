@@ -53,6 +53,10 @@ struct PlantGalleryCard: View {
             }
             .frame(width: 150, height: 215)
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            print("Plant Gallery Card \(userPlantModel.basePlant.species) tapped")
+        }
     }
 }
 
