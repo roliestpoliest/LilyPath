@@ -17,6 +17,12 @@ class UserPlantModel:Identifiable {
     var watersCollected: Int
     var numberOfRevives: Int
     var isCurrent: Bool
+    var overallProgress: Double {
+        guard currentStage > 0, currentStage <= basePlant.stageStepGoals.count else {
+            return 0
+        }
+        return Double(stepsCollected) / Double(basePlant.stepGoal)
+    }
     var stepsInCurrentStage: Int {
         guard currentStage > 1, currentStage <= basePlant.stageStepGoals.count else {
             return stepsCollected
