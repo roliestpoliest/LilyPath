@@ -10,6 +10,7 @@
 		2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2306B1532CADD30B00ECC155 /* ThemeColors.swift */; };
 		231DE64C2CB3AA58008EFABA /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231DE64B2CB3AA4F008EFABA /* Tabs.swift */; };
 		231DE64E2CB3AD7A008EFABA /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231DE64D2CB3AD6F008EFABA /* TabBar.swift */; };
+		231DE6562CB4991E008EFABA /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231DE6552CB49914008EFABA /* CircularProgressBar.swift */; };
 		231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E92002CAEFEA700964175 /* FontSizes.swift */; };
 		233A0B6D2CB2007300570652 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B6C2CB2007100570652 /* Icons.swift */; };
 		233A0B6F2CB2095B00570652 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B6E2CB2095300570652 /* IconImage.swift */; };
@@ -63,6 +64,7 @@
 		2306B1532CADD30B00ECC155 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		231DE64B2CB3AA4F008EFABA /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		231DE64D2CB3AD6F008EFABA /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		231DE6552CB49914008EFABA /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
 		231E92002CAEFEA700964175 /* FontSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizes.swift; sourceTree = "<group>"; };
 		233A0B6C2CB2007100570652 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		233A0B6E2CB2095300570652 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		238719992CB0707B00305DFA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				231DE6552CB49914008EFABA /* CircularProgressBar.swift */,
 				231DE64D2CB3AD6F008EFABA /* TabBar.swift */,
 				233A0B732CB24E7300570652 /* TaskButton.swift */,
 				233A0B6E2CB2095300570652 /* IconImage.swift */,
@@ -411,6 +414,7 @@
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */,
+				231DE6562CB4991E008EFABA /* CircularProgressBar.swift in Sources */,
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
