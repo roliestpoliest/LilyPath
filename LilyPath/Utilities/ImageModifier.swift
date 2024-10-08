@@ -15,7 +15,7 @@ struct WiltFlowerEffect: ViewModifier {
             content
                 .brightness(0.15)
                 .saturation(0.4)
-                .colorMultiply(Color(hex: "bd8b68"))
+                .colorMultiply(Color(hex: "#BD8B68"))
         } else {
             content
         }
