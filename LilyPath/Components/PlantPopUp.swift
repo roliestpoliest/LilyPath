@@ -11,7 +11,7 @@ import SwiftUI
 // TODO: blur/darken background
 // TODO: add popup functionality
 
-struct GenericPopUpView<Content: View>: View {
+struct GenericPlantPopUpView<Content: View>: View {
     @State private var showPopUp = true
     var headerText: String
     var content: () -> Content
@@ -21,7 +21,7 @@ struct GenericPopUpView<Content: View>: View {
     var body: some View {
         ZStack {
             VStack {
-                pinkHeader(text: headerText)
+                header(text: headerText)
                 Spacer()
                 content()
                 Spacer()
@@ -38,18 +38,20 @@ struct GenericPopUpView<Content: View>: View {
         .zIndex(1)
     }
 
-    private func pinkHeader(text: String) -> some View {
+    private func header(text: String, backGroundColor: Color = .customPink, textColor: Color = .customBrown) -> some View {
         ZStack {
             UnevenRoundedRectangle(
                 topLeadingRadius: 17, bottomLeadingRadius: 0,
                 bottomTrailingRadius: 0, topTrailingRadius: 17
             )
-            .fill(Color.customPink)
+            .fill(backGroundColor)
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
+            .frame(height: 50)
+            
             ZStack {
                 Text(text.uppercased())
                     .font(Font.popupTitle)
-                    .foregroundColor(Color.customBrown)
+                    .foregroundColor(textColor)
 
                 HStack {
                     Spacer()
@@ -63,14 +65,13 @@ struct GenericPopUpView<Content: View>: View {
             }
             .padding()
         }
-        .frame(height: 50)
     }
 }
 
 class PlantPopUp {
 
     static func purchase(plantModel: BasePlantModel) -> some View {
-        GenericPopUpView(
+        GenericPlantPopUpView(
             headerText: "Purchase",
             content: {
                 HStack(spacing: 30) {
@@ -92,7 +93,7 @@ class PlantPopUp {
     }
 
     static func locked(plantModel: BasePlantModel) -> some View {
-        GenericPopUpView(
+        GenericPlantPopUpView(
             headerText: "Womp Womp",
             content: {
                 HStack(spacing: 20) {
@@ -112,7 +113,7 @@ class PlantPopUp {
     }
 
     static func wilt(plantModel: BasePlantModel) -> some View {
-        GenericPopUpView(
+        GenericPlantPopUpView(
             headerText: "Uh oh!",
             content: {
                 HStack(spacing: 10) {
@@ -138,7 +139,7 @@ class PlantPopUp {
     }
 
     static func levelUp(plantModel: BasePlantModel) -> some View {
-        GenericPopUpView(
+        GenericPlantPopUpView(
             headerText: "Level Up!",
             content: {
                 HStack(spacing: 10) {
@@ -165,7 +166,7 @@ class PlantPopUp {
         let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
 
-        return GenericPopUpView(
+        return GenericPlantPopUpView(
             headerText: currentPlantModel.basePlant.species,
             content: {
                 VStack {
@@ -270,7 +271,7 @@ class PlantPopUp {
     static func swapPlant(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
     ) -> some View {
-        GenericPopUpView(
+        GenericPlantPopUpView(
             headerText: "Swap Plant",
             content: {
                 HStack {
@@ -300,7 +301,7 @@ class PlantPopUp {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 50, height: 75)
-            .modifier(ImageEffectModifier(applyEffects: applyEffects))
+            .modifier(WiltFlowerEffect(applyEffects: applyEffects))
     }
 
     private static func actionButton(
@@ -331,7 +332,7 @@ class PlantPopUp {
     }
 }
 
-struct ImageEffectModifier: ViewModifier {
+struct WiltFlowerEffect: ViewModifier {
     let applyEffects: Bool
 
     func body(content: Content) -> some View {
