@@ -21,7 +21,7 @@ struct TaskCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .layoutPriority(1)
                 
-                ProgressBar(value: Double(task.userProgress), total: Double(task.goal))
+                ProgressBar(value: Double(task.userProgress), total: Double(task.goal), frameHeight: 11)
             }
             
             VStack {
@@ -57,7 +57,7 @@ struct TaskCard: View {
 }
 
 #Preview {
-    TaskCard(task: TaskModel(type: .walk, goal: 12000, waterPointReward: 1000, gemReward: 3, userProgress: 10000, status: TaskModel.TaskStatus.collect))
+    TaskCard(task: TaskModel(type: .climb, goal: 12000, waterPointReward: 1000, gemReward: 3, userProgress: 10000, status: TaskModel.TaskStatus.collect))
         .padding(30)
         .background(Color.mainBackground)
 }
