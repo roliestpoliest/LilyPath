@@ -39,6 +39,7 @@
 		8298A1172CAA04340062563F /* GardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A1162CAA04340062563F /* GardenView.swift */; };
 		8298A1192CAA04430062563F /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A1182CAA04430062563F /* StatisticsView.swift */; };
 		8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A11A2CAA04B10062563F /* SplashScreenView.swift */; };
+		82D166002CB4F4C000A91D5E /* ImageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D165FF2CB4F4C000A91D5E /* ImageModifier.swift */; };
 		82DDA1832CB379A2008585EE /* PlantGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DDA1822CB379A2008585EE /* PlantGalleryView.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,7 @@
 		8298A1162CAA04340062563F /* GardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenView.swift; sourceTree = "<group>"; };
 		8298A1182CAA04430062563F /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		8298A11A2CAA04B10062563F /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		82D165FF2CB4F4C000A91D5E /* ImageModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModifier.swift; sourceTree = "<group>"; };
 		82DDA1822CB379A2008585EE /* PlantGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantGalleryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 				233A0B6C2CB2007100570652 /* Icons.swift */,
 				231E92002CAEFEA700964175 /* FontSizes.swift */,
 				2306B1532CADD30B00ECC155 /* ThemeColors.swift */,
+				82D165FF2CB4F4C000A91D5E /* ImageModifier.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */,
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
+				82D166002CB4F4C000A91D5E /* ImageModifier.swift in Sources */,
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */,

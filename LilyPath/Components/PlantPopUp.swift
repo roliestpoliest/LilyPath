@@ -332,21 +332,6 @@ class PlantPopUp {
     }
 }
 
-struct WiltFlowerEffect: ViewModifier {
-    let applyEffects: Bool
-
-    func body(content: Content) -> some View {
-        if applyEffects {
-            content
-                .brightness(0.15)
-                .saturation(0.4)
-                .colorMultiply(Color(hex: "bd8b68"))
-        } else {
-            content
-        }
-    }
-}
-
 #Preview {
     ZStack {
         ScrollView(showsIndicators: false) {
