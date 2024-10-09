@@ -63,7 +63,12 @@ struct CurrentPlantDisplay: View {
                         .scaledToFit()
                         .frame(
                             maxWidth: userCurrentPlant.currentStage == 1
-                            ? 40 : 70)
+                            ? 40 : 70
+                        )
+                        .modifier(
+                            WiltFlowerEffect(
+                                applyEffects: userCurrentPlant.status == .wilted
+                            ))
                 }
                 .frame(maxHeight: 120)
             }
@@ -148,8 +153,9 @@ struct IconWithText: View {
     HomeView(
         userCurrentPlant:
             UserPlantModel(
-                basePlant: BasePlantModel.buttercup, currentStage: 3,
-                stepsCollected: [100, 200, 100].reduce(0, +))
+                basePlant: BasePlantModel.buttercup, currentStage: 4,
+                stepsCollected: [100, 200, 300, 100].reduce(0, +),
+                status: .wilted)
     )
     .padding(.horizontal, 30)
     .background(Color.mainBackground)
