@@ -16,7 +16,10 @@ final class BasePlantModel: Identifiable {
     let stageStepGoals: [Int]
     let stageImages: [String]
     
-    init(species: String, requiredLevelToBuy: Int, price: Int, stageStepGoals: [Int]) {
+    init(
+        species: String, requiredLevelToBuy: Int, price: Int,
+        stageStepGoals: [Int]
+    ) {
         self.species = species
         self.requiredLevelToBuy = requiredLevelToBuy
         self.price = price
@@ -102,4 +105,9 @@ final class BasePlantModel: Identifiable {
         price: 150,
         stageStepGoals: [150, 250, 350, 450, 0]
     )
+    
+    static let allPlants = [
+        buttercup, carnation, chamomile, delphinium, lavender, lily, lotus,
+        peony, petunia, rose, sunflower,
+    ]
 }
