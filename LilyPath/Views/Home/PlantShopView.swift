@@ -11,12 +11,12 @@ struct PlantShopView: View {
     let plants: [BasePlantModel]
     let columns = [
         GridItem(.flexible(), spacing: 40),
-        GridItem(.flexible(), spacing: 40)
+        GridItem(.flexible(), spacing: 40),
     ]
     
     var body: some View {
         VStack {
-            ViewTitle(title: "Plant Shop")
+            ViewTitle(title: "Plant Shop", isNavTitle: true)
             
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 40) {
@@ -27,20 +27,11 @@ struct PlantShopView: View {
             }
             .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
         }
+        .background(Color.mainBackground)
     }
 }
 
 #Preview {
-    PlantShopView(plants: [
-        BasePlantModel.lily,
-        BasePlantModel.delphinium,
-        BasePlantModel.buttercup,
-        BasePlantModel.rose,
-        BasePlantModel.chamomile,
-        BasePlantModel.petunia,
-        BasePlantModel.carnation,
-        BasePlantModel.lotus
-    ])
-    .padding(.horizontal, 30)
-    .background(Color.mainBackground)
+    PlantShopView(plants: BasePlantModel.allPlants)
+        .padding(.horizontal, 30)
 }

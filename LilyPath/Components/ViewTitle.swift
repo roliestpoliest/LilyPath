@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ViewTitle: View {
-    @State var title: String
+    let title: String
+    var isNavTitle: Bool = false
     
     var body: some View {
         Text(title)
@@ -16,5 +17,14 @@ struct ViewTitle: View {
             .foregroundColor(.customBrown)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical)
+            .padding(.top, isNavTitle ? 40 : 0)
     }
+}
+
+#Preview {
+    ViewTitle(title: "View Title")
+        .background(Color.mainBackground)
+    
+    ViewTitle(title: "Nav View Title", isNavTitle: true)
+        .background(Color.mainBackground)
 }
