@@ -9,22 +9,27 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selectedTab: Tabs = .home
-
+    
     var body: some View {
         VStack {
-            ZStack {
-                TabView(selection: $selectedTab) {
-                    GardenView()
-                        .tag(Tabs.garden)
-                    
-                    HomeView()
-                        .tag(Tabs.home)
-                    
-                    StatisticsView()
-                        .tag(Tabs.stats)
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            TabView(selection: $selectedTab) {
+                GardenView()
+                    .tag(Tabs.garden)
+                
+                // TODO: replace with user's current plant
+                HomeView(
+                    userCurrentPlant:
+                        UserPlantModel(
+                            basePlant: BasePlantModel.buttercup,
+                            currentStage: 3,
+                            stepsCollected: [100, 200, 100].reduce(0, +))
+                )
+                .tag(Tabs.home)
+                
+                StatisticsView()
+                    .tag(Tabs.stats)
             }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             
             TabBar(selectedTab: $selectedTab)
         }
