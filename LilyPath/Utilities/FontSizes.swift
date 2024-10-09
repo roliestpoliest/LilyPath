@@ -37,6 +37,10 @@ extension Font {
         return .system(size: 16, weight: .medium, design: .rounded)
     }
     
+    static var statsBodyBold: Font {
+        return .system(size: 16, weight: .bold, design: .rounded)
+    }
+    
     static var popupTitle: Font {
         return .system(size: 20, weight: .bold, design: .rounded)
     }
@@ -51,5 +55,9 @@ extension Font {
     
     static var tabLabel: Font {
         return .system(size: 12, weight: .semibold, design: .rounded)
+    }
+    
+    static var stageLable: Font {
+        return .system(size: 12, weight: .bold, design: .rounded)
     }
 }
