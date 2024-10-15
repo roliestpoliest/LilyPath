@@ -11,7 +11,7 @@ import SwiftUI
 // TODO: blur/darken background
 // TODO: add popup functionality
 
-struct GenericPlantPopUpView<Content: View>: View {
+struct GenericPopUpView<Content: View>: View {
     @State private var showPopUp = true
     var headerText: String
     var content: () -> Content
@@ -38,7 +38,10 @@ struct GenericPlantPopUpView<Content: View>: View {
         .zIndex(1)
     }
 
-    private func header(text: String, backGroundColor: Color = .customPink, textColor: Color = .customBrown) -> some View {
+    private func header(
+        text: String, backGroundColor: Color = .customPink,
+        textColor: Color = .customBrown
+    ) -> some View {
         ZStack {
             UnevenRoundedRectangle(
                 topLeadingRadius: 17, bottomLeadingRadius: 0,
@@ -47,7 +50,7 @@ struct GenericPlantPopUpView<Content: View>: View {
             .fill(backGroundColor)
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
             .frame(height: 50)
-            
+
             ZStack {
                 Text(text.uppercased())
                     .font(Font.popupTitle)
@@ -68,10 +71,10 @@ struct GenericPlantPopUpView<Content: View>: View {
     }
 }
 
-class PlantPopUp {
+class PopUp {
 
     static func purchase(plantModel: BasePlantModel) -> some View {
-        GenericPlantPopUpView(
+        GenericPopUpView(
             headerText: "Purchase",
             content: {
                 HStack(spacing: 30) {
@@ -80,7 +83,7 @@ class PlantPopUp {
                     VStack(spacing: 15) {
                         Text(plantModel.species)
                             .font(Font.popupBody)
-                            .foregroundColor(Color.customBrown)
+                            .foregroundColor(.customBrown)
 
                         actionButton(text: String(plantModel.price), icon: .gem)
                         {
@@ -93,7 +96,7 @@ class PlantPopUp {
     }
 
     static func locked(plantModel: BasePlantModel) -> some View {
-        GenericPlantPopUpView(
+        GenericPopUpView(
             headerText: "Womp Womp",
             content: {
                 HStack(spacing: 20) {
@@ -105,7 +108,7 @@ class PlantPopUp {
                         )
                         .multilineTextAlignment(.center)
                         .font(Font.popupBody)
-                        .foregroundColor(Color.customBrown)
+                        .foregroundColor(.customBrown)
                     }
                 }
             }
@@ -113,7 +116,7 @@ class PlantPopUp {
     }
 
     static func wilt(plantModel: BasePlantModel) -> some View {
-        GenericPlantPopUpView(
+        GenericPopUpView(
             headerText: "Uh oh!",
             content: {
                 HStack(spacing: 10) {
@@ -124,7 +127,7 @@ class PlantPopUp {
                         Text("Your \(plantModel.species) is wilting!")
                             .multilineTextAlignment(.center)
                             .font(Font.popupBody)
-                            .foregroundColor(Color.customBrown)
+                            .foregroundColor(.customBrown)
 
                         actionButton(
                             text: "-1000", secondText: "Revive?",
@@ -139,7 +142,7 @@ class PlantPopUp {
     }
 
     static func levelUp(plantModel: BasePlantModel) -> some View {
-        GenericPlantPopUpView(
+        GenericPopUpView(
             headerText: "Level Up!",
             content: {
                 HStack(spacing: 10) {
@@ -149,12 +152,13 @@ class PlantPopUp {
                         Text("Your \(plantModel.species) is growing!")
                             .multilineTextAlignment(.center)
                             .font(Font.popupBody)
-                            .foregroundColor(Color.customBrown)
+                            .foregroundColor(.customBrown)
 
                         actionButton(text: "+1", icon: .gem) {
                             print("Level Up button tapped")
                         }
                     }
+                    .frame(width: 175)
                 }
             }
         )
@@ -166,7 +170,7 @@ class PlantPopUp {
         let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
 
-        return GenericPlantPopUpView(
+        return GenericPopUpView(
             headerText: currentPlantModel.basePlant.species,
             content: {
                 VStack {
@@ -271,7 +275,7 @@ class PlantPopUp {
     static func swapPlant(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
     ) -> some View {
-        GenericPlantPopUpView(
+        GenericPopUpView(
             headerText: "Swap Plant",
             content: {
                 HStack {
@@ -282,7 +286,7 @@ class PlantPopUp {
                         )
                         .multilineTextAlignment(.center)
                         .font(Font.popupBody)
-                        .foregroundColor(Color.customBrown)
+                        .foregroundColor(.customBrown)
 
                         actionButton(text: "Yes") {
                             print("Swap button tapped")
@@ -310,13 +314,13 @@ class PlantPopUp {
     ) -> some View {
         Button(action: action) {
             HStack(spacing: 10) {
-                if let secondText = secondText {
-                    Text(secondText)
+                secondText.map {
+                    Text($0)
                         .font(.popupDetails)
                         .foregroundColor(.white)
                 }
-                if let icon = icon {
-                    IconImage(icon: icon, height: 20, color: .waterBlue)
+                icon.map {
+                    IconImage(icon: $0, height: 20, color: .waterBlue)
                 }
                 Text(text)
                     .font(.popupDetails)
@@ -343,21 +347,21 @@ class PlantPopUp {
                     basePlant: .lily, currentStage: 4, stepsCollected: 1000
                 )
 
-                PlantPopUp.purchase(plantModel: BasePlantModel.delphinium)
+                PopUp.purchase(plantModel: BasePlantModel.delphinium)
                     .frame(height: 250)
-                PlantPopUp.locked(plantModel: BasePlantModel.delphinium)
+                PopUp.locked(plantModel: BasePlantModel.delphinium)
                     .frame(height: 250)
-                PlantPopUp.wilt(plantModel: BasePlantModel.lavender)
+                PopUp.wilt(plantModel: BasePlantModel.lavender)
                     .frame(height: 250)
-                PlantPopUp.levelUp(plantModel: BasePlantModel.delphinium)
+                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
                     .frame(height: 250)
-                PlantPopUp.stats(
+                PopUp.stats(
                     currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
-                PlantPopUp.stats(
+                PopUp.stats(
                     currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
                 )
                 .frame(height: 275)
-                PlantPopUp.swapPlant(
+                PopUp.swapPlant(
                     currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
             }
             .padding(.horizontal)
