@@ -13,7 +13,7 @@ struct DailyTasksView: View {
     
     var body: some View {
         VStack {
-            ViewTitle(title: "Daily Tasks", isNavTitle: true)
+            ViewTitle(title: "Daily Tasks")
             
             ScrollView(showsIndicators: false) {
                 ForEach(tasks.indices, id: \.self) { index in

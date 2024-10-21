@@ -16,7 +16,7 @@ struct PlantShopView: View {
     
     var body: some View {
         VStack {
-            ViewTitle(title: "Plant Shop", isNavTitle: true)
+            ViewTitle(title: "Plant Shop")
             
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 40) {
