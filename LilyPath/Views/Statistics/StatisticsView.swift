@@ -34,9 +34,7 @@ struct StatNavigationLink<Destination: View>: View {
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxHeight: 20)
+                    .font(.viewTitle)
                     .foregroundColor(Color.customBrown)
             }
         }
