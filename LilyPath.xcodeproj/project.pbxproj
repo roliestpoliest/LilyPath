@@ -18,6 +18,7 @@
 		233A0B742CB24E7300570652 /* TaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B732CB24E7300570652 /* TaskButton.swift */; };
 		2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2353BDA82CC61B2F0019412C /* PlantStatsView.swift */; };
 		2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2353BDAA2CC61B600019412C /* FitnessStatsView.swift */; };
+		2353BDAD2CC7183F0019412C /* TimePeriodPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */; };
 		238719432CAF090F00305DFA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 238719422CAF090F00305DFA /* .gitignore */; };
 		238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719482CAF172A00305DFA /* DailyTasksView.swift */; };
 		238719942CB0635200305DFA /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719932CB0634A00305DFA /* TaskModel.swift */; };
@@ -75,6 +76,7 @@
 		233A0B732CB24E7300570652 /* TaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskButton.swift; sourceTree = "<group>"; };
 		2353BDA82CC61B2F0019412C /* PlantStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsView.swift; sourceTree = "<group>"; };
 		2353BDAA2CC61B600019412C /* FitnessStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsView.swift; sourceTree = "<group>"; };
+		2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodPicker.swift; sourceTree = "<group>"; };
 		238719422CAF090F00305DFA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		238719482CAF172A00305DFA /* DailyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTasksView.swift; sourceTree = "<group>"; };
 		238719932CB0634A00305DFA /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		238719992CB0707B00305DFA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */,
 				231DE6552CB49914008EFABA /* CircularProgressBar.swift */,
 				231DE64D2CB3AD6F008EFABA /* TabBar.swift */,
 				233A0B732CB24E7300570652 /* TaskButton.swift */,
@@ -413,6 +416,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */,
+				2353BDAD2CC7183F0019412C /* TimePeriodPicker.swift in Sources */,
 				233A0B742CB24E7300570652 /* TaskButton.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,
@@ -606,6 +610,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
+				DEVELOPMENT_TEAM = FR25N7MR4F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -637,6 +642,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
+				DEVELOPMENT_TEAM = FR25N7MR4F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
