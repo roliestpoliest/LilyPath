@@ -50,7 +50,7 @@ struct TaskCard: View {
             }
         }
         .padding()
-        .frame(width: .infinity, height: 100)
+        .frame(height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
     }
