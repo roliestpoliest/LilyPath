@@ -16,6 +16,8 @@
 		233A0B6F2CB2095B00570652 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B6E2CB2095300570652 /* IconImage.swift */; };
 		233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B712CB2486200570652 /* ShadowConstants.swift */; };
 		233A0B742CB24E7300570652 /* TaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233A0B732CB24E7300570652 /* TaskButton.swift */; };
+		2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2353BDA82CC61B2F0019412C /* PlantStatsView.swift */; };
+		2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2353BDAA2CC61B600019412C /* FitnessStatsView.swift */; };
 		238719432CAF090F00305DFA /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 238719422CAF090F00305DFA /* .gitignore */; };
 		238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719482CAF172A00305DFA /* DailyTasksView.swift */; };
 		238719942CB0635200305DFA /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719932CB0634A00305DFA /* TaskModel.swift */; };
@@ -71,6 +73,8 @@
 		233A0B6E2CB2095300570652 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		233A0B712CB2486200570652 /* ShadowConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowConstants.swift; sourceTree = "<group>"; };
 		233A0B732CB24E7300570652 /* TaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskButton.swift; sourceTree = "<group>"; };
+		2353BDA82CC61B2F0019412C /* PlantStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsView.swift; sourceTree = "<group>"; };
+		2353BDAA2CC61B600019412C /* FitnessStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsView.swift; sourceTree = "<group>"; };
 		238719422CAF090F00305DFA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		238719482CAF172A00305DFA /* DailyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTasksView.swift; sourceTree = "<group>"; };
 		238719932CB0634A00305DFA /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
+				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
 			);
 			path = Statistics;
@@ -406,6 +412,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */,
 				233A0B742CB24E7300570652 /* TaskButton.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,
@@ -420,6 +427,7 @@
 				238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */,
 				231DE6562CB4991E008EFABA /* CircularProgressBar.swift in Sources */,
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
+				2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */,

@@ -9,12 +9,42 @@ import SwiftUI
 
 struct StatisticsView: View {
     var body: some View {
-        VStack {
-            Text("Stats View!")
+        NavigationStack {
+            VStack {
+                StatNavigationLink(title: "Plant Stats", destination: PlantStatsView())
+                
+                StatNavigationLink(title: "Fitness Stats", destination: FitnessStatsView())
+                
+                Spacer()
+            }
+            .background(Color.mainBackground)
+        }
+    }
+}
+
+struct StatNavigationLink<Destination: View>: View {
+    let title: String
+    let destination: Destination
+
+    var body: some View {
+        NavigationLink(destination: destination) {
+            HStack {
+                ViewTitle(title: title)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 20)
+                    .foregroundColor(Color.customBrown)
+            }
         }
     }
 }
 
 #Preview {
     StatisticsView()
+        .padding(.horizontal, 30)
+        .background(Color.mainBackground)
 }
