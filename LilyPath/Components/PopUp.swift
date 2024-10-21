@@ -11,8 +11,12 @@ import SwiftUI
 // TODO: blur/darken background
 // TODO: add popup functionality
 
+// MARK: Generic view
 struct GenericPopUpView<Content: View>: View {
     @State private var showPopUp = true
+    var headerColor: Color = .customPink
+    var textColor: Color = .customBrown
+    var x_color: Color = .darkPink
     var headerText: String
     var content: () -> Content
     var width: CGFloat = 275
@@ -21,7 +25,7 @@ struct GenericPopUpView<Content: View>: View {
     var body: some View {
         ZStack {
             VStack {
-                header(text: headerText)
+                header(text: headerText, headerColor: headerColor, textColor: textColor, x_color: x_color)
                 Spacer()
                 content()
                 Spacer()
@@ -37,17 +41,19 @@ struct GenericPopUpView<Content: View>: View {
         }
         .zIndex(1)
     }
-
+    // MARK: header
     private func header(
-        text: String, backGroundColor: Color = .customPink,
-        textColor: Color = .customBrown
+        text: String,
+        headerColor: Color,
+        textColor: Color,
+        x_color: Color
     ) -> some View {
         ZStack {
             UnevenRoundedRectangle(
                 topLeadingRadius: 17, bottomLeadingRadius: 0,
                 bottomTrailingRadius: 0, topTrailingRadius: 17
             )
-            .fill(backGroundColor)
+            .fill(headerColor)
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
             .frame(height: 50)
 
@@ -62,7 +68,7 @@ struct GenericPopUpView<Content: View>: View {
                         print("Close button tapped")
                         showPopUp.toggle()
                     }) {
-                        IconImage(icon: .x, height: 20, color: .darkPink)
+                        IconImage(icon: .x, height: 20, color: x_color)
                     }
                 }
             }
@@ -71,8 +77,8 @@ struct GenericPopUpView<Content: View>: View {
     }
 }
 
+// MARK: Pop Up Class
 class PopUp {
-
     static func purchase(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
             headerText: "Purchase",
@@ -94,7 +100,7 @@ class PopUp {
             }
         )
     }
-
+    // MARK: locked
     static func locked(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
             headerText: "Womp Womp",
@@ -115,6 +121,7 @@ class PopUp {
         )
     }
 
+    // MARK: wilt
     static func wilt(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
             headerText: "Uh oh!",
@@ -141,6 +148,7 @@ class PopUp {
         )
     }
 
+    // MARK: level up
     static func levelUp(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
             headerText: "Level Up!",
@@ -164,7 +172,8 @@ class PopUp {
         )
     }
 
-    static func stats(
+    // MARK: stats
+    static func plantStats(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
@@ -266,12 +275,12 @@ class PopUp {
                 }
                 .padding()
                 .foregroundColor(.customBrown)
-
             },
             width: 300, height: 215 + additionalHeight
         )
     }
 
+    // MARK: swap
     static func swapPlant(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
     ) -> some View {
@@ -297,7 +306,61 @@ class PopUp {
             }
         )
     }
+    
+    // MARK: fitness stats
+    static func fitnessStats() -> some View {
+        GenericPopUpView(
+            headerColor: Color.darkerBlue,
+            textColor: Color(hex: "#DEE5EB"),
+            x_color: Color(hex: "#DEE5EB"),
+            headerText: "Steps",
+            content: {
+                HStack(spacing: 20) {
+                    VStack(alignment: .center, spacing: 15) {
+                        Grid {
+                            let width: CGFloat = 135
+                            GridRow {
+                                Text("Day")
+                                    .frame(width: width, alignment: .leading)
+                                    .font(.statsBodyBold)
 
+                                Text("Sept 21")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .font(.statsBody)
+                            }
+                            GridRow {
+                                Text("Total Steps")
+                                    .frame(width: width, alignment: .leading)
+                                    .font(.statsBodyBold)
+
+                                Text("4806")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .font(.statsBody)
+                            }
+                            GridRow {
+                                Text("Average Steps")
+                                    .frame(width: width, alignment: .leading)
+                                    .font(.statsBodyBold)
+                                Text("209/hour")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .font(.statsBody)
+                            }
+                        }
+                        
+//                        Chart {
+//                            BarMark(
+//                                
+//                            )
+//                        }
+                    }
+                    .padding()
+                    .foregroundColor(.customBrown)
+                }
+            }
+        )
+    }
+
+    // MARK: plant image
     private static func plantImage(image: String, applyEffects: Bool = false)
         -> some View
     {
@@ -308,6 +371,7 @@ class PopUp {
             .modifier(WiltFlowerEffect(applyEffects: applyEffects))
     }
 
+    // MARK: action button
     private static func actionButton(
         text: String, secondText: String? = nil, icon: Icon? = nil,
         action: @escaping () -> Void
@@ -347,22 +411,23 @@ class PopUp {
                     basePlant: .lily, currentStage: 4, stepsCollected: 1000
                 )
 
-                PopUp.purchase(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PopUp.locked(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PopUp.wilt(plantModel: BasePlantModel.lavender)
-                    .frame(height: 250)
-                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PopUp.stats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
-                PopUp.stats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
-                )
-                .frame(height: 275)
-                PopUp.swapPlant(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+//                PopUp.purchase(plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
+//                PopUp.locked(plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
+//                PopUp.wilt(plantModel: BasePlantModel.lavender)
+//                    .frame(height: 250)
+//                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
+//                    .frame(height: 250)
+//                PopUp.plantStats(
+//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+//                PopUp.plantStats(
+//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
+//                )
+//                .frame(height: 275)
+//                PopUp.swapPlant(
+//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+                PopUp.fitnessStats()
             }
             .padding(.horizontal)
             .padding()
