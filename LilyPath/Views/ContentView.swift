@@ -11,7 +11,7 @@ struct ContentView: View {
     @State var selectedTab: Tabs = .home
     
     var body: some View {
-        VStack {
+        ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
                 GardenView()
                     .tag(Tabs.garden)
@@ -29,9 +29,9 @@ struct ContentView: View {
                 StatisticsView()
                     .tag(Tabs.stats)
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             
             TabBar(selectedTab: $selectedTab)
+                .background(Color.mainBackground)
         }
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
