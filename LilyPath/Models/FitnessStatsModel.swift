@@ -93,7 +93,7 @@ extension FitnessStatsModel {
     static let slept = FitnessStatsModel(
         id: "slept", icon: .slept, unit: "hour", action: "slept")
     static let calories = FitnessStatsModel(
-        id: "calories", icon: .calories, unit: "cal", action: "used")
+        id: "calories", icon: .calories, unit: "cal", action: "burned")
     
     static let allFitness: [FitnessStatsModel] = [
         .steps, .distance, .climbed, .slept, .calories,

@@ -7,36 +7,22 @@
 
 import Foundation
 
-struct TaskType {
-    let descriptionTemplate: String
-    let goalRange: ClosedRange<Int>
-    let incrementFactor: Int
-
-    init(descriptionTemplate: String, goalRange: ClosedRange<Int>, incrementFactor: Int = 1) {
-        self.descriptionTemplate = descriptionTemplate
-        self.goalRange = goalRange
-        self.incrementFactor = incrementFactor
+class TaskManager: ObservableObject {
+    static let shared = TaskManager()
+    
+    @Published var tasks: [TaskModel]
+    
+    private init() {
+        self.tasks = generateRandomTasks()
     }
     
-    func description(for goal: Int) -> String {
-        return String(format: descriptionTemplate, formatNumberWithCommas(goal))
+    // TODO: generate randome tasks once a day
+    func generateNewTasks() {
+        self.tasks = generateRandomTasks()
     }
-
-    static let walk = TaskType(descriptionTemplate: "Walk %@ steps", goalRange: 80...150, incrementFactor: 100)
-    static let climb = TaskType(descriptionTemplate: "Climb %@ flights of stairs", goalRange: 10...20)
-    static let sleep = TaskType(descriptionTemplate: "Get %@ hours of sleep", goalRange: 7...9)
-    static let stand = TaskType(descriptionTemplate: "Stand for %@ hours", goalRange: 4...7)
-    
-    static let all: [TaskType] = [.walk, .climb, .sleep, .stand]
 }
 
 class TaskModel: ObservableObject {
-    enum TaskStatus: String {
-        case inProgress = "In Progress"
-        case collect = "Collect"
-        case completed = "Completed"
-    }
-    
     let type: TaskType
     let goal: Int
     let waterPointReward: Int
@@ -44,7 +30,14 @@ class TaskModel: ObservableObject {
     @Published var userProgress: Int
     @Published var status: TaskStatus
     
-    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, userProgress: Int = 0, status: TaskStatus = .inProgress) {
+    init(
+        type: TaskType,
+        goal: Int,
+        waterPointReward: Int,
+        gemReward: Int,
+        userProgress: Int = 0,
+        status: TaskStatus = .inProgress
+    ) {
         self.type = type
         self.goal = goal
         self.waterPointReward = waterPointReward
@@ -52,24 +45,77 @@ class TaskModel: ObservableObject {
         self.userProgress = userProgress
         self.status = status
     }
-
+    
     var taskName: String {
-        return type.description(for: self.goal)
+        type.description(for: goal)
     }
-
+    
     func updateStatus(to status: TaskStatus) {
         self.status = status
     }
     
     func checkProgress() {
-        if self.userProgress >= self.goal {
+        if userProgress >= goal {
             updateStatus(to: .completed)
         }
     }
     
     // TODO: update functionality
     func updateUserProgress(to newProgress: Int) {
-        self.userProgress = newProgress
+        userProgress = newProgress
         checkProgress()
     }
+}
+
+enum TaskStatus: String {
+    case inProgress = "In Progress"
+    case collect = "Collect"
+    case completed = "Completed"
+}
+
+struct TaskType {
+    let descriptionTemplate: String
+    let goalRange: ClosedRange<Int>
+    let incrementFactor: Int
+    
+    init(
+        descriptionTemplate: String, goalRange: ClosedRange<Int>,
+        incrementFactor: Int = 1
+    ) {
+        self.descriptionTemplate = descriptionTemplate
+        self.goalRange = goalRange
+        self.incrementFactor = incrementFactor
+    }
+    
+    func description(for goal: Int) -> String {
+        String(format: descriptionTemplate, formatNumberWithCommas(goal))
+    }
+}
+
+extension TaskType {
+    static let walk = TaskType(
+        descriptionTemplate: "Walk %@ steps",
+        goalRange: 5000...10000,
+        incrementFactor: 100
+    )
+    static let distance = TaskType(
+        descriptionTemplate: "Walk & run %@ miles",
+        goalRange: 2...5
+    )
+    static let climb = TaskType(
+        descriptionTemplate: "Climb %@ flights of stairs",
+        goalRange: 8...18
+    )
+    static let sleep = TaskType(
+        descriptionTemplate: "Get %@ hours of sleep",
+        goalRange: 7...9
+    )
+    static let calories = TaskType(
+        descriptionTemplate: "Burn %@ calories",
+        goalRange: 300...600
+    )
+    
+    static let allTasks: [TaskType] = [
+        .walk, .distance, .climb, .sleep, .calories,
+    ]
 }
