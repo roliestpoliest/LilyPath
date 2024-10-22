@@ -35,7 +35,7 @@ struct TimePeriodPicker: View {
                         .padding(5)
                     
                     Text(options[index].rawValue)
-                        .font(Font.stageLable)
+                        .font(Font.label)
                         .foregroundColor(
                             selectedTimePeriod == options[index]
                             ? .white : Color.customBrown

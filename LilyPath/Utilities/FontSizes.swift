@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension Font {
+    // MARK: - General use
     static var viewTitle: Font {
         return .system(size: 32, weight: .bold, design: .rounded)
     }
@@ -16,7 +17,11 @@ extension Font {
         return .system(size: 16, weight: .semibold, design: .rounded)
     }
     
-    // for level, water pts, gems
+    static var label: Font {
+        return .system(size: 12, weight: .semibold, design: .rounded)
+    }
+    
+    // MARK: - For level, water pts, gems
     static var userInfo: Font {
         return .system(size: 14, weight: .semibold, design: .rounded)
     }
@@ -25,14 +30,16 @@ extension Font {
         return .system(size: 14, weight: .medium, design: .rounded)
     }
     
+    // MARK: - Home
+    static var homeIcons: Font {
+        return .system(size: 55, weight: .medium, design: .rounded)
+    }
+    
+    // MARK: - Stats
     static var statsCard: Font {
         return .system(size: 18, weight: .medium, design: .rounded)
     }
-    
-    static var statsCategory: Font {
-        return .system(size: 16, weight: .bold, design: .rounded)
-    }
-    
+
     static var statsBody: Font {
         return .system(size: 16, weight: .medium, design: .rounded)
     }
@@ -41,6 +48,11 @@ extension Font {
         return .system(size: 16, weight: .bold, design: .rounded)
     }
     
+    static var statsIcon: Font {
+        return .system(size: 34, weight: .bold, design: .rounded)
+    }
+    
+    // MARK: - Popup
     static var popupTitle: Font {
         return .system(size: 20, weight: .bold, design: .rounded)
     }
@@ -53,11 +65,7 @@ extension Font {
         return .system(size: 14, weight: .medium, design: .rounded)
     }
     
-    static var tabLabel: Font {
-        return .system(size: 12, weight: .semibold, design: .rounded)
-    }
-    
-    static var stageLable: Font {
+    static var stageLabel: Font {
         return .system(size: 12, weight: .bold, design: .rounded)
     }
 }

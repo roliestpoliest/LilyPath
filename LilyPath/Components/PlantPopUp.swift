@@ -240,7 +240,7 @@ class PlantPopUp {
 
                     HStack {
                         Text("Stage \(currentPlantModel.currentStage)")
-                            .font(.stageLable)
+                            .font(.stageLabel)
                             .layoutPriority(1)
 
                         ProgressBar(

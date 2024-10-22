@@ -41,7 +41,7 @@ struct TabBar: View {
                 color: isActive ? .white : Color.customBrown)
             if isActive {
                 Text(title)
-                    .font(Font.tabLabel)
+                    .font(Font.label)
                     .foregroundColor(isActive ? .white : Color.customBrown)
             }
 
