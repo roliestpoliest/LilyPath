@@ -85,8 +85,9 @@ struct HomeViewActions: View {
                     plants: BasePlantModel.allPlants)
             ) {
                 IconWithText(
-                    icon: .newPlant, height: 50,
-                    color: Color.darkGreen, text: "New Plant"
+                    icon: .newPlant,
+                    color: Color.darkGreen,
+                    text: "New Plant"
                 )
                 .frame(height: 150)
             }
@@ -98,8 +99,9 @@ struct HomeViewActions: View {
                 }
             ) {
                 IconWithText(
-                    icon: .waterDrop, height: 55,
-                    color: Color.waterBlue, text: "Water"
+                    icon: .waterDrop,
+                    color: Color.waterBlue,
+                    text: "Water"
                 )
             }
             
@@ -123,8 +125,9 @@ struct HomeViewActions: View {
                 )
             ) {
                 IconWithText(
-                    icon: .dailyTask, height: 60,
-                    color: Color.customPink, text: "Daily Tasks"
+                    icon: .dailyTask,
+                    color: Color.customPink,
+                    text: "Daily Tasks"
                 )
                 .frame(height: 160)
             }
@@ -134,13 +137,12 @@ struct HomeViewActions: View {
 
 struct IconWithText: View {
     let icon: Icon
-    let height: CGFloat
     let color: Color
     let text: String
     
     var body: some View {
         VStack {
-            IconImage(icon: icon, height: height, color: color)
+            IconImage(icon: icon, font: .homeIcons, color: color)
             
             Text(text)
                 .font(Font.customBody)
