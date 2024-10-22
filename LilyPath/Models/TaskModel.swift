@@ -18,13 +18,6 @@ struct TaskType {
         self.incrementFactor = incrementFactor
     }
     
-    private func formatNumberWithCommas(_ number: Int) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        
-        return numberFormatter.string(from: NSNumber(value: number)) ?? "\(number)"
-    }
-
     func description(for goal: Int) -> String {
         return String(format: descriptionTemplate, formatNumberWithCommas(goal))
     }
