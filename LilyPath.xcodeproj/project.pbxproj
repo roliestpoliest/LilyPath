@@ -21,13 +21,14 @@
 		238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719952CB06A9D00305DFA /* GenerateRandomTasks.swift */; };
 		2387199D2CB0709600305DFA /* TaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199C2CB0709600305DFA /* TaskCard.swift */; };
 		2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199E2CB0715A00305DFA /* ViewTitle.swift */; };
-		820667502CC5FE1900D2CC47 /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8206674F2CC5FE1900D2CC47 /* HealthData.swift */; };
 		822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AC2CB26525003BD934 /* PlantGalleryCard.swift */; };
 		822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AE2CB356EA003BD934 /* ProgressBar.swift */; };
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
 		822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */; };
 		822FF7022CB118EC00F8F5DC /* PopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF7012CB118EC00F8F5DC /* PopUp.swift */; };
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
+		8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF202CC62BC900455EC4 /* HealthManager.swift */; };
+		8280FF232CC63B4D00455EC4 /* ActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF222CC63B4D00455EC4 /* ActivityModel.swift */; };
 		828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828897642CAE40D10089C5DD /* PlantShopCard.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
 		8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E72CA9F65B0062563F /* ContentView.swift */; };
@@ -76,13 +77,16 @@
 		238719952CB06A9D00305DFA /* GenerateRandomTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRandomTasks.swift; sourceTree = "<group>"; };
 		2387199C2CB0709600305DFA /* TaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCard.swift; sourceTree = "<group>"; };
 		2387199E2CB0715A00305DFA /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
-		8206674F2CC5FE1900D2CC47 /* HealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
+		820667702CC60ADF00D2CC47 /* LilyPath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LilyPath.entitlements; sourceTree = "<group>"; };
 		822948AC2CB26525003BD934 /* PlantGalleryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantGalleryCard.swift; sourceTree = "<group>"; };
 		822948AE2CB356EA003BD934 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
 		822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlantModel.swift; sourceTree = "<group>"; };
 		822FF7012CB118EC00F8F5DC /* PopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUp.swift; sourceTree = "<group>"; };
 		827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopView.swift; sourceTree = "<group>"; };
+		8280FF1F2CC60EA000455EC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8280FF202CC62BC900455EC4 /* HealthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
+		8280FF222CC63B4D00455EC4 /* ActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModel.swift; sourceTree = "<group>"; };
 		828897642CAE40D10089C5DD /* PlantShopCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopCard.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8298A0E52CA9F65B0062563F /* LilyPathApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LilyPathApp.swift; sourceTree = "<group>"; };
@@ -170,7 +174,8 @@
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
 				822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */,
-				8206674F2CC5FE1900D2CC47 /* HealthData.swift */,
+				8280FF202CC62BC900455EC4 /* HealthManager.swift */,
+				8280FF222CC63B4D00455EC4 /* ActivityModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -199,6 +204,8 @@
 		8298A0E42CA9F65B0062563F /* LilyPath */ = {
 			isa = PBXGroup;
 			children = (
+				8280FF1F2CC60EA000455EC4 /* Info.plist */,
+				820667702CC60ADF00D2CC47 /* LilyPath.entitlements */,
 				8298A0E52CA9F65B0062563F /* LilyPathApp.swift */,
 				2306B1522CADD2FB00ECC155 /* Utilities */,
 				238719992CB0707B00305DFA /* Components */,
@@ -339,7 +346,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					8298A0E12CA9F65B0062563F = {
 						CreatedOnToolsVersion = 15.4;
@@ -411,6 +418,7 @@
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,
 				231DE64E2CB3AD7A008EFABA /* TabBar.swift in Sources */,
 				233A0B6F2CB2095B00570652 /* IconImage.swift in Sources */,
+				8280FF232CC63B4D00455EC4 /* ActivityModel.swift in Sources */,
 				822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */,
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
@@ -425,7 +433,7 @@
 				822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */,
 				828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
-				820667502CC5FE1900D2CC47 /* HealthData.swift in Sources */,
+				8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */,
 				822FF7022CB118EC00F8F5DC /* PopUp.swift in Sources */,
 				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				82DDA1832CB379A2008585EE /* PlantGalleryView.swift in Sources */,
@@ -595,11 +603,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LilyPath/LilyPath.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
+				DEVELOPMENT_TEAM = 8VNFX56NRK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LilyPath/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This app wants to read your health data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -626,11 +640,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LilyPath/LilyPath.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
+				DEVELOPMENT_TEAM = 8VNFX56NRK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LilyPath/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This app wants to read your health data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -655,7 +675,6 @@
 		8298A10A2CA9F65C0062563F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -674,7 +693,6 @@
 		8298A10B2CA9F65C0062563F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -693,7 +711,6 @@
 		8298A10D2CA9F65C0062563F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -710,7 +727,6 @@
 		8298A10E2CA9F65C0062563F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

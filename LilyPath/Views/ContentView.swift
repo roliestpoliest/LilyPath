@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var healthManager: HealthManager
     @State var selectedTab: Tabs = .home
 
     var body: some View {
@@ -16,16 +17,16 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     GardenView()
                         .tag(Tabs.garden)
-                    
+
                     HomeView()
                         .tag(Tabs.home)
-                    
+
                     StatisticsView()
                         .tag(Tabs.stats)
+                        .environmentObject(healthManager)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            
             TabBar(selectedTab: $selectedTab)
         }
         .padding(.horizontal, 30)
@@ -34,5 +35,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(HealthManager())
 }

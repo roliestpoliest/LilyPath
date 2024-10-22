@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct LilyPathApp: App {
+    @StateObject var healthManager = HealthManager()
     var body: some Scene {
         WindowGroup {
             SplashScreenView()
+                .environmentObject(healthManager)
         }
     }
 }
