@@ -60,4 +60,7 @@ extension Font {
     static var stageLable: Font {
         return .system(size: 12, weight: .bold, design: .rounded)
     }
+    static var chartAxisLabels: Font {
+        return .system(size: 10, weight: .bold, design: .rounded)
+    }
 }
