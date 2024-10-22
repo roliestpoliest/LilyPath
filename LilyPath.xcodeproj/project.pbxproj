@@ -26,6 +26,7 @@
 		2387199D2CB0709600305DFA /* TaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199C2CB0709600305DFA /* TaskCard.swift */; };
 		2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199E2CB0715A00305DFA /* ViewTitle.swift */; };
 		23F44A822CC761A100721D6E /* FormatNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A812CC7619300721D6E /* FormatNumber.swift */; };
+		23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */; };
 		822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AC2CB26525003BD934 /* PlantGalleryCard.swift */; };
 		822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AE2CB356EA003BD934 /* ProgressBar.swift */; };
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
@@ -85,6 +86,7 @@
 		2387199C2CB0709600305DFA /* TaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCard.swift; sourceTree = "<group>"; };
 		2387199E2CB0715A00305DFA /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
 		23F44A812CC7619300721D6E /* FormatNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatNumber.swift; sourceTree = "<group>"; };
+		23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsModel.swift; sourceTree = "<group>"; };
 		822948AC2CB26525003BD934 /* PlantGalleryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantGalleryCard.swift; sourceTree = "<group>"; };
 		822948AE2CB356EA003BD934 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */,
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
 				822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */,
@@ -436,6 +439,7 @@
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
 				2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
+				23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */,
 				822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */,
