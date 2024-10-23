@@ -537,10 +537,8 @@ extension HealthManager {
         )
     }
     
-    // MARK: - Fetch Hourly Data for Sleep
-    func fetchHourlySleep(
-        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-    ) {
+    // MARK: - Fetch Hourly Data for Sleep (In Bed Only)
+    func fetchHourlySleep(for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void) {
         guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else {
             completion([])
             return
@@ -548,7 +546,7 @@ extension HealthManager {
         
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: startDate)
-        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date.endOfDay
+        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: startOfDay) ?? Date()
         
         let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
         
@@ -559,34 +557,39 @@ extension HealthManager {
             }
             
             var hourlySleep = [HealthDataPoint]()
+            
+            // Filter to only include "in bed" data (if necessary)
             let inBedSamples = samples.filter { $0.value == HKCategoryValueSleepAnalysis.inBed.rawValue }
-            let groupedSamples = Dictionary(grouping: inBedSamples, by: { calendar.component(.hour, from: $0.startDate) })
             
-            for (hour, hourlySamples) in groupedSamples {
-                let sleepMinutes = hourlySamples.reduce(0) { total, sample in
-                    total + sample.endDate.timeIntervalSince(sample.startDate) / 60
-                }
-                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
-                if let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: startOfDay) {
-                    hourlySleep.append(HealthDataPoint(date: date, value: sleepHours))
+            // Iterate over each sleep sample and split it into hourly chunks
+            for sample in inBedSamples {
+                var currentStart = sample.startDate
+                let sampleEnd = sample.endDate
+                
+                // Split the sleep sample into hourly chunks
+                while currentStart < sampleEnd {
+                    let nextHour = calendar.nextDate(after: currentStart, matching: DateComponents(minute: 0), matchingPolicy: .nextTime) ?? sampleEnd
+                    let endOfHour = min(nextHour, sampleEnd)
+                    
+                    // Calculate the time slept within this hour
+                    let sleepMinutes = endOfHour.timeIntervalSince(currentStart) / 60.0
+                    let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
+                    
+                    // Add the sleep duration for the current hour
+                    hourlySleep.append(HealthDataPoint(date: currentStart, value: sleepHours))
+                    
+                    // Move to the next hour
+                    currentStart = endOfHour
                 }
             }
             
-            // Fill in missing hours with 0 values
-            for hour in 0..<24 {
-                if !hourlySleep.contains(where: { calendar.component(.hour, from: $0.date) == hour }) {
-                    if let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: startOfDay) {
-                        hourlySleep.append(HealthDataPoint(date: date, value: 0))
-                    }
-                }
-            }
-            
+            // Sort the hourly data points by date and return
             completion(hourlySleep.sorted(by: { $0.date < $1.date }))
         }
         
         HKHealthStore().execute(query)
     }
-    
+
     // MARK: - General Fetch Hourly Data for HKQuantityType
      func fetchHourlyData(
         for quantityType: HKQuantityType, startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
@@ -680,358 +683,6 @@ extension HealthManager {
         }
     }
 }
-
-//extension HealthManager {
-//
-//    // MARK: - Fetch Daily Data for Steps
-//    func fetchDailySteps(
-//        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let stepsType = HKQuantityType(.stepCount)
-//        fetchDailyData(
-//            for: stepsType, startDate: startDate, completion: completion)
-//    }
-//
-//    // MARK: - Fetch Daily Data for Calories
-//    func fetchDailyCalories(
-//        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let caloriesType = HKQuantityType(.activeEnergyBurned)
-//        fetchDailyData(
-//            for: caloriesType, startDate: startDate, completion: completion)
-//    }
-//
-//    // MARK: - Fetch Daily Data for Flights Climbed
-//    func fetchDailyFlightsClimbed(
-//        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let flightsClimbedType = HKQuantityType(.flightsClimbed)
-//        fetchDailyData(
-//            for: flightsClimbedType, startDate: startDate,
-//            completion: completion)
-//    }
-//
-//    // MARK: - Fetch Daily Data for Walking/Running Distance
-//    func fetchDailyWalkingRunningDistance(
-//        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let walkingRunningDistanceType = HKQuantityType(.distanceWalkingRunning)
-//        fetchDailyData(
-//            for: walkingRunningDistanceType, startDate: startDate,
-//            completion: completion)
-//    }
-//
-//    // MARK: - Fetch Daily Data for Sleep
-//    func fetchDailySleep(
-//        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        guard
-//            let sleepType = HKObjectType.categoryType(
-//                forIdentifier: .sleepAnalysis)
-//        else {
-//            completion([])
-//            return
-//        }
-//
-//        let predicate = HKQuery.predicateForSamples(
-//            withStart: startDate, end: Date(), options: .strictStartDate)
-//
-//        let query = HKSampleQuery(
-//            sampleType: sleepType, predicate: predicate,
-//            limit: HKObjectQueryNoLimit, sortDescriptors: nil
-//        ) { _, samples, error in
-//            guard let samples = samples as? [HKCategorySample], error == nil
-//            else {
-//                completion([])
-//                return
-//            }
-//
-//            var dailySleep = [HealthDataPoint]()
-//            let groupedSamples = Dictionary(
-//                grouping: samples,
-//                by: { Calendar.current.startOfDay(for: $0.startDate) })
-//
-//            for (date, dailySamples) in groupedSamples {
-//                let sleepMinutes = dailySamples.reduce(0) { total, sample in
-//                    total + sample.endDate.timeIntervalSince(sample.startDate)
-//                        / 60
-//                }
-//                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
-//                dailySleep.append(
-//                    HealthDataPoint(date: date, value: sleepHours))
-//            }
-//
-//            completion(dailySleep.sorted(by: { $0.date < $1.date }))
-//        }
-//
-//        HKHealthStore().execute(query)
-//    }
-//
-//    // MARK: - General Fetch Daily Data for HKQuantityType
-//    private func fetchDailyData(
-//        for quantityType: HKQuantityType, startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let interval = DateComponents(day: 1)
-//        let query = HKStatisticsCollectionQuery(
-//            quantityType: quantityType,
-//            quantitySamplePredicate: HKQuery.predicateForSamples(
-//                withStart: startDate, end: Date(), options: .strictStartDate),
-//            anchorDate: startDate,
-//            intervalComponents: interval
-//        )
-//        
-//        query.initialResultsHandler = { _, results, error in
-//            guard let result = results else {
-//                completion([])
-//                return
-//            }
-//            
-//            var dailyData = [HealthDataPoint]()
-//            result.enumerateStatistics(from: startDate, to: Date()) { statistics, _ in
-//                let value: Double
-//                
-//                // Handle unit conversion
-//                if quantityType == HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie()) ?? 0.0
-//                } else if quantityType == HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) {
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0.0
-//                } else {
-//                    // Default to count for other metrics
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0.0
-//                }
-//                
-//                dailyData.append(HealthDataPoint(date: statistics.startDate, value: value))
-//            }
-//            completion(dailyData.sorted(by: { $0.date < $1.date }))
-//        }
-//        
-//        HKHealthStore().execute(query)
-//    }
-//    // MARK: - Fetch Past Day Data for Any Metric
-//    func fetchPastDayData(for metricType: MetricType) async {
-//        let startDate = Date.startOfDay
-//
-//        switch metricType {
-//        case .steps:
-//            fetchDailySteps(startDate: startDate) { dailySteps in
-//                DispatchQueue.main.async {
-//                    self.oneDayChartData = dailySteps
-//                }
-//            }
-//        case .calories:
-//            fetchDailyCalories(startDate: startDate) { dailyCalories in
-//                DispatchQueue.main.async {
-//                    self.oneDayChartData = dailyCalories
-//                }
-//            }
-//        case .flightsClimbed:
-//            fetchDailyFlightsClimbed(startDate: startDate) { dailyFlights in
-//                DispatchQueue.main.async {
-//                    self.oneDayChartData = dailyFlights
-//                }
-//            }
-//        case .sleep:
-//            fetchDailySleep(startDate: startDate) { dailySleep in
-//                DispatchQueue.main.async {
-//                    self.oneDayChartData = dailySleep
-//                }
-//            }
-//        case .walkingRunningDistance:
-//            fetchDailyWalkingRunningDistance(startDate: startDate) {
-//                dailyDistance in
-//                DispatchQueue.main.async {
-//                    self.oneDayChartData = dailyDistance
-//                }
-//            }
-//        }
-//    }
-//}
-
-//extension HealthManager {
-//    
-//    // MARK: - Fetch Hourly Data for Steps
-//    func fetchHourlySteps(
-//        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let stepsType = HKQuantityType(.stepCount)
-//        fetchHourlyData(
-//            for: stepsType, startDate: startDate, completion: completion
-//        )
-//    }
-//    
-//    // MARK: - Fetch Hourly Data for Calories
-//    func fetchHourlyCalories(
-//        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let caloriesType = HKQuantityType(.activeEnergyBurned)
-//        fetchHourlyData(
-//            for: caloriesType, startDate: startDate, completion: completion
-//        )
-//    }
-//    
-//    // MARK: - Fetch Hourly Data for Flights Climbed
-//    func fetchHourlyFlightsClimbed(
-//        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let flightsClimbedType = HKQuantityType(.flightsClimbed)
-//        fetchHourlyData(
-//            for: flightsClimbedType, startDate: startDate, completion: completion
-//        )
-//    }
-//    
-//    // MARK: - Fetch Hourly Data for Walking/Running Distance
-//    func fetchHourlyWalkingRunningDistance(
-//        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let walkingRunningDistanceType = HKQuantityType(.distanceWalkingRunning)
-//        fetchHourlyData(
-//            for: walkingRunningDistanceType, startDate: startDate, completion: completion
-//        )
-//    }
-//    
-//    // MARK: - Fetch Hourly Data for Sleep
-//    func fetchHourlySleep(
-//        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else {
-//            completion([])
-//            return
-//        }
-//        
-//        let calendar = Calendar.current
-//        let startOfDay = calendar.startOfDay(for: startDate)
-//        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date.endOfDay
-//        
-//        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
-//        
-//        let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
-//            guard let samples = samples as? [HKCategorySample], error == nil else {
-//                completion([])
-//                return
-//            }
-//            
-//            var hourlySleep = [HealthDataPoint]()
-//            let inBedSamples = samples.filter { $0.value == HKCategoryValueSleepAnalysis.inBed.rawValue }
-//            let groupedSamples = Dictionary(grouping: inBedSamples, by: { calendar.component(.hour, from: $0.startDate) })
-//            
-//            for (hour, hourlySamples) in groupedSamples {
-//                let sleepMinutes = hourlySamples.reduce(0) { total, sample in
-//                    total + sample.endDate.timeIntervalSince(sample.startDate) / 60
-//                }
-//                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
-//                if let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: startOfDay) {
-//                    hourlySleep.append(HealthDataPoint(date: date, value: sleepHours))
-//                }
-//            }
-//            
-//            // Fill in missing hours with 0 values
-//            for hour in 0..<24 {
-//                if !hourlySleep.contains(where: { calendar.component(.hour, from: $0.date) == hour }) {
-//                    if let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: startOfDay) {
-//                        hourlySleep.append(HealthDataPoint(date: date, value: 0))
-//                    }
-//                }
-//            }
-//            
-//            completion(hourlySleep.sorted(by: { $0.date < $1.date }))
-//        }
-//        
-//        HKHealthStore().execute(query)
-//    }
-//    
-//    // MARK: - General Fetch Hourly Data for HKQuantityType
-//    private func fetchHourlyData(
-//        for quantityType: HKQuantityType, startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-//    ) {
-//        let interval = DateComponents(hour: 1)
-//        let calendar = Calendar.current
-//        let startOfDay = calendar.startOfDay(for: startDate)
-//        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
-//        
-//        let query = HKStatisticsCollectionQuery(
-//            quantityType: quantityType,
-//            quantitySamplePredicate: HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate),
-//            anchorDate: startOfDay,
-//            intervalComponents: interval
-//        )
-//        
-//        query.initialResultsHandler = { _, results, error in
-//            guard let result = results else {
-//                completion([])
-//                return
-//            }
-//            
-//            var hourlyData = [HealthDataPoint]()
-//            let now = Date()
-//            
-//            // Enumerate through the statistics and handle unit conversion based on the metric type
-//            result.enumerateStatistics(from: startOfDay, to: now) { statistics, _ in
-//                let value: Double
-//                
-//                if quantityType == HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie()) ?? 0.0
-//                } else if quantityType == HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) {
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.mile()) ?? 0.0
-//                } else {
-//                    value = statistics.sumQuantity()?.doubleValue(for: HKUnit.count()) ?? 0.0
-//                }
-//                
-//                hourlyData.append(HealthDataPoint(date: statistics.startDate, value: value))
-//            }
-//            
-//            // Fill in missing hours with 0 values
-//            for hour in 0..<24 {
-//                if !hourlyData.contains(where: { calendar.component(.hour, from: $0.date) == hour }) {
-//                    if let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: startOfDay) {
-//                        hourlyData.append(HealthDataPoint(date: date, value: 0))
-//                    }
-//                }
-//            }
-//            
-//            completion(hourlyData.sorted(by: { $0.date < $1.date }))
-//        }
-//        
-//        HKHealthStore().execute(query)
-//    }
-//    
-//    // MARK: - Fetch Past Day Data for Any Metric
-////    func fetchPastDayData(for metricType: MetricType) async {
-////        let startDate = Date.startOfDay
-////        
-////        switch metricType {
-////        case .steps:
-////            fetchHourlySteps(for: startDate) { hourlySteps in
-////                DispatchQueue.main.async {
-////                    self.oneDayChartData = hourlySteps
-////                }
-////            }
-////        case .calories:
-////            fetchHourlyCalories(for: startDate) { hourlyCalories in
-////                DispatchQueue.main.async {
-////                    self.oneDayChartData = hourlyCalories
-////                }
-////            }
-////        case .flightsClimbed:
-////            fetchHourlyFlightsClimbed(for: startDate) { hourlyFlights in
-////                DispatchQueue.main.async {
-////                    self.oneDayChartData = hourlyFlights
-////                }
-////            }
-////        case .sleep:
-////            fetchHourlySleep(for: startDate) { hourlySleep in
-////                DispatchQueue.main.async {
-////                    self.oneDayChartData = hourlySleep
-////                }
-////            }
-////        case .walkingRunningDistance:
-////            fetchHourlyWalkingRunningDistance(for: startDate) { hourlyDistance in
-////                DispatchQueue.main.async {
-////                    self.oneDayChartData = hourlyDistance
-////                }
-////            }
-////        }
-////    }
-//}
 
 extension HealthManager {
     // MARK: - HealthManager: Helper Functions
