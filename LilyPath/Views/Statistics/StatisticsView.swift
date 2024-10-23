@@ -154,7 +154,7 @@ struct ChartsView: View {
         let dates: [Date]
         switch period {
         case .day:
-            dates = stride(from: Date.startOfDay, to: Date.endOfDay, by: 60 * 60 * 6).map { $0 }
+            dates = stride(from: Date.startOfDay, to: Date.endOfDay, by: 60 * 60).map { $0 }  // Hourly for the current day
         case .week:
             dates = stride(from: Date.startOfWeek, to: Date.endOfWeek, by: 60 * 60 * 24).map { $0 }
         case .month:
@@ -167,7 +167,7 @@ struct ChartsView: View {
     private func formatXAxisLabel(for date: Date) -> String {
         switch selectedChartPeriod {
         case .day:
-            return date.formatted(.dateTime.hour())
+            return date.formatted(.dateTime.hour())  // Show hours for daily data
         case .week:
             return date.formatted(.dateTime.weekday(.abbreviated))
         case .month:
@@ -177,21 +177,29 @@ struct ChartsView: View {
     
     // Helper function to determine X-axis values based on the selected chart period
     private func xAxisValues() -> [Date] {
+        let calendar = Calendar.current
+        
         switch selectedChartPeriod {
         case .day:
-            return stride(from: .startOfDay, to: .endOfDay, by: 60 * 60 * 6).map { $0 }
+            // Ensure endOfDay is 12 AM of the *next* day, covering all necessary intervals
+            let startOfDay = Date.startOfDay
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
+            
+            // Return every 6 hours including 12 AM, 6 AM, 12 PM, and 6 PM
+            return stride(from: startOfDay, to: endOfDay, by: 60 * 60 * 6).map { $0 }
+            
         case .week:
             return stride(from: .startOfWeek, to: .endOfWeek, by: 60 * 60 * 24).map { $0 }
+            
         case .month:
             return stride(from: .startOfMonth, through: .endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
         }
     }
-    
     // Determine the appropriate unit for the X-axis
     private func chartUnit() -> Calendar.Component {
         switch selectedChartPeriod {
         case .day:
-            return .hour
+            return .hour  // Use hourly unit for daily data
         case .week, .month:
             return .day
         }
