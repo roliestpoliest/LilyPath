@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var healthManager: HealthManager
     @State var selectedTab: Tabs = .home
     
     var body: some View {
@@ -29,7 +30,6 @@ struct ContentView: View {
                 StatisticsView()
                     .tag(Tabs.stats)
             }
-            
             TabBar(selectedTab: $selectedTab)
                 .background(Color.mainBackground)
         }
@@ -39,5 +39,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(HealthManager())
 }

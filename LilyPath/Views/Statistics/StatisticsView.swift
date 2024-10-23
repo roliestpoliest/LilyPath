@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StatisticsView: View {
+    @EnvironmentObject var healthManager: HealthManager
     var body: some View {
         NavigationStack {
             VStack {
