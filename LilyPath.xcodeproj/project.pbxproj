@@ -37,6 +37,9 @@
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
 		822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */; };
 		822FF7022CB118EC00F8F5DC /* PopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF7012CB118EC00F8F5DC /* PopUp.swift */; };
+		823A18802CC9B20E00289917 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A187F2CC9B20E00289917 /* ChartsView.swift */; };
+		823A18822CC9B28000289917 /* FitnessStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */; };
+		823A18862CC9B96600289917 /* MetricType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18852CC9B96600289917 /* MetricType.swift */; };
 		8258D9CF2CC9989400E04273 /* TempStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8258D9CE2CC9989400E04273 /* TempStatsView.swift */; };
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
 		8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF202CC62BC900455EC4 /* HealthManager.swift */; };
@@ -106,6 +109,9 @@
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
 		822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlantModel.swift; sourceTree = "<group>"; };
 		822FF7012CB118EC00F8F5DC /* PopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUp.swift; sourceTree = "<group>"; };
+		823A187F2CC9B20E00289917 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
+		823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsDetailView.swift; sourceTree = "<group>"; };
+		823A18852CC9B96600289917 /* MetricType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricType.swift; sourceTree = "<group>"; };
 		8258D9CE2CC9989400E04273 /* TempStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempStatsView.swift; sourceTree = "<group>"; };
 		827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopView.swift; sourceTree = "<group>"; };
 		8280FF1F2CC60EA000455EC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 		2306B1522CADD2FB00ECC155 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				823A18852CC9B96600289917 /* MetricType.swift */,
 				23F44A812CC7619300721D6E /* NumberFormatter.swift */,
 				231DE64B2CB3AA4F008EFABA /* Tabs.swift */,
 				233A0B712CB2486200570652 /* ShadowConstants.swift */,
@@ -180,17 +187,13 @@
 		238719992CB0707B00305DFA /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				23F44A872CC8F14500721D6E /* StatsCard.swift */,
 				2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */,
 				231DE6552CB49914008EFABA /* CircularProgressBar.swift */,
 				231DE64D2CB3AD6F008EFABA /* TabBar.swift */,
 				233A0B6E2CB2095300570652 /* IconImage.swift */,
 				2387199E2CB0715A00305DFA /* ViewTitle.swift */,
 				822948AE2CB356EA003BD934 /* ProgressBar.swift */,
-				2387199C2CB0709600305DFA /* TaskCard.swift */,
 				822FF7012CB118EC00F8F5DC /* PopUp.swift */,
-				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
-				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -203,7 +206,6 @@
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
 				822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */,
-				8280FF202CC62BC900455EC4 /* HealthManager.swift */,
 				8280FF222CC63B4D00455EC4 /* ActivityModel.swift */,
 			);
 			path = Models;
@@ -212,6 +214,7 @@
 		23F44A8C2CC8FD3300721D6E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				8280FF202CC62BC900455EC4 /* HealthManager.swift */,
 				23F44A912CC8FD9F00721D6E /* UserPlantManager.swift */,
 				23F44A8F2CC8FD7C00721D6E /* TaskManager.swift */,
 				23F44A8D2CC8FD5900721D6E /* FitnessStatsManager.swift */,
@@ -300,7 +303,9 @@
 			children = (
 				8298A1142CAA03D40062563F /* HomeView.swift */,
 				238719482CAF172A00305DFA /* DailyTasksView.swift */,
+				2387199C2CB0709600305DFA /* TaskCard.swift */,
 				827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */,
+				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 			children = (
 				8298A1162CAA04340062563F /* GardenView.swift */,
 				82DDA1822CB379A2008585EE /* PlantGalleryView.swift */,
+				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
 			);
 			path = Garden;
 			sourceTree = "<group>";
@@ -317,10 +323,13 @@
 		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				8298A1182CAA04430062563F /* StatisticsView.swift */,
+				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
 				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
 				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
-				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
-				8298A1182CAA04430062563F /* StatisticsView.swift */,
+				823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */,
+				23F44A872CC8F14500721D6E /* StatsCard.swift */,
+				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 				8258D9CE2CC9989400E04273 /* TempStatsView.swift */,
 			);
 			path = Statistics;
@@ -481,7 +490,9 @@
 				23F44A862CC8C08D00721D6E /* PlantStatsModel.swift in Sources */,
 				23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
+				823A18802CC9B20E00289917 /* ChartsView.swift in Sources */,
 				233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */,
+				823A18862CC9B96600289917 /* MetricType.swift in Sources */,
 				822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */,
 				828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
@@ -496,6 +507,7 @@
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
 				2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */,
 				233A0B6D2CB2007300570652 /* Icons.swift in Sources */,
+				823A18822CC9B28000289917 /* FitnessStatsDetailView.swift in Sources */,
 				822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */,
 				231DE64C2CB3AA58008EFABA /* Tabs.swift in Sources */,
 				822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */,

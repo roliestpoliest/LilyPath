@@ -16,31 +16,6 @@ struct HealthDataPoint: Identifiable {
     let value: Double
 }
 
-enum MetricType: String, CaseIterable, Identifiable {
-    case steps
-    case calories
-    case flightsClimbed
-    case sleep
-    case walkingRunningDistance
-    
-    var id: String { self.rawValue }
-    
-    // Add a displayName property to return a human-readable name
-    var displayName: String {
-        switch self {
-        case .steps:
-            return "Steps"
-        case .calories:
-            return "Calories"
-        case .flightsClimbed:
-            return "Flights Climbed"
-        case .sleep:
-            return "Sleep"
-        case .walkingRunningDistance:
-            return "Distance"
-        }
-    }
-}
 enum TimeFrame {
     case daily
     case weekly
@@ -822,16 +797,6 @@ extension HealthManager {
                     self.oneDayChartData = hourlyDistance
                 }
             }
-        }
-    }
-}
-
-extension HealthManager {
-    // MARK: - HealthManager: Helper Functions
-    private func processChartData(_ steps: [HealthDataPoint]) {
-        let sortedData = steps.sorted(by: { $0.date < $1.date })
-        DispatchQueue.main.async {
-            self.oneMonthChartData = sortedData
         }
     }
 }
