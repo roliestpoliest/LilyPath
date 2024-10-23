@@ -26,6 +26,9 @@
 		2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199E2CB0715A00305DFA /* ViewTitle.swift */; };
 		23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A812CC7619300721D6E /* NumberFormatter.swift */; };
 		23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */; };
+		23F44A862CC8C08D00721D6E /* PlantStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */; };
+		23F44A882CC8F14500721D6E /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A872CC8F14500721D6E /* StatsCard.swift */; };
+		23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */; };
 		822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AC2CB26525003BD934 /* PlantGalleryCard.swift */; };
 		822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AE2CB356EA003BD934 /* ProgressBar.swift */; };
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
@@ -85,6 +88,9 @@
 		2387199E2CB0715A00305DFA /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
 		23F44A812CC7619300721D6E /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
 		23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsModel.swift; sourceTree = "<group>"; };
+		23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsModel.swift; sourceTree = "<group>"; };
+		23F44A872CC8F14500721D6E /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsDetailView.swift; sourceTree = "<group>"; };
 		822948AC2CB26525003BD934 /* PlantGalleryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantGalleryCard.swift; sourceTree = "<group>"; };
 		822948AE2CB356EA003BD934 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
@@ -160,6 +166,7 @@
 		238719992CB0707B00305DFA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				23F44A872CC8F14500721D6E /* StatsCard.swift */,
 				2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */,
 				231DE6552CB49914008EFABA /* CircularProgressBar.swift */,
 				231DE64D2CB3AD6F008EFABA /* TabBar.swift */,
@@ -177,6 +184,7 @@
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */,
 				23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */,
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
@@ -280,6 +288,7 @@
 		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
 				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
 				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
@@ -423,6 +432,7 @@
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,
 				231DE64E2CB3AD7A008EFABA /* TabBar.swift in Sources */,
+				23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */,
 				233A0B6F2CB2095B00570652 /* IconImage.swift in Sources */,
 				822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */,
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
@@ -435,6 +445,7 @@
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
 				2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
+				23F44A862CC8C08D00721D6E /* PlantStatsModel.swift in Sources */,
 				23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				233A0B722CB2486200570652 /* ShadowConstants.swift in Sources */,
@@ -442,6 +453,7 @@
 				828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */,
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
 				822FF7022CB118EC00F8F5DC /* PlantPopUp.swift in Sources */,
+				23F44A882CC8F14500721D6E /* StatsCard.swift in Sources */,
 				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */,
 				82DDA1832CB379A2008585EE /* PlantGalleryView.swift in Sources */,
