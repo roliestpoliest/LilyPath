@@ -13,7 +13,7 @@ class FitnessStatsManager: ObservableObject {
     @Published var fitnessStats: [FitnessStatsModel]
     
     private init() {
-        self.fitnessStats = FitnessStatsModel.allFitness
+        self.fitnessStats = FitnessStatsModel.allFitnessStats
     }
     
     // TODO: incorporate healthKit data fetching
@@ -85,17 +85,45 @@ class FitnessStatsModel: Identifiable, ObservableObject {
 
 extension FitnessStatsModel {
     static let steps = FitnessStatsModel(
-        id: "steps", icon: .steps, unit: "step", action: "taken")
+        id: "steps",
+        icon: .steps,
+        unit: "step",
+        action: "taken"
+    )
+
     static let distance = FitnessStatsModel(
-        id: "distance", icon: .distance, unit: "mile", action: "walked & ran")
+        id: "distance",
+        icon: .distance,
+        unit: "mile",
+        action: "walked & ran"
+    )
+
     static let climbed = FitnessStatsModel(
-        id: "climbed", icon: .climbed, unit: "flight", action: "climbed")
+        id: "climbed",
+        icon: .climbed,
+        unit: "flight",
+        action: "climbed"
+    )
+
     static let slept = FitnessStatsModel(
-        id: "slept", icon: .slept, unit: "hour", action: "slept")
+        id: "slept",
+        icon: .slept,
+        unit: "hour",
+        action: "slept"
+    )
+
     static let calories = FitnessStatsModel(
-        id: "calories", icon: .calories, unit: "cal", action: "burned")
-    
-    static let allFitness: [FitnessStatsModel] = [
-        .steps, .distance, .climbed, .slept, .calories,
+        id: "calories",
+        icon: .calories,
+        unit: "cal",
+        action: "burned"
+    )
+
+    static let allFitnessStats: [FitnessStatsModel] = [
+        .steps,
+        .distance,
+        .climbed,
+        .slept,
+        .calories
     ]
 }
