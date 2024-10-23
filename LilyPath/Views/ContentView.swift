@@ -20,8 +20,7 @@ struct ContentView: View {
 
                     HomeView()
                         .tag(Tabs.home)
-                        .environmentObject(healthManager)
-
+                    
                     StatisticsView()
                         .tag(Tabs.stats)
                         .environmentObject(healthManager)

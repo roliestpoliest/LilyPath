@@ -12,8 +12,7 @@ struct HomeView: View {
     var body: some View {
         VStack {
             ViewTitle(title: "Home")
-//            Spacer()
-            PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
+            Spacer()
         }
     }
 }

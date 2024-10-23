@@ -306,70 +306,7 @@ class PopUp {
             }
         )
     }
-    
-    // MARK: fitness stats
-    static func fitnessStats(metricType: MetricType, chartPeriod: ChartPeriod) -> some View {
-        GeometryReader { geometry in
-            let additionalHeight: CGFloat = 40
-            let chartHeight = geometry.size.height * 0.4  // Adjust the chart height dynamically
-            
-            return GenericPopUpView(
-                headerColor: Color.darkerBlue,
-                textColor: Color(hex: "#DEE5EB"),
-                x_color: Color(hex: "#DEE5EB"),
-                headerText: "\(metricType.displayName)",
-                content: {
-                    HStack(spacing: 20) {
-                        VStack(alignment: .center, spacing: 15) {
-                            Grid {
-                                let width: CGFloat = 135
-                                GridRow {
-                                    Text("Day")
-                                        .frame(width: width, alignment: .leading)
-                                        .font(.statsBodyBold)
-                                    
-                                    Text("Sept 21")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .font(.statsBody)
-                                }
-                                GridRow {
-                                    Text("Total Steps")
-                                        .frame(width: width, alignment: .leading)
-                                        .font(.statsBodyBold)
-                                    
-                                    Text("4806")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .font(.statsBody)
-                                }
-                                GridRow {
-                                    Text("Average Steps")
-                                        .frame(width: width, alignment: .leading)
-                                        .font(.statsBodyBold)
-                                    Text("209/hour")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .font(.statsBody)
-                                }
-                            }
-                            
-                            // Insert the Chart view here with dynamic height
-                            ChartsView(
-                                metricType: metricType,
-                                selectedChartPeriod: chartPeriod
-                            )
-                            .frame(width: geometry.size.width * 0.8, height: chartHeight) // Dynamically set chart size
-                            .padding(.leading, 8)  // Add left padding to prevent cut-off
-                            .padding()  // General padding
-                        }
-                        .padding()
-                        .foregroundColor(.customBrown)
-                    }
-                },
-                width: geometry.size.width * 0.85,  // Dynamically set the width
-                height: 215 + additionalHeight + chartHeight // Adjust the height based on the chart height
-            )
-        }
-    }
-    
+        
     // MARK: plant image
     private static func plantImage(image: String, applyEffects: Bool = false)
         -> some View
@@ -437,7 +374,7 @@ class PopUp {
 //                .frame(height: 275)
 //                PopUp.swapPlant(
 //                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
-                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
+//                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
 //                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
             }
             .padding(.horizontal)
