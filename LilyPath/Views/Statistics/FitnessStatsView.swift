@@ -8,66 +8,42 @@
 import SwiftUI
 
 struct FitnessStatsView: View {
-    @State private var selectedTab: TimePeriod = .daily
+    @State private var selectedTimePeriod: TimePeriod = .daily
     @ObservedObject private var statsManager = FitnessStatsManager.shared
-
+    
     var body: some View {
         NavigationStack {
             VStack {
                 ViewTitle(title: "Fitness Stats")
-
-                TimePeriodPicker(selectedTimePeriod: $selectedTab)
+                
+                TimePeriodPicker(selectedTimePeriod: $selectedTimePeriod)
                     .padding(.bottom, 20)
-                    .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-
+                    .shadow(
+                        radius: ShadowConstants.radius,
+                        y: ShadowConstants.yOffset)
+                
                 ScrollView {
                     VStack(spacing: 30) {
                         ForEach(statsManager.fitnessStats, id: \.id) { stat in
                             NavigationLink(
-                                destination: FitnessStatsDetailView(stat: stat, timePeriod: selectedTab)
+                                destination: FitnessStatsDetailView(
+                                    stat: stat, timePeriod: selectedTimePeriod)
                             ) {
-                                FitnessStatsCard(stat: stat, timePeriod: selectedTab)
+                                StatsCard(stat: stat, timePeriod: selectedTimePeriod)
                             }
                         }
                     }
                 }
-                .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-
+                .shadow(
+                    radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+                
                 Spacer()
             }
             .background(Color.mainBackground)
-        }
-    }
-}
-
-struct FitnessStatsCard: View {
-    @ObservedObject var stat: FitnessStatsModel
-    let timePeriod: TimePeriod
-
-    var body: some View {
-        HStack {
-            ZStack {
-                IconImage(icon: stat.icon, font: .statsIcon, color: .darkerBlue)
+            .task(id: selectedTimePeriod) {
+                statsManager.fetchAndUpdateStats()
             }
-            .frame(width: 55, height: 55)
-            .background(Color.lightBlue)
-            .cornerRadius(10)
-
-            Text(stat.description(for: timePeriod))
-                .font(.statsCard)
-                .foregroundColor(.white)
-                .padding(.leading, 8)
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.statsCard)
-                .foregroundColor(.white)
         }
-        .padding(12)
-        .frame(maxWidth: .infinity, maxHeight: 80)
-        .background(Color.customBrown)
-        .cornerRadius(20)
     }
 }
 
@@ -75,7 +51,7 @@ struct FitnessStatsCard: View {
 struct FitnessStatsDetailView: View {
     @ObservedObject var stat: FitnessStatsModel
     let timePeriod: TimePeriod
-
+    
     var body: some View {
         VStack {
             // TODO: Add Swift Chart
@@ -84,15 +60,17 @@ struct FitnessStatsDetailView: View {
                 .scaledToFit()
                 .frame(height: 200)
                 .padding()
-
+            
             Text(stat.description(for: timePeriod))
                 .font(.title2)
                 .padding()
-
+            
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .navigationTitle("\(timePeriod.rawValue.capitalized) \(stat.id.capitalized)")
+        .navigationTitle(
+            "\(timePeriod.rawValue.capitalized) \(stat.id.capitalized)"
+        )
         .background(Color.mainBackground)
     }
 }
