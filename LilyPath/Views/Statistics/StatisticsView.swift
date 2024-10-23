@@ -185,7 +185,7 @@ struct ChartsView: View {
 }
 struct StatisticsView: View {
     @EnvironmentObject var healthManager: HealthManager
-    @State private var selectedMetric: MetricType = .walkingRunningDistance  // Default to Walking/Running Distance
+    @State private var selectedMetric: MetricType = .steps  // Default to Walking/Running Distance
 
     var body: some View {
         VStack {
