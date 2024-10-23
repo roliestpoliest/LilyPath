@@ -18,7 +18,7 @@ class UserPlantManager: ObservableObject {
             UserPlantModel(
                 basePlant: .peony,
                 completionDate: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
-                currentStage: 1,
+                currentStage: 3,
                 stepsCollected: 1000,
                 lastWateredDate: Calendar.current.date(byAdding: .day, value: -8, to: Date()),
                 status: .completed
@@ -26,12 +26,31 @@ class UserPlantManager: ObservableObject {
             UserPlantModel(
                 basePlant: .lily,
                 completionDate: Date(),
-                currentStage: 4,
+                currentStage: 1,
                 stepsCollected: 1000,
                 lastWateredDate: Date(),
                 status: .completed
-            )
+            ),
+            UserPlantModel(
+                basePlant: .peony,
+                completionDate: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
+                currentStage: 5,
+                stepsCollected: 1000,
+                lastWateredDate: Calendar.current.date(byAdding: .day, value: -8, to: Date()),
+                status: .completed
+            ),
         ]
+    }
+    
+    // Sort user plants by stage then species name
+    func getUserPlantsSorted() -> [UserPlantModel] {
+        userPlants.sorted {
+            if $0.currentStage == $1.currentStage {
+                return $0.basePlant.species < $1.basePlant.species
+            } else {
+                return $0.currentStage < $1.currentStage
+            }
+        }
     }
 
     func updatePlantStats(for timePeriod: TimePeriod) {
