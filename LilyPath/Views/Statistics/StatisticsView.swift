@@ -19,7 +19,8 @@ enum ChartPeriod: String, CaseIterable, Identifiable {
 struct ChartsView: View {
     @EnvironmentObject var healthManager: HealthManager
     @State private var selectedChartPeriod: ChartPeriod = .day  // Default to Past Day
-
+    var metricType: MetricType  // Add the selected metric type
+    
     var body: some View {
         VStack {
             // Picker for selecting the time frame (Day, Week, Month)
@@ -30,21 +31,18 @@ struct ChartsView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
-
+            
             GeometryReader { geometry in
                 VStack {
-                    if healthManager.oneMonthChartData.isEmpty {
+                    if selectedChartData().isEmpty {
                         Text("Loading chart data...")
                     } else {
-                        Chart(healthManager.oneMonthChartData) { dataPoint in
+                        Chart(selectedChartData()) { dataPoint in
                             BarMark(
-                                x: .value(
-                                    "Date", dataPoint.date, unit: chartUnit()),
-                                y: .value("Steps", dataPoint.value)
+                                x: .value("Date", dataPoint.date, unit: chartUnit()),
+                                y: .value("Value", dataPoint.value)
                             )
-                            .foregroundStyle(
-                                getBarColor(for: dataPoint.date)  // Set bar color dynamically
-                            )
+                            .foregroundStyle(getBarColor(for: dataPoint.date))
                             .cornerRadius(1)
                         }
                         .chartXAxis {
@@ -53,7 +51,7 @@ struct ChartsView: View {
                                     .foregroundStyle(.black)
                                 AxisValueLabel {
                                     if let dateValue = value.as(Date.self) {
-                                        Text(formatXAxisLabel(for: dateValue))  // Dynamic label formatting
+                                        Text(formatXAxisLabel(for: dateValue))
                                             .foregroundColor(.customBrown)
                                             .layoutPriority(1)
                                             .font(.chartAxisLabels)
@@ -66,12 +64,13 @@ struct ChartsView: View {
                                 AxisGridLine()
                                     .foregroundStyle(.black)
                                 AxisValueLabel {
-                                    Text("\(Int(value.as(Double.self) ?? 0))")
+                                    Text("\(value.as(Double.self)?.formattedString() ?? "0")")
                                         .foregroundColor(.customBrown)
                                         .font(.chartAxisLabels)
                                 }
                             }
                         }
+                        .chartYScale(domain: 0...maxYValue())  // Ensure Y-axis goes from 0 to max value
                         .frame(width: geometry.size.width - 20, height: 300)
                         .padding(.horizontal, 10)
                         .padding(.top, 10)
@@ -81,45 +80,71 @@ struct ChartsView: View {
         }
         .onAppear {
             Task {
-                await updateChartData(for: selectedChartPeriod)
+                await updateChartData()  // Ensure chart data is updated on first appearance
             }
         }
-        .onChange(of: selectedChartPeriod) { newPeriod in
+        .onChange(of: selectedChartPeriod) { _ in
             Task {
-                await updateChartData(for: newPeriod)
+                await updateChartData()  // Update data when chart period changes
+            }
+        }
+        .onChange(of: metricType) { _ in  // Trigger chart update when the metric changes
+            Task {
+                await updateChartData()
             }
         }
     }
-
+    
+    // Helper function to select the correct chart data based on the selected period
+    private func selectedChartData() -> [HealthDataPoint] {
+        switch selectedChartPeriod {
+        case .day:
+            return healthManager.oneDayChartData.isEmpty ? generateZeroValueData(for: .day) : healthManager.oneDayChartData
+        case .week:
+            return healthManager.oneWeekChartData.isEmpty ? generateZeroValueData(for: .week) : healthManager.oneWeekChartData
+        case .month:
+            return healthManager.oneMonthChartData.isEmpty ? generateZeroValueData(for: .month) : healthManager.oneMonthChartData
+        }
+    }
+    
+    // Generate placeholder zero data for the given period
+    private func generateZeroValueData(for period: ChartPeriod) -> [HealthDataPoint] {
+        let dates: [Date]
+        switch period {
+        case .day:
+            dates = stride(from: Date.startOfDay, to: Date.endOfDay, by: 60 * 60 * 6).map { $0 }
+        case .week:
+            dates = stride(from: Date.startOfWeek, to: Date.endOfWeek, by: 60 * 60 * 24).map { $0 }
+        case .month:
+            dates = stride(from: Date.startOfMonth, through: Date.endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
+        }
+        return dates.map { HealthDataPoint(date: $0, value: 0) }
+    }
+    
     // Helper function to format the X-axis labels dynamically
     private func formatXAxisLabel(for date: Date) -> String {
         switch selectedChartPeriod {
         case .day:
-            return date.formatted(.dateTime.hour())  // Show hours for daily
+            return date.formatted(.dateTime.hour())
         case .week:
-            return date.formatted(.dateTime.weekday(.abbreviated))  // Show abbreviated weekday for weekly
+            return date.formatted(.dateTime.weekday(.abbreviated))
         case .month:
-            return date.formatted(.dateTime.day())  // Show day number for monthly
+            return date.formatted(.dateTime.day())
         }
     }
-
+    
     // Helper function to determine X-axis values based on the selected chart period
     private func xAxisValues() -> [Date] {
         switch selectedChartPeriod {
         case .day:
-            return stride(from: .startOfDay, to: .endOfDay, by: 60 * 60 * 6).map
-            { $0 }
+            return stride(from: .startOfDay, to: .endOfDay, by: 60 * 60 * 6).map { $0 }
         case .week:
-            return stride(
-                from: .startOfWeek, to: .endOfWeek, by: 60 * 60 * 24
-            ).map { $0 }
+            return stride(from: .startOfWeek, to: .endOfWeek, by: 60 * 60 * 24).map { $0 }
         case .month:
-            return stride(
-                from: .startOfMonth, through: .endOfMonth, by: 60 * 60 * 24 * 7
-            ).map { $0 }
+            return stride(from: .startOfMonth, through: .endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
         }
     }
-
+    
     // Determine the appropriate unit for the X-axis
     private func chartUnit() -> Calendar.Component {
         switch selectedChartPeriod {
@@ -129,119 +154,72 @@ struct ChartsView: View {
             return .day
         }
     }
-
+    
     private func getBarColor(for date: Date) -> Color {
         let calendar = Calendar.current
         switch selectedChartPeriod {
         case .day:
-            return calendar.isDateInToday(date)
-                && calendar.component(.hour, from: date)
-                    == calendar.component(.hour, from: Date())
-                ? Color.waterBlue
-                : Color.darkerBlue
+            return calendar.isDateInToday(date) && calendar.component(.hour, from: date) == calendar.component(.hour, from: Date()) ? Color.waterBlue : Color.darkerBlue
         case .week, .month:
-            return calendar.isDateInToday(date)
-                ? Color.waterBlue : Color.darkerBlue
+            return calendar.isDateInToday(date) ? Color.waterBlue : Color.darkerBlue
         }
     }
-
-    // Function to update the chart data based on the selected chart period
-    private func updateChartData(for period: ChartPeriod) async {
-        switch period {
+    
+    // Get the maximum Y value for the chart to ensure it fits correctly
+    private func maxYValue() -> Double {
+        let maxValue = selectedChartData().map { $0.value }.max() ?? 0
+        return maxValue > 0 ? (maxValue + 0.5).rounded(toPlaces: 1) : 10  // Add a buffer and ensure precision
+    }
+    
+    // Function to update the chart data based on the selected chart period and metric
+    private func updateChartData() async {
+        switch selectedChartPeriod {
         case .day:
-            await healthManager.fetchPastDayData()
+            await healthManager.fetchPastDayData(for: metricType)
         case .week:
-            await healthManager.fetchPastWeekData()
+            await healthManager.fetchPastWeekData(for: metricType)
         case .month:
-            await healthManager.fetchPastMonthData()
+            await healthManager.fetchPastMonthData(for: metricType)
         }
     }
 }
 struct StatisticsView: View {
     @EnvironmentObject var healthManager: HealthManager
+    @State private var selectedMetric: MetricType = .walkingRunningDistance  // Default to Walking/Running Distance
 
     var body: some View {
         VStack {
             ViewTitle(title: "Statistics")
 
-            //            ScrollView {
-            //                LazyVGrid(
-            //                    columns: Array(repeating: GridItem(spacing: 20), count: 2)
-            //                ) {
-            //                    ForEach(
-            //                        healthManager.activities.sorted(by: {
-            //                            $0.value.id < $1.value.id
-            //                        }), id: \.key
-            //                    ) { _, activity in
-            //                        ActivityCard(activity: activity)
-            //                    }
-            //                }
-            //                .padding(.horizontal)
+            // Picker to choose the metric type
+            Picker("Select Metric", selection: $selectedMetric) {
+                Text("Steps").tag(MetricType.steps)
+                Text("Calories").tag(MetricType.calories)
+                Text("Flights Climbed").tag(MetricType.flightsClimbed)
+                Text("Sleep").tag(MetricType.sleep)
+                Text("Distance").tag(MetricType.walkingRunningDistance)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
 
-            ChartsView()
+            ChartsView(metricType: selectedMetric)  // Pass selectedMetric directly
                 .environmentObject(healthManager)
-
-            //            }
-
         }
         .onAppear {
             Task {
-                // Call each metric data fetch asynchronously
-                await healthManager.fetchMetricData(
-                    for: .steps, timeFrame: .daily)
-                await healthManager.fetchMetricData(
-                    for: .calories, timeFrame: .weekly)
-                await healthManager.fetchMetricData(
-                    for: .flightsClimbed, timeFrame: .monthly)
+                await fetchMetricDataForSelectedType()
+            }
+        }
+        .onChange(of: selectedMetric) { newMetric in
+            Task {
+                await fetchMetricDataForSelectedType()
             }
         }
     }
+
+    // Fetch data for the selected metric and update the chart accordingly
+    private func fetchMetricDataForSelectedType() async {
+        await healthManager.fetchMetricData(
+            for: selectedMetric, timeFrame: .weekly)
+    }
 }
-//    struct StatisticsView: View {
-//    @EnvironmentObject var healthManager: HealthManager
-//
-//    var body: some View {
-//        VStack {
-//            ViewTitle(title: "Statistics")
-//
-//            ScrollView {
-//                LazyVGrid(columns: Array(repeating: GridItem(spacing: 20), count: 2)) {
-//                    ForEach(healthManager.activities.sorted(by: { $0.value.id < $1.value.id }), id: \.key) { _, activity in
-//                        ActivityCard(activity: activity)
-//                    }
-//                }
-//                .padding(.horizontal)
-//            }
-//
-//        }
-//        .onAppear {
-//            Task {
-//                // Call each metric data fetch asynchronously
-//                await healthManager.fetchMetricData(for: .steps, timeFrame: .daily)
-//                await healthManager.fetchMetricData(for: .calories, timeFrame: .weekly)
-//                await healthManager.fetchMetricData(for: .flightsClimbed, timeFrame: .monthly)
-//            }
-//        }
-//    }
-//}
-
-// Fetching Daily Data
-//            healthManager.fetchMetricData(for: .steps, timeFrame: .daily)
-//            healthManager.fetchMetricData(for: .calories, timeFrame: .daily)
-//            healthManager.fetchMetricData(for: .flightsClimbed, timeFrame: .daily)
-//            healthManager.fetchMetricData(for: .sleep, timeFrame: .daily)
-//            healthManager.fetchMetricData(for: .walkingRunningDistance, timeFrame: .daily)
-
-// Fetching Weekly Data:
-//            healthManager.fetchMetricData(for: .steps, timeFrame: .weekly)
-//            healthManager.fetchMetricData(for: .calories, timeFrame: .weekly)
-//            healthManager.fetchMetricData(for: .flightsClimbed, timeFrame: .weekly)
-//            healthManager.fetchMetricData(for: .sleep, timeFrame: .weekly)
-//            healthManager.fetchMetricData(for: .walkingRunningDistance, timeFrame: .weekly)
-//
-//            // Fetching Monthly Data:
-//            healthManager.fetchMetricData(for: .steps, timeFrame: .monthly)
-//            healthManager.fetchMetricData(for: .calories, timeFrame: .monthly)
-//            healthManager.fetchMetricData(for: .flightsClimbed, timeFrame: .monthly)
-//            healthManager.fetchMetricData(for: .sleep, timeFrame: .monthly)
-//            healthManager.fetchMetricData(for: .walkingRunningDistance, timeFrame: .monthly)

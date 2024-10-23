@@ -129,11 +129,124 @@ extension Date {
 }
 
 extension HealthManager {
-    // MARK: - HealthManager: Fetch Monthly Data
+    // MARK: - Fetch Monthly Data for Steps
     func fetchMonthlySteps(
         for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
     ) {
         let stepsType = HKQuantityType(.stepCount)
+        fetchMonthlyData(
+            for: stepsType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Monthly Data for Calories
+    func fetchMonthlyCalories(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let caloriesType = HKQuantityType(.activeEnergyBurned)
+        fetchMonthlyData(
+            for: caloriesType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Monthly Data for Flights Climbed
+    func fetchMonthlyFlightsClimbed(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let flightsClimbedType = HKQuantityType(.flightsClimbed)
+        fetchMonthlyData(
+            for: flightsClimbedType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Monthly Data for Walking/Running Distance
+    func fetchMonthlyWalkingRunningDistance(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let walkingRunningDistanceType = HKQuantityType(.distanceWalkingRunning)
+        fetchMonthlyData(
+            for: walkingRunningDistanceType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Monthly Data for Sleep
+    func fetchMonthlySleep(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        guard
+            let sleepType = HKObjectType.categoryType(
+                forIdentifier: .sleepAnalysis)
+        else {
+            completion([])
+            return
+        }
+
+        let calendar = Calendar.current
+        let startOfMonth =
+            calendar.date(
+                from: calendar.dateComponents([.year, .month], from: startDate))
+            ?? Date.startOfMonth
+        let endOfMonth =
+            calendar.date(
+                from: DateComponents(
+                    year: calendar.component(.year, from: startOfMonth),
+                    month: calendar.component(.month, from: startOfMonth),
+                    day: calendar.range(
+                        of: .day, in: .month, for: startOfMonth)?.count))?
+            .endOfDay ?? Date.endOfDay
+
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+
+        let query = HKSampleQuery(
+            sampleType: sleepType, predicate: predicate,
+            limit: HKObjectQueryNoLimit, sortDescriptors: nil
+        ) { _, samples, error in
+            guard let samples = samples as? [HKCategorySample], error == nil
+            else {
+                completion([])
+                return
+            }
+
+            var monthlySleep = [HealthDataPoint]()
+            let now = Date()
+
+            // Group the sleep samples by date
+            let groupedSamples = Dictionary(
+                grouping: samples,
+                by: { Calendar.current.startOfDay(for: $0.startDate) })
+
+            // Calculate total sleep per day
+            for (date, dailySamples) in groupedSamples {
+                let sleepMinutes = dailySamples.reduce(0) { total, sample in
+                    total + sample.endDate.timeIntervalSince(sample.startDate)
+                        / 60
+                }
+                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
+                monthlySleep.append(
+                    HealthDataPoint(date: date, value: sleepHours))
+            }
+
+            // For future days, add 0 sleep for remaining days of the month
+            var futureDay = calendar.date(
+                byAdding: .day, value: monthlySleep.count, to: startOfMonth)
+
+            while let future = futureDay, future <= endOfMonth {
+                if future > now {
+                    monthlySleep.append(HealthDataPoint(date: future, value: 0))
+                }
+                futureDay = calendar.date(byAdding: .day, value: 1, to: future)
+            }
+
+            completion(monthlySleep.sorted(by: { $0.date < $1.date }))
+        }
+
+        HKHealthStore().execute(query)
+    }
+
+    // MARK: - General Fetch Monthly Data for HKQuantityType
+    private func fetchMonthlyData(
+        for quantityType: HKQuantityType, startDate: Date,
+        completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
         let interval = DateComponents(day: 1)  // Set the interval to daily
 
         let calendar = Calendar.current
@@ -151,7 +264,7 @@ extension HealthManager {
             .endOfDay ?? Date.endOfDay
 
         let query = HKStatisticsCollectionQuery(
-            quantityType: stepsType,
+            quantityType: quantityType,
             quantitySamplePredicate: HKQuery.predicateForSamples(
                 withStart: startOfMonth, end: endOfMonth,
                 options: .strictStartDate),
@@ -165,53 +278,204 @@ extension HealthManager {
                 return
             }
 
-            var monthlySteps = [HealthDataPoint]()
+            var monthlyData = [HealthDataPoint]()
             let now = Date()
+
+            // Determine the correct unit based on the quantityType
+            let unit: HKUnit
+            switch quantityType.identifier {
+            case HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
+                unit = HKUnit.kilocalorie()  // Use kilocalories for calories
+            case HKQuantityTypeIdentifier.stepCount.rawValue,
+                HKQuantityTypeIdentifier.flightsClimbed.rawValue:
+                unit = HKUnit.count()  // Use count for steps and flights
+            case HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue:
+                unit = HKUnit.mile()  // Use miles for walking/running distance
+            default:
+                unit = HKUnit.count()  // Default to count if type is unknown
+            }
 
             // Enumerate through the existing statistics from startOfMonth to now
             result.enumerateStatistics(from: startOfMonth, to: now) {
                 statistics, _ in
-                let steps =
-                    statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.0
+                let value =
+                    statistics.sumQuantity()?.doubleValue(for: unit) ?? 0.0
                 let dataPoint = HealthDataPoint(
-                    date: statistics.startDate, value: steps)
-                monthlySteps.append(dataPoint)
+                    date: statistics.startDate, value: value)
+                monthlyData.append(dataPoint)
             }
 
-            // For future days (after the current date), add 0 steps for the remaining days of the month
+            // For future days, add 0 value for the remaining days of the month
             var futureDay = calendar.date(
-                byAdding: .day, value: monthlySteps.count, to: startOfMonth)
+                byAdding: .day, value: monthlyData.count, to: startOfMonth)
 
             while let future = futureDay, future <= endOfMonth {
                 if future > now {
-                    monthlySteps.append(HealthDataPoint(date: future, value: 0))
+                    monthlyData.append(HealthDataPoint(date: future, value: 0))
                 }
                 futureDay = calendar.date(byAdding: .day, value: 1, to: future)
             }
 
-            completion(monthlySteps)
+            completion(monthlyData.sorted(by: { $0.date < $1.date }))
         }
 
         HKHealthStore().execute(query)
     }
 
-    func fetchPastMonthData() async {
+    // Usage for fetching monthly data for different metrics
+    func fetchPastMonthData(for metricType: MetricType) async {
         let startDate = Date.startOfMonth
 
-        fetchMonthlySteps(for: startDate) { monthlySteps in
-            let chartData = monthlySteps.sorted(by: { $0.date < $1.date })
-
-            DispatchQueue.main.async {
-                self.oneMonthChartData = chartData
+        switch metricType {
+        case .steps:
+            fetchMonthlySteps(for: startDate) { monthlySteps in
+                DispatchQueue.main.async {
+                    self.oneMonthChartData = monthlySteps
+                }
+            }
+        case .calories:
+            fetchMonthlyCalories(for: startDate) { monthlyCalories in
+                DispatchQueue.main.async {
+                    self.oneMonthChartData = monthlyCalories
+                }
+            }
+        case .flightsClimbed:
+            fetchMonthlyFlightsClimbed(for: startDate) { monthlyFlights in
+                DispatchQueue.main.async {
+                    self.oneMonthChartData = monthlyFlights
+                }
+            }
+        case .sleep:
+            fetchMonthlySleep(for: startDate) { monthlySleep in
+                DispatchQueue.main.async {
+                    self.oneMonthChartData = monthlySleep
+                }
+            }
+        case .walkingRunningDistance:
+            fetchMonthlyWalkingRunningDistance(for: startDate) {
+                monthlyDistance in
+                DispatchQueue.main.async {
+                    self.oneMonthChartData = monthlyDistance
+                }
             }
         }
     }
+}
 
-    // MARK: - HealthManager: Fetch Weekly Data
+extension HealthManager {
+    // MARK: - Fetch Weekly Data for Steps
     func fetchWeeklySteps(
         for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
     ) {
         let stepsType = HKQuantityType(.stepCount)
+        fetchWeeklyData(
+            for: stepsType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Weekly Data for Calories
+    func fetchWeeklyCalories(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let caloriesType = HKQuantityType(.activeEnergyBurned)
+        fetchWeeklyData(
+            for: caloriesType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Weekly Data for Flights Climbed
+    func fetchWeeklyFlightsClimbed(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let flightsClimbedType = HKQuantityType(.flightsClimbed)
+        fetchWeeklyData(
+            for: flightsClimbedType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Weekly Data for Walking/Running Distance
+    func fetchWeeklyWalkingRunningDistance(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let walkingRunningDistanceType = HKQuantityType(.distanceWalkingRunning)
+        fetchWeeklyData(
+            for: walkingRunningDistanceType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Weekly Data for Sleep
+    func fetchWeeklySleep(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        guard
+            let sleepType = HKObjectType.categoryType(
+                forIdentifier: .sleepAnalysis)
+        else {
+            completion([])
+            return
+        }
+
+        let calendar = Calendar.current
+        let startOfWeek =
+            calendar.date(
+                from: calendar.dateComponents(
+                    [.yearForWeekOfYear, .weekOfYear], from: startDate))
+            ?? Date.startOfWeek
+        let endOfWeek =
+            calendar.date(byAdding: .day, value: 6, to: startOfWeek)?.endOfDay
+            ?? Date.endOfDay
+
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startOfWeek, end: endOfWeek, options: .strictStartDate)
+
+        let query = HKSampleQuery(
+            sampleType: sleepType, predicate: predicate,
+            limit: HKObjectQueryNoLimit, sortDescriptors: nil
+        ) { _, samples, error in
+            guard let samples = samples as? [HKCategorySample], error == nil
+            else {
+                completion([])
+                return
+            }
+
+            var weeklySleep = [HealthDataPoint]()
+            let now = Date()
+
+            // Group sleep data by date
+            let groupedSamples = Dictionary(
+                grouping: samples,
+                by: { Calendar.current.startOfDay(for: $0.startDate) })
+
+            // Calculate total sleep per day
+            for (date, dailySamples) in groupedSamples {
+                let sleepMinutes = dailySamples.reduce(0) { total, sample in
+                    total + sample.endDate.timeIntervalSince(sample.startDate)
+                        / 60
+                }
+                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
+                weeklySleep.append(
+                    HealthDataPoint(date: date, value: sleepHours))
+            }
+
+            // Add 0 sleep for future days in the week
+            var futureDay = calendar.date(
+                byAdding: .day, value: weeklySleep.count, to: startOfWeek)
+            while let future = futureDay, future <= endOfWeek {
+                if future > now {
+                    weeklySleep.append(HealthDataPoint(date: future, value: 0))
+                }
+                futureDay = calendar.date(byAdding: .day, value: 1, to: future)
+            }
+
+            completion(weeklySleep.sorted(by: { $0.date < $1.date }))
+        }
+
+        HKHealthStore().execute(query)
+    }
+
+    // MARK: - General Fetch Weekly Data for HKQuantityType
+    private func fetchWeeklyData(
+        for quantityType: HKQuantityType, startDate: Date,
+        completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
         let interval = DateComponents(day: 1)  // Set the interval to daily
 
         let calendar = Calendar.current
@@ -225,7 +489,7 @@ extension HealthManager {
             ?? Date.endOfDay
 
         let query = HKStatisticsCollectionQuery(
-            quantityType: stepsType,
+            quantityType: quantityType,
             quantitySamplePredicate: HKQuery.predicateForSamples(
                 withStart: startOfWeek, end: endOfWeek,
                 options: .strictStartDate),
@@ -239,134 +503,184 @@ extension HealthManager {
                 return
             }
 
-            var weeklySteps = [HealthDataPoint]()
+            var weeklyData = [HealthDataPoint]()
             let now = Date()
+
+            // Determine the correct unit based on the quantityType
+            let unit: HKUnit
+            switch quantityType.identifier {
+            case HKQuantityTypeIdentifier.activeEnergyBurned.rawValue:
+                unit = HKUnit.kilocalorie()  // Use kilocalories for calories
+            case HKQuantityTypeIdentifier.stepCount.rawValue,
+                HKQuantityTypeIdentifier.flightsClimbed.rawValue:
+                unit = HKUnit.count()  // Use count for steps and flights
+            case HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue:
+                unit = HKUnit.mile()  // Use miles for walking/running distance
+            default:
+                unit = HKUnit.count()  // Default to count if type is unknown
+            }
 
             // Enumerate through the existing statistics from startOfWeek to now
             result.enumerateStatistics(from: startOfWeek, to: now) {
                 statistics, _ in
-                let steps =
-                    statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.0
+                let value =
+                    statistics.sumQuantity()?.doubleValue(for: unit) ?? 0.0
                 let dataPoint = HealthDataPoint(
-                    date: statistics.startDate, value: steps)
-                weeklySteps.append(dataPoint)
+                    date: statistics.startDate, value: value)
+                weeklyData.append(dataPoint)
             }
 
-            // For future days (after the current date), add 0 steps for the remaining days of the week
+            // For future days, add 0 value for the remaining days of the week
             var futureDay = calendar.date(
-                byAdding: .day, value: weeklySteps.count, to: startOfWeek)
+                byAdding: .day, value: weeklyData.count, to: startOfWeek)
 
             while let future = futureDay, future <= endOfWeek {
                 if future > now {
-                    weeklySteps.append(HealthDataPoint(date: future, value: 0))
+                    weeklyData.append(HealthDataPoint(date: future, value: 0))
                 }
                 futureDay = calendar.date(byAdding: .day, value: 1, to: future)
             }
 
-            completion(weeklySteps)
+            completion(weeklyData.sorted(by: { $0.date < $1.date }))
         }
 
         HKHealthStore().execute(query)
     }
-
-    func fetchPastWeekData() async {
+    // MARK: - Fetch Past Week Data
+    func fetchPastWeekData(for metricType: MetricType) async {
         let startDate = Date.startOfWeek
 
-        fetchWeeklySteps(for: startDate) { weeklySteps in
-            let chartData = weeklySteps.sorted(by: { $0.date < $1.date })
-
-            DispatchQueue.main.async {
-                self.oneMonthChartData = chartData
-            }
-        }
-    }
-
-    // MARK: - HealthManager: Fetch Daily Data
-    func fetchHourlySteps(
-        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-    ) {
-        let stepsType = HKQuantityType(.stepCount)
-        let interval = DateComponents(hour: 1)
-
-        let startOfDay = Calendar.current.startOfDay(for: startDate)
-        let endOfDay =
-            Calendar.current.date(
-                bySettingHour: 23, minute: 59, second: 59, of: startOfDay)
-            ?? Date()
-
-        let query = HKStatisticsCollectionQuery(
-            quantityType: stepsType,
-            quantitySamplePredicate: HKQuery.predicateForSamples(
-                withStart: startOfDay, end: endOfDay, options: .strictStartDate),
-            anchorDate: startOfDay,
-            intervalComponents: interval
-        )
-
-        query.initialResultsHandler = { _, results, error in
-            guard let result = results else {
-                completion([])
-                return
-            }
-
-            var hourlySteps = [HealthDataPoint]()
-            let now = Date()
-
-            result.enumerateStatistics(from: startOfDay, to: now) {
-                statistics, _ in
-                let steps =
-                    statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.0
-                let dataPoint = HealthDataPoint(
-                    date: statistics.startDate, value: steps)
-                hourlySteps.append(dataPoint)
-            }
-
-            // For future hours (after the current time), set the value to 0
-            let calendar = Calendar.current
-            var futureHour = calendar.date(
-                byAdding: .hour, value: hourlySteps.count, to: startOfDay)
-
-            while let future = futureHour, future <= endOfDay {
-                if future > now {
-                    hourlySteps.append(HealthDataPoint(date: future, value: 0))
+        switch metricType {
+        case .steps:
+            fetchWeeklySteps(for: startDate) { weeklySteps in
+                DispatchQueue.main.async {
+                    self.oneWeekChartData = weeklySteps
                 }
-                futureHour = calendar.date(
-                    byAdding: .hour, value: 1, to: future)
             }
-
-            completion(hourlySteps)
-        }
-
-        HKHealthStore().execute(query)
-    }
-
-    func fetchPastDayData() async {
-        let startDate = Date.startOfDay
-
-        fetchHourlySteps(for: startDate) { hourlySteps in
-            let chartData = hourlySteps.sorted(by: { $0.date < $1.date })
-
-            DispatchQueue.main.async {
-                self.oneMonthChartData = chartData
+        case .calories:
+            fetchWeeklyCalories(for: startDate) { weeklyCalories in
+                DispatchQueue.main.async {
+                    self.oneWeekChartData = weeklyCalories
+                }
+            }
+        case .flightsClimbed:
+            fetchWeeklyFlightsClimbed(for: startDate) { weeklyFlights in
+                DispatchQueue.main.async {
+                    self.oneWeekChartData = weeklyFlights
+                }
+            }
+        case .sleep:
+            fetchWeeklySleep(for: startDate) { weeklySleep in
+                DispatchQueue.main.async {
+                    self.oneWeekChartData = weeklySleep
+                }
+            }
+        case .walkingRunningDistance:
+            fetchWeeklyWalkingRunningDistance(for: startDate) {
+                weeklyDistance in
+                DispatchQueue.main.async {
+                    self.oneWeekChartData = weeklyDistance
+                }
             }
         }
     }
+}
 
-    // MARK: - HealthManager: Helper Functions
-    private func processChartData(_ steps: [HealthDataPoint]) {
-        let sortedData = steps.sorted(by: { $0.date < $1.date })
-        DispatchQueue.main.async {
-            self.oneMonthChartData = sortedData
-        }
-    }
+extension HealthManager {
 
+    // MARK: - Fetch Daily Data for Steps
     func fetchDailySteps(
         startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
     ) {
         let stepsType = HKQuantityType(.stepCount)
+        fetchDailyData(
+            for: stepsType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Daily Data for Calories
+    func fetchDailyCalories(
+        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let caloriesType = HKQuantityType(.activeEnergyBurned)
+        fetchDailyData(
+            for: caloriesType, startDate: startDate, completion: completion)
+    }
+
+    // MARK: - Fetch Daily Data for Flights Climbed
+    func fetchDailyFlightsClimbed(
+        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let flightsClimbedType = HKQuantityType(.flightsClimbed)
+        fetchDailyData(
+            for: flightsClimbedType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Daily Data for Walking/Running Distance
+    func fetchDailyWalkingRunningDistance(
+        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let walkingRunningDistanceType = HKQuantityType(.distanceWalkingRunning)
+        fetchDailyData(
+            for: walkingRunningDistanceType, startDate: startDate,
+            completion: completion)
+    }
+
+    // MARK: - Fetch Daily Data for Sleep
+    func fetchDailySleep(
+        startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        guard
+            let sleepType = HKObjectType.categoryType(
+                forIdentifier: .sleepAnalysis)
+        else {
+            completion([])
+            return
+        }
+
+        let predicate = HKQuery.predicateForSamples(
+            withStart: startDate, end: Date(), options: .strictStartDate)
+
+        let query = HKSampleQuery(
+            sampleType: sleepType, predicate: predicate,
+            limit: HKObjectQueryNoLimit, sortDescriptors: nil
+        ) { _, samples, error in
+            guard let samples = samples as? [HKCategorySample], error == nil
+            else {
+                completion([])
+                return
+            }
+
+            var dailySleep = [HealthDataPoint]()
+            let groupedSamples = Dictionary(
+                grouping: samples,
+                by: { Calendar.current.startOfDay(for: $0.startDate) })
+
+            for (date, dailySamples) in groupedSamples {
+                let sleepMinutes = dailySamples.reduce(0) { total, sample in
+                    total + sample.endDate.timeIntervalSince(sample.startDate)
+                        / 60
+                }
+                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
+                dailySleep.append(
+                    HealthDataPoint(date: date, value: sleepHours))
+            }
+
+            completion(dailySleep.sorted(by: { $0.date < $1.date }))
+        }
+
+        HKHealthStore().execute(query)
+    }
+
+    // MARK: - General Fetch Daily Data for HKQuantityType
+    private func fetchDailyData(
+        for quantityType: HKQuantityType, startDate: Date,
+        completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
         let interval = DateComponents(day: 1)
 
         let query = HKStatisticsCollectionQuery(
-            quantityType: stepsType,
+            quantityType: quantityType,
             quantitySamplePredicate: HKQuery.predicateForSamples(
                 withStart: startDate, end: Date(), options: .strictStartDate),
             anchorDate: startDate,
@@ -379,18 +693,138 @@ extension HealthManager {
                 return
             }
 
-            var dailySteps = [HealthDataPoint]()
+            var dailyData = [HealthDataPoint]()
             result.enumerateStatistics(from: startDate, to: Date()) {
                 statistics, _ in
-                let steps =
+                let value =
                     statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.0
-                dailySteps.append(
-                    HealthDataPoint(date: statistics.startDate, value: steps))
+                dailyData.append(
+                    HealthDataPoint(date: statistics.startDate, value: value))
             }
-            completion(dailySteps)
+            completion(dailyData.sorted(by: { $0.date < $1.date }))
         }
 
         HKHealthStore().execute(query)
+    }
+
+    // MARK: - Fetch Past Day Data for Any Metric
+    func fetchPastDayData(for metricType: MetricType) async {
+        let startDate = Date.startOfDay
+
+        switch metricType {
+        case .steps:
+            fetchDailySteps(startDate: startDate) { dailySteps in
+                DispatchQueue.main.async {
+                    self.oneDayChartData = dailySteps
+                }
+            }
+        case .calories:
+            fetchDailyCalories(startDate: startDate) { dailyCalories in
+                DispatchQueue.main.async {
+                    self.oneDayChartData = dailyCalories
+                }
+            }
+        case .flightsClimbed:
+            fetchDailyFlightsClimbed(startDate: startDate) { dailyFlights in
+                DispatchQueue.main.async {
+                    self.oneDayChartData = dailyFlights
+                }
+            }
+        case .sleep:
+            fetchDailySleep(startDate: startDate) { dailySleep in
+                DispatchQueue.main.async {
+                    self.oneDayChartData = dailySleep
+                }
+            }
+        case .walkingRunningDistance:
+            fetchDailyWalkingRunningDistance(startDate: startDate) {
+                dailyDistance in
+                DispatchQueue.main.async {
+                    self.oneDayChartData = dailyDistance
+                }
+            }
+        }
+    }
+}
+
+extension HealthManager {
+
+    // MARK: - Fetch Hourly Data for Steps
+    func fetchHourlySteps(
+        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let stepsType = HKQuantityType(.stepCount)
+        fetchHourlyData(
+            for: stepsType, startDate: startDate, completion: completion
+        )
+    }
+
+    // MARK: - General Fetch Hourly Data for HKQuantityType
+    private func fetchHourlyData(
+        for quantityType: HKQuantityType, startDate: Date,
+        completion: @escaping ([HealthDataPoint]) -> Void
+    ) {
+        let interval = DateComponents(hour: 1)
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: startDate)
+        let endOfDay =
+            calendar.date(
+                bySettingHour: 23, minute: 59, second: 59, of: startOfDay
+            ) ?? Date()
+
+        let query = HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: HKQuery.predicateForSamples(
+                withStart: startOfDay, end: endOfDay, options: .strictStartDate
+            ),
+            anchorDate: startOfDay,
+            intervalComponents: interval
+        )
+
+        query.initialResultsHandler = { _, results, error in
+            guard let result = results else {
+                completion([])
+                return
+            }
+
+            var hourlyData = [HealthDataPoint]()
+            let now = Date()
+
+            // Gather data for completed hours
+            result.enumerateStatistics(from: startOfDay, to: now) {
+                statistics, _ in
+                let value =
+                    statistics.sumQuantity()?.doubleValue(for: .count()) ?? 0.0
+                hourlyData.append(
+                    HealthDataPoint(date: statistics.startDate, value: value))
+            }
+
+            // For future hours, set the value to 0
+            var futureHour = calendar.date(
+                byAdding: .hour, value: hourlyData.count, to: startOfDay)
+            while let future = futureHour, future <= endOfDay {
+                if future > now {
+                    hourlyData.append(HealthDataPoint(date: future, value: 0))
+                }
+                futureHour = calendar.date(
+                    byAdding: .hour, value: 1, to: future)
+            }
+
+            // Sort the data by date and return it
+            completion(hourlyData.sorted(by: { $0.date < $1.date }))
+        }
+
+        HKHealthStore().execute(query)
+    }
+}
+
+extension HealthManager {
+    // MARK: - HealthManager: Helper Functions
+    private func processChartData(_ steps: [HealthDataPoint]) {
+        let sortedData = steps.sorted(by: { $0.date < $1.date })
+        DispatchQueue.main.async {
+            self.oneMonthChartData = sortedData
+        }
     }
 }
 
@@ -425,7 +859,7 @@ class HealthManager: ObservableObject {
             do {
                 try await healthStore.requestAuthorization(
                     toShare: [], read: healthTypes)
-                await fetchPastMonthData()  // Fetch past month data after authorization
+                await fetchPastDayData(for: MetricType.steps)  // Fetch past month data after authorization
             } catch {
                 print(
                     "HealthKit authorization failed: \(error.localizedDescription)"
@@ -437,153 +871,58 @@ class HealthManager: ObservableObject {
     // Generalized function to fetch data based on metric type and time frame
     func fetchMetricData(for metricType: MetricType, timeFrame: TimeFrame) async
     {
-        let (startDate, endDate, key, title, goal) = getTimeFrameDetails(
-            for: metricType, timeFrame: timeFrame
-        )
+        let (startDate, endDate, key, title) = getTimeFrameDetails(
+            for: metricType, timeFrame: timeFrame)
 
         switch metricType {
         case .steps:
             await fetchSteps(
-                from: startDate, to: endDate, for: key, title: title, goal: goal
-            )
+                from: startDate, to: endDate, for: key, title: title)
         case .calories:
             await fetchCalories(
-                from: startDate, to: endDate, for: key, title: title, goal: goal
-            )
+                from: startDate, to: endDate, for: key, title: title)
         case .flightsClimbed:
             await fetchFlightsClimbed(
-                from: startDate, to: endDate, for: key, title: title, goal: goal
-            )
+                from: startDate, to: endDate, for: key, title: title)
         case .sleep:
             await fetchSleep(
-                from: startDate, to: endDate, for: key, title: title, goal: goal
-            )
+                from: startDate, to: endDate, for: key, title: title)
         case .walkingRunningDistance:
             await fetchWalkingRunningDistance(
-                from: startDate, to: endDate, for: key, title: title, goal: goal
-            )
+                from: startDate, to: endDate, for: key, title: title)
         }
     }
 
     // Helper function to get start date, end date, and other details based on the time frame and metric type
     private func getTimeFrameDetails(
         for metricType: MetricType, timeFrame: TimeFrame
-    ) -> (Date, Date, String, String, String) {
+    ) -> (Date, Date, String, String) {
         let todayEnd = Date()
-        let (startDate, keyPrefix, titlePrefix, goal) = getStartDateAndGoal(
+        let (startDate, keyPrefix, titlePrefix) = getStartDateAndGoal(
             for: timeFrame, metricType: metricType)
 
         let key = "\(keyPrefix)\(metricType)"
         let title = "\(titlePrefix) \(metricType)"
-        return (startDate, todayEnd, key, title, goal)
+        return (startDate, todayEnd, key, title)
     }
 
     // Helper function to determine the start date and goals based on time frame and metric type
     private func getStartDateAndGoal(
         for timeFrame: TimeFrame, metricType: MetricType
-    ) -> (Date, String, String, String) {
+    ) -> (Date, String, String) {
         switch timeFrame {
         case .daily:
-            return (
-                Date.startOfDay, "today", "Today's",
-                getGoal(for: metricType, timeFrame: .daily)
-            )
+            return (Date.startOfDay, "today", "Today's")
         case .weekly:
-            return (
-                Date.startOfWeek, "weekly", "This Week's",
-                getGoal(for: metricType, timeFrame: .weekly)
-            )
+            return (Date.startOfWeek, "weekly", "This Week's")
         case .monthly:
-            return (
-                Date.startOfMonth, "monthly", "This Month's",
-                getGoal(for: metricType, timeFrame: .monthly)
-            )
+            return (Date.startOfMonth, "monthly", "This Month's")
         }
-    }
-
-    // Helper function to return goal strings based on the metric type and time frame
-    private func getGoal(for metricType: MetricType, timeFrame: TimeFrame)
-        -> String
-    {
-        switch metricType {
-        case .steps:
-            switch timeFrame {
-            case .daily: return "10,000"
-            case .weekly: return "70,000"
-            case .monthly: return "300,000"
-            }
-        case .calories:
-            switch timeFrame {
-            case .daily: return "500 kcal"
-            case .weekly: return "3500 kcal"
-            case .monthly: return "20,000 kcal"
-            }
-        case .flightsClimbed:
-            switch timeFrame {
-            case .daily: return "10 flights"
-            case .weekly: return "70 flights"
-            case .monthly: return "300 flights"
-            }
-        case .sleep:
-            switch timeFrame {
-            case .daily: return "8 hrs"
-            case .weekly: return "56 hrs"
-            case .monthly: return "240 hrs"
-            }
-        case .walkingRunningDistance:
-            switch timeFrame {
-            case .daily: return "5 miles"
-            case .weekly: return "35 miles"
-            case .monthly: return "150 miles"
-            }
-        }
-    }
-
-    func fetchDailySteps(
-        startDate: Date, completion: @escaping ([Date: Double]) -> Void
-    ) {
-        let stepsType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        let interval = DateComponents(day: 1)
-        let query = HKStatisticsCollectionQuery(
-            quantityType: stepsType,
-            quantitySamplePredicate: nil,  // You can set a predicate if needed
-            anchorDate: startDate,
-            intervalComponents: interval
-        )
-
-        query.initialResultsHandler = { query, results, error in
-            guard let result = results, error == nil else {
-                print(
-                    "Error fetching steps: \(error?.localizedDescription ?? "Unknown error")"
-                )
-                completion([:])  // Return an empty dictionary on error
-                return
-            }
-
-            var dailySteps: [Date: Double] = [:]
-
-            result.enumerateStatistics(from: startDate, to: Date()) {
-                statistics, _ in
-                // Get the total steps for the day
-                if let sum = statistics.sumQuantity() {
-                    let steps = sum.doubleValue(for: HKUnit.count())
-                    dailySteps[statistics.startDate] = steps
-                } else {
-                    dailySteps[statistics.startDate] = 0.0
-                }
-            }
-
-            // Call the completion handler with the dictionary of daily steps
-            completion(dailySteps)
-        }
-
-        HKHealthStore().execute(query)
     }
 
     // MARK: - General Fetch Functions for each type
     func fetchSteps(
-        from startDate: Date, to endDate: Date, for key: String, title: String,
-        goal: String
+        from startDate: Date, to endDate: Date, for key: String, title: String
     ) async {
         await withCheckedContinuation { continuation in
             guard
@@ -613,14 +952,6 @@ class HealthManager: ObservableObject {
                 }
 
                 let stepCount = quantity.doubleValue(for: HKUnit.count())
-                let activity = Activity(
-                    id: UUID().uuidString.hashValue, title: title,
-                    subtitle: goal, image: "figure.walk",
-                    amount: stepCount.formattedString())
-
-                DispatchQueue.main.async {
-                    self.activities[key] = activity
-                }
 
                 print("\(title): \(stepCount.formattedString())")
                 continuation.resume()
@@ -631,8 +962,7 @@ class HealthManager: ObservableObject {
     }
 
     func fetchCalories(
-        from startDate: Date, to endDate: Date, for key: String, title: String,
-        goal: String
+        from startDate: Date, to endDate: Date, for key: String, title: String
     ) async {
         await withCheckedContinuation { continuation in
             guard
@@ -663,15 +993,6 @@ class HealthManager: ObservableObject {
 
                 let calorieCount = quantity.doubleValue(
                     for: HKUnit.kilocalorie())
-                let activity = Activity(
-                    id: UUID().uuidString.hashValue, title: title,
-                    subtitle: goal, image: "flame.fill",
-                    amount: calorieCount.formattedString())
-
-                DispatchQueue.main.async {
-                    self.activities[key] = activity
-                }
-
                 print("\(title): \(calorieCount.formattedString())")
                 continuation.resume()
             }
@@ -681,8 +1002,7 @@ class HealthManager: ObservableObject {
     }
 
     func fetchFlightsClimbed(
-        from startDate: Date, to endDate: Date, for key: String, title: String,
-        goal: String
+        from startDate: Date, to endDate: Date, for key: String, title: String
     ) async {
         await withCheckedContinuation { continuation in
             guard
@@ -712,15 +1032,6 @@ class HealthManager: ObservableObject {
                 }
 
                 let flights = quantity.doubleValue(for: HKUnit.count())
-                let activity = Activity(
-                    id: UUID().uuidString.hashValue, title: title,
-                    subtitle: goal, image: "figure.stairs",
-                    amount: flights.formattedString())
-
-                DispatchQueue.main.async {
-                    self.activities[key] = activity
-                }
-
                 print("\(title): \(flights.formattedString())")
                 continuation.resume()
             }
@@ -730,8 +1041,7 @@ class HealthManager: ObservableObject {
     }
 
     func fetchSleep(
-        from startDate: Date, to endDate: Date, for key: String, title: String,
-        goal: String
+        from startDate: Date, to endDate: Date, for key: String, title: String
     ) async {
         await withCheckedContinuation { continuation in
             guard
@@ -769,14 +1079,6 @@ class HealthManager: ObservableObject {
                 }
 
                 let totalSleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
-                let activity = Activity(
-                    id: UUID().uuidString.hashValue, title: title,
-                    subtitle: goal, image: "bed.double.fill",
-                    amount: "\(totalSleepHours) hrs")
-
-                DispatchQueue.main.async {
-                    self.activities[key] = activity
-                }
 
                 print("\(title): \(totalSleepHours) hrs")
                 continuation.resume()
@@ -787,8 +1089,7 @@ class HealthManager: ObservableObject {
     }
 
     func fetchWalkingRunningDistance(
-        from startDate: Date, to endDate: Date, for key: String, title: String,
-        goal: String
+        from startDate: Date, to endDate: Date, for key: String, title: String
     ) async {
         await withCheckedContinuation { continuation in
             guard
@@ -818,52 +1119,12 @@ class HealthManager: ObservableObject {
                 }
 
                 let distance = quantity.doubleValue(for: HKUnit.mile())
-                let activity = Activity(
-                    id: UUID().uuidString.hashValue, title: title,
-                    subtitle: goal, image: "figure.walk",
-                    amount: distance.formattedString() + " mi")
-
-                DispatchQueue.main.async {
-                    self.activities[key] = activity
-                }
 
                 print("\(title): \(distance.formattedString()) mi")
                 continuation.resume()
             }
 
             HKHealthStore().execute(query)
-        }
-    }
-}
-
-struct ActivityCard: View {
-    @State var activity: Activity
-    var body: some View {
-        ZStack {
-            Color(uiColor: .systemGray6)
-                .cornerRadius(20)
-
-            VStack(spacing: 10) {
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(activity.title)
-                            .font(.system(size: 12))
-                        Text(activity.subtitle)
-                            .font(.system(size: 10))
-                            .foregroundColor(.gray)
-                    }
-
-                    Image(systemName: activity.image)
-                        .foregroundColor(.green)
-
-                }
-                .padding()
-
-                Text(activity.amount)
-                    .font(.system(size: 24))
-            }
-            .padding()
-            .cornerRadius(15)
         }
     }
 }
