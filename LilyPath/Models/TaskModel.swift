@@ -7,21 +7,6 @@
 
 import Foundation
 
-class TaskManager: ObservableObject {
-    static let shared = TaskManager()
-    
-    @Published var tasks: [TaskModel]
-    
-    private init() {
-        self.tasks = generateRandomTasks()
-    }
-    
-    // TODO: generate randome tasks once a day
-    func generateNewTasks() {
-        self.tasks = generateRandomTasks()
-    }
-}
-
 class TaskModel: ObservableObject {
     let type: TaskType
     let goal: Int

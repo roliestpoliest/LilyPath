@@ -29,6 +29,9 @@
 		23F44A862CC8C08D00721D6E /* PlantStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */; };
 		23F44A882CC8F14500721D6E /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A872CC8F14500721D6E /* StatsCard.swift */; };
 		23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */; };
+		23F44A8E2CC8FD5900721D6E /* FitnessStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A8D2CC8FD5900721D6E /* FitnessStatsManager.swift */; };
+		23F44A902CC8FD7C00721D6E /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A8F2CC8FD7C00721D6E /* TaskManager.swift */; };
+		23F44A922CC8FD9F00721D6E /* UserPlantManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A912CC8FD9F00721D6E /* UserPlantManager.swift */; };
 		822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AC2CB26525003BD934 /* PlantGalleryCard.swift */; };
 		822948AF2CB356EA003BD934 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AE2CB356EA003BD934 /* ProgressBar.swift */; };
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
@@ -91,6 +94,9 @@
 		23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsModel.swift; sourceTree = "<group>"; };
 		23F44A872CC8F14500721D6E /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
 		23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsDetailView.swift; sourceTree = "<group>"; };
+		23F44A8D2CC8FD5900721D6E /* FitnessStatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsManager.swift; sourceTree = "<group>"; };
+		23F44A8F2CC8FD7C00721D6E /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
+		23F44A912CC8FD9F00721D6E /* UserPlantManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlantManager.swift; sourceTree = "<group>"; };
 		822948AC2CB26525003BD934 /* PlantGalleryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantGalleryCard.swift; sourceTree = "<group>"; };
 		822948AE2CB356EA003BD934 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
@@ -193,6 +199,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		23F44A8C2CC8FD3300721D6E /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				23F44A912CC8FD9F00721D6E /* UserPlantManager.swift */,
+				23F44A8F2CC8FD7C00721D6E /* TaskManager.swift */,
+				23F44A8D2CC8FD5900721D6E /* FitnessStatsManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		8298A0D92CA9F65B0062563F = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +237,7 @@
 				2306B1522CADD2FB00ECC155 /* Utilities */,
 				238719992CB0707B00305DFA /* Components */,
 				233A0B702CB2114B00570652 /* Helpers */,
+				23F44A8C2CC8FD3300721D6E /* Managers */,
 				23BE23812CAB250700D1D961 /* Models */,
 				8298A10F2CAA03460062563F /* Views */,
 				8298A0E92CA9F65B0062563F /* Assets.xcassets */,
@@ -438,6 +455,7 @@
 				8298A1152CAA03D40062563F /* HomeView.swift in Sources */,
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
 				82D166002CB4F4C000A91D5E /* ImageModifier.swift in Sources */,
+				23F44A8E2CC8FD5900721D6E /* FitnessStatsManager.swift in Sources */,
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */,
@@ -454,8 +472,10 @@
 				8298A1172CAA04340062563F /* GardenView.swift in Sources */,
 				822FF7022CB118EC00F8F5DC /* PlantPopUp.swift in Sources */,
 				23F44A882CC8F14500721D6E /* StatsCard.swift in Sources */,
+				23F44A922CC8FD9F00721D6E /* UserPlantManager.swift in Sources */,
 				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */,
+				23F44A902CC8FD7C00721D6E /* TaskManager.swift in Sources */,
 				82DDA1832CB379A2008585EE /* PlantGalleryView.swift in Sources */,
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
 				2306B1542CADD31000ECC155 /* ThemeColors.swift in Sources */,
