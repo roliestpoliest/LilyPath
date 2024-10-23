@@ -168,77 +168,53 @@ extension HealthManager {
     }
 
     // MARK: - Fetch Monthly Data for Sleep
-    func fetchMonthlySleep(
-        for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void
-    ) {
-        guard
-            let sleepType = HKObjectType.categoryType(
-                forIdentifier: .sleepAnalysis)
-        else {
+    func fetchMonthlySleep(for startDate: Date, completion: @escaping ([HealthDataPoint]) -> Void) {
+        guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else {
             completion([])
             return
         }
-
+        
         let calendar = Calendar.current
-        let startOfMonth =
-            calendar.date(
-                from: calendar.dateComponents([.year, .month], from: startDate))
-            ?? Date.startOfMonth
-        let endOfMonth =
-            calendar.date(
-                from: DateComponents(
-                    year: calendar.component(.year, from: startOfMonth),
-                    month: calendar.component(.month, from: startOfMonth),
-                    day: calendar.range(
-                        of: .day, in: .month, for: startOfMonth)?.count))?
-            .endOfDay ?? Date.endOfDay
-
-        let predicate = HKQuery.predicateForSamples(
-            withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
-
-        let query = HKSampleQuery(
-            sampleType: sleepType, predicate: predicate,
-            limit: HKObjectQueryNoLimit, sortDescriptors: nil
-        ) { _, samples, error in
-            guard let samples = samples as? [HKCategorySample], error == nil
-            else {
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: startDate)) ?? Date.startOfMonth
+        let endOfMonth = calendar.date(byAdding: .month, value: 1, to: startOfMonth)?.addingTimeInterval(-1) ?? Date.endOfMonth
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+        
+        let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+            guard let samples = samples as? [HKCategorySample], error == nil else {
                 completion([])
                 return
             }
-
+            
             var monthlySleep = [HealthDataPoint]()
-            let now = Date()
-
-            // Group the sleep samples by date
-            let groupedSamples = Dictionary(
-                grouping: samples,
-                by: { Calendar.current.startOfDay(for: $0.startDate) })
-
-            // Calculate total sleep per day
+            
+            // Filter to only include "in bed" data (value == HKCategoryValueSleepAnalysis.inBed)
+            let inBedSamples = samples.filter { $0.value == HKCategoryValueSleepAnalysis.inBed.rawValue }
+            
+            // Group sleep data by day
+            let groupedSamples = Dictionary(grouping: inBedSamples, by: { Calendar.current.startOfDay(for: $0.startDate) })
+            
+            // Calculate total sleep time (in bed) per day
             for (date, dailySamples) in groupedSamples {
                 let sleepMinutes = dailySamples.reduce(0) { total, sample in
-                    total + sample.endDate.timeIntervalSince(sample.startDate)
-                        / 60
+                    total + sample.endDate.timeIntervalSince(sample.startDate) / 60
                 }
-                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 2)
-                monthlySleep.append(
-                    HealthDataPoint(date: date, value: sleepHours))
+                let sleepHours = (sleepMinutes / 60.0).rounded(toPlaces: 1)
+                monthlySleep.append(HealthDataPoint(date: date, value: sleepHours))
             }
-
-            // For future days, add 0 sleep for remaining days of the month
-            var futureDay = calendar.date(
-                byAdding: .day, value: monthlySleep.count, to: startOfMonth)
-
-            while let future = futureDay, future <= endOfMonth {
-                if future > now {
-                    monthlySleep.append(HealthDataPoint(date: future, value: 0))
+            
+            // Fill in any missing days with 0 hours
+            var currentDate = startOfMonth
+            while currentDate <= endOfMonth {
+                if !monthlySleep.contains(where: { $0.date == currentDate }) {
+                    monthlySleep.append(HealthDataPoint(date: currentDate, value: 0))
                 }
-                futureDay = calendar.date(byAdding: .day, value: 1, to: future)
+                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
             }
-
+            
             completion(monthlySleep.sorted(by: { $0.date < $1.date }))
         }
-
+        
         HKHealthStore().execute(query)
     }
 
