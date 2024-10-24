@@ -20,19 +20,14 @@ extension Font {
     static var label: Font {
         return .system(size: 12, weight: .semibold, design: .rounded)
     }
-    
-    // MARK: - For level, water pts, gems
-    static var userInfo: Font {
-        return .system(size: 14, weight: .semibold, design: .rounded)
+
+    // MARK: - Home
+    static var homeIcons: Font {
+        return .system(size: 55, weight: .medium, design: .rounded)
     }
     
     static var rewards: Font {
         return .system(size: 14, weight: .medium, design: .rounded)
-    }
-    
-    // MARK: - Home
-    static var homeIcons: Font {
-        return .system(size: 55, weight: .medium, design: .rounded)
     }
     
     // MARK: - Stats

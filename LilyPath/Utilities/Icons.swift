@@ -21,6 +21,7 @@ enum Icon: String {
     case stats = "chart.bar.xaxis"
     
     // MARK: - Home View
+    case questionMark = "questionmark"
     case newPlant = "leaf.fill"
     case dailyTask = "list.bullet.clipboard.fill"
     
