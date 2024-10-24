@@ -34,10 +34,10 @@ struct ProgressBar: View {
                     RoundedRectangle(cornerRadius: (frameHeight - padding) / 2)
                         .fill(foregroundColor)
                         .frame(
-                            width: min(
-                                CGFloat(value / total)
-                                * (geometry.size.width - padding),
-                                geometry.size.width - padding),
+                            width: max(0, min(
+                                geometry.size.width * CGFloat(value / max(total, 1)),
+                                geometry.size.width
+                            )),
                             height: frameHeight - padding
                         )
                 }

@@ -59,16 +59,11 @@ struct StatsCard: View {
             .background(Color.lightBlue)
             .cornerRadius(10)
             
-            Text(stat.displayName)
+            Text("\(stat.value) \(stat.fluentDisplayName)")
                 .font(.statsCard)
                 .foregroundColor(.white)
-                .padding(.leading, 8)
             
             Spacer()
-            
-            Text(stat.value) // Dynamically display the value
-                .font(.statsCard)
-                .foregroundColor(.white)
             
             Image(systemName: "chevron.right")
                 .font(.statsCard)
@@ -97,5 +92,9 @@ struct MetricStatsModel {
     
     var displayName: String {
         return metricType.displayName
+    }
+    
+    var fluentDisplayName: String {
+        return metricType.fluentDisplayName
     }
 }

@@ -29,4 +29,20 @@ enum MetricType: String, CaseIterable, Identifiable {
             return "Distance"
         }
     }
+    
+    // Fluent name for more natural reading
+    var fluentDisplayName: String {
+        switch self {
+        case .steps:
+            return "Steps"
+        case .calories:
+            return "calories burned"
+        case .flightsClimbed:
+            return "flights climbed"
+        case .sleep:
+            return "hours slept"
+        case .walkingRunningDistance:
+            return "miles walked"
+        }
+    }
 }
