@@ -20,15 +20,15 @@ struct ContentView: View {
                     .tag(Tabs.garden)
                 
                 // TODO: replace with user's current plant
-//                HomeView(
-//                    userCurrentPlant:
-//                        UserPlantModel(
-//                            basePlant: BasePlantModel.buttercup,
-//                            currentStage: 3,
-//                            stepsCollected: [100, 200, 100].reduce(0, +))
-//                )
-                TempStatsView()
-                    .environmentObject(healthManager)
+                HomeView(
+                    userCurrentPlant:
+                        UserPlantModel(
+                            basePlant: BasePlantModel.buttercup,
+                            currentStage: 3,
+                            stepsCollected: [100, 200, 100].reduce(0, +))
+                )
+//                TempStatsView()
+//                    .environmentObject(healthManager)
                 .tag(Tabs.home)
                 
                 StatisticsView()
