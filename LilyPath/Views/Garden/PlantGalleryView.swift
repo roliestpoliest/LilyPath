@@ -38,15 +38,14 @@ struct PlantGalleryView: View {
             .background(Color.mainBackground)
 
             if let plant = selectedPlant, showPopUp {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
+                Color.mainBackground.opacity(0.4)  .ignoresSafeArea()
                     .onTapGesture {
                         dismissPopup()
                     }
 
                 PopUp.plantStats(
                     currentPlantModel: userPlantManager.currentPlant!,
-                    swapabblePlantModel: plant,
+                    swappablePlantModel: plant,
                     showPopUp: $showPopUp
                 )
                 .frame(width: 300, height: 250)

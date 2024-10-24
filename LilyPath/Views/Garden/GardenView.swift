@@ -62,7 +62,7 @@ struct GardenView: View {
                         
                         PopUp.plantStats(
                             currentPlantModel: plants,
-                            swapabblePlantModel: plants,
+                            swappablePlantModel: plants,
                             showPopUp: $showPopUp
                         )
                         .frame(width: 300, height: 250)

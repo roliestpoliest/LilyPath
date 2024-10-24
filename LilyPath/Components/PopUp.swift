@@ -192,15 +192,15 @@ class PopUp {
     
     // MARK: stats
     static func plantStats(
-        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel,
+        currentPlantModel: UserPlantModel, swappablePlantModel: UserPlantModel,
         showPopUp: Binding<Bool>
     ) -> some View {
-        let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
+        let showSwapButton = currentPlantModel.id != swappablePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
         
         return GenericPopUpView(
             showPopUp: showPopUp,
-            headerText: currentPlantModel.basePlant.species,
+            headerText: swappablePlantModel.basePlant.species,
             content: {
                 VStack {
                     Grid {
@@ -211,7 +211,7 @@ class PopUp {
                                 .font(.statsBodyBold)
                             
                             Text(
-                                currentPlantModel.plantDate.formatted(
+                                swappablePlantModel.plantDate.formatted(
                                     .dateTime.month(.abbreviated).day(
                                         .twoDigits
                                     )
@@ -227,7 +227,7 @@ class PopUp {
                                 .font(.statsBodyBold)
                             
                             Text(
-                                currentPlantModel.completionDate.map {
+                                swappablePlantModel.completionDate.map {
                                     $0.formatted(
                                         .dateTime.month(.abbreviated).day(
                                             .twoDigits
@@ -242,7 +242,7 @@ class PopUp {
                             Text("Species")
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
-                            Text(currentPlantModel.basePlant.species)
+                            Text(swappablePlantModel.basePlant.species)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.statsBody)
                             
@@ -253,7 +253,7 @@ class PopUp {
                                 .font(.statsBodyBold)
                             
                             Text(
-                                "\(Int((currentPlantModel.overallProgress) * 100))%"
+                                "\(Int((swappablePlantModel.overallProgress) * 100))%"
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
@@ -264,7 +264,7 @@ class PopUp {
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
                             Text(
-                                "\(currentPlantModel.basePlant.overallStepGoal - currentPlantModel.stepsCollected)"
+                                "\(swappablePlantModel.basePlant.overallStepGoal - swappablePlantModel.stepsCollected)"
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
@@ -272,14 +272,14 @@ class PopUp {
                     }
                     
                     HStack {
-                        Text("Stage \(currentPlantModel.currentStage)")
+                        Text("Stage \(swappablePlantModel.currentStage)")
                             .font(.stageLabel)
                             .layoutPriority(1)
                         
                         ProgressBar(
                             value: Double(
-                                currentPlantModel.stepsInCurrentStage),
-                            total: Double(currentPlantModel.currentStageGoal)
+                                swappablePlantModel.stepsInCurrentStage),
+                            total: Double(swappablePlantModel.currentStageGoal)
                         )
                         .frame(maxWidth: .infinity)
                         
@@ -301,7 +301,7 @@ class PopUp {
     
     // MARK: swap
     static func swapPlant(
-        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel,
+        currentPlantModel: UserPlantModel, swappablePlantModel: UserPlantModel,
         showPopUp: Binding<Bool>
     ) -> some View {
         GenericPopUpView(
@@ -309,10 +309,10 @@ class PopUp {
             headerText: "Swap Plant",
             content: {
                 HStack {
-                    plantImage(image: swapabblePlantModel.currentImage)
+                    plantImage(image: swappablePlantModel.currentImage)
                     VStack(spacing: 15) {
                         Text(
-                            "Switch from \(currentPlantModel.basePlant.species) to \(swapabblePlantModel.basePlant.species)?"
+                            "Switch from \(currentPlantModel.basePlant.species) to \(swappablePlantModel.basePlant.species)?"
                         )
                         .multilineTextAlignment(.center)
                         .font(Font.popupBody)
@@ -401,15 +401,15 @@ class PopUp {
                 )
                 .frame(height: 250)
                 PopUp.plantStats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2,
+                    currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true))
                 PopUp.plantStats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1,
+                    currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
                     showPopUp: .constant(true)
                 )
                 .frame(height: 275)
                 PopUp.swapPlant(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2,
+                    currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true))
                 //                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
                 //                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
