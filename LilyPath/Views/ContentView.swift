@@ -14,9 +14,9 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-//                GardenView()
-                AggregateHealthDataView()
-                    .environmentObject(healthManager)
+                GardenView()
+//                AggregateHealthDataView()
+//                    .environmentObject(healthManager)
                     .tag(Tabs.garden)
                 
                 // TODO: replace with user's current plant
@@ -32,6 +32,8 @@ struct ContentView: View {
                 .tag(Tabs.home)
                 
                 StatisticsView()
+                    .environmentObject(healthManager)
+
                     .tag(Tabs.stats)
             }
             TabBar(selectedTab: $selectedTab)

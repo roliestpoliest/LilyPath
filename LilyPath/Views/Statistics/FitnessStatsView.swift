@@ -14,30 +14,9 @@ struct FitnessStatsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                ViewTitle(title: "Fitness Stats")
+                ViewTitle(title: "temp")
                 
-                TimePeriodPicker(selectedTimePeriod: $selectedTimePeriod)
-                    .padding(.bottom, 20)
-                    .shadow(
-                        radius: ShadowConstants.radius,
-                        y: ShadowConstants.yOffset)
-                
-                ScrollView {
-                    VStack(spacing: 30) {
-                        Text("foo")
-//                        ForEach(statsManager.fitnessStats, id: \.id) { stat in
-//                            NavigationLink(
-//                                destination: FitnessStatsDetailView(
-//                                    stat: stat, timePeriod: selectedTimePeriod)
-//                            ) {
-                                StatsCard(stat: stat, timePeriod: selectedTimePeriod)
-//                            }
-//                        }
-                    }
-                }
-                .shadow(
-                    radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-                
+      
                 Spacer()
             }
             .background(Color.mainBackground)
