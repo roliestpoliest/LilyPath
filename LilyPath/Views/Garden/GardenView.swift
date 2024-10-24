@@ -49,7 +49,6 @@ struct GardenView: View {
                     
                     Spacer()
                 }
-                .padding()
             }
             .background(Color.mainBackground)
             .overlay(
