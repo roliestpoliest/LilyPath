@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class BasePlantModel: Identifiable {
+final class BasePlantModel: Identifiable, Equatable {
     let id = UUID()
     let species: String
     let requiredLevelToBuy: Int
@@ -16,6 +16,11 @@ final class BasePlantModel: Identifiable {
     let stageStepGoals: [Int]
     let stageImages: [String]
     let gemReward: Int
+    
+    
+    static func == (lhs: BasePlantModel, rhs: BasePlantModel) -> Bool {
+        lhs.id == rhs.id
+    }
     
     init(
         species: String, requiredLevelToBuy: Int, price: Int, gemReward: Int,

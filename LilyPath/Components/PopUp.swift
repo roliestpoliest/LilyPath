@@ -13,7 +13,7 @@ import SwiftUI
 
 // MARK: Generic view
 struct GenericPopUpView<Content: View>: View {
-    @State private var showPopUp = true
+    @Binding var showPopUp: Bool
     var headerColor: Color = .customPink
     var textColor: Color = .customBrown
     var x_color: Color = .darkPink
@@ -68,7 +68,7 @@ struct GenericPopUpView<Content: View>: View {
                     Spacer()
                     Button(action: {
                         print("Close button tapped")
-                        showPopUp.toggle()
+                        showPopUp = false
                     }) {
                         IconImage(icon: .x, height: 20, color: x_color)
                     }
@@ -81,8 +81,11 @@ struct GenericPopUpView<Content: View>: View {
 
 // MARK: Pop Up Class
 class PopUp {
-    static func purchase(plantModel: BasePlantModel) -> some View {
+    static func purchase(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
+    -> some View
+    {
         GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: "Purchase",
             content: {
                 HStack(spacing: 30) {
@@ -95,6 +98,7 @@ class PopUp {
                         
                         actionButton(text: String(plantModel.price), icon: .gem)
                         {
+                            showPopUp.wrappedValue = false
                             print("Purchase button tapped")
                         }
                     }
@@ -103,8 +107,11 @@ class PopUp {
         )
     }
     // MARK: locked
-    static func locked(plantModel: BasePlantModel) -> some View {
+    static func locked(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
+    -> some View
+    {
         GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: "Womp Womp",
             content: {
                 HStack(spacing: 20) {
@@ -124,8 +131,11 @@ class PopUp {
     }
     
     // MARK: wilt
-    static func wilt(plantModel: BasePlantModel) -> some View {
+    static func wilt(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
+    -> some View
+    {
         GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: "Uh oh!",
             content: {
                 HStack(spacing: 10) {
@@ -151,8 +161,11 @@ class PopUp {
     }
     
     // MARK: level up
-    static func levelUp(plantModel: BasePlantModel) -> some View {
+    static func levelUp(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
+    -> some View
+    {
         GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: "Level Up!",
             content: {
                 HStack(spacing: 10) {
@@ -176,12 +189,14 @@ class PopUp {
     
     // MARK: stats
     static func plantStats(
-        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
+        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel,
+        showPopUp: Binding<Bool>
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
         
         return GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: currentPlantModel.basePlant.species,
             content: {
                 VStack {
@@ -284,9 +299,11 @@ class PopUp {
     
     // MARK: swap
     static func swapPlant(
-        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
+        currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel,
+        showPopUp: Binding<Bool>
     ) -> some View {
         GenericPopUpView(
+            showPopUp: showPopUp,
             headerText: "Swap Plant",
             content: {
                 HStack {
@@ -310,7 +327,7 @@ class PopUp {
     }
     
     // MARK: plant image
-    private static func plantImage(image: String, applyEffects: Bool = false)
+    static func plantImage(image: String, applyEffects: Bool = false)
     -> some View
     {
         Image(image)
@@ -321,7 +338,7 @@ class PopUp {
     }
     
     // MARK: action button
-    private static func actionButton(
+    static func actionButton(
         text: String, secondText: String? = nil, icon: Icon? = nil,
         action: @escaping () -> Void
     ) -> some View {
@@ -360,22 +377,37 @@ class PopUp {
                     basePlant: .lily, currentStage: 4, watersCollected: 24
                 )
                 
-                PopUp.purchase(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PopUp.locked(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
-                PopUp.wilt(plantModel: BasePlantModel.lavender)
-                    .frame(height: 250)
-                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
-                    .frame(height: 250)
+                PopUp.purchase(
+                    plantModel: BasePlantModel.delphinium,
+                    showPopUp: .constant(true)
+                )
+                .frame(height: 250)
+                PopUp.locked(
+                    plantModel: BasePlantModel.delphinium,
+                    showPopUp: .constant(true)
+                )
+                .frame(height: 250)
+                PopUp.wilt(
+                    plantModel: BasePlantModel.lavender,
+                    showPopUp: .constant(true)
+                )
+                .frame(height: 250)
+                PopUp.levelUp(
+                    plantModel: BasePlantModel.delphinium,
+                    showPopUp: .constant(true)
+                )
+                .frame(height: 250)
                 PopUp.plantStats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2,
+                    showPopUp: .constant(true))
                 PopUp.plantStats(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1,
+                    showPopUp: .constant(true)
                 )
                 .frame(height: 275)
                 PopUp.swapPlant(
-                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2,
+                    showPopUp: .constant(true))
                 //                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
                 //                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
             }

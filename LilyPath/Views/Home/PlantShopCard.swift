@@ -56,9 +56,6 @@ struct PlantShopCard: View {
             .frame(width: 150, height: 180)
         }
         .contentShape(Rectangle())
-        .onTapGesture {
-            print("Plant Shop Card \(plantModel.species) tapped")
-        }
     }
 }
 

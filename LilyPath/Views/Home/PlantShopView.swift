@@ -14,22 +14,48 @@ struct PlantShopView: View {
         GridItem(.flexible(), spacing: 40),
     ]
     
+    @State var selectedPlant: BasePlantModel? = nil
+    @State var showPopUp: Bool = false
+    
     var body: some View {
-        VStack {
-            UserCurrencyBar()
-
-            ViewTitle(title: "Plant Shop")
-            
-            ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: columns, spacing: 40) {
-                    ForEach(plants) { plant in
-                        PlantShopCard(plantModel: plant)
+        ZStack {
+            VStack {
+                UserCurrencyBar()
+                
+                ViewTitle(title: "Plant Shop")
+                
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns, spacing: 40) {
+                        ForEach(plants) { plant in
+                            PlantShopCard(plantModel: plant)
+                                .onTapGesture {
+                                    withAnimation {
+                                        selectedPlant = plant
+                                        showPopUp = true
+                                        print("\(plant.species) card tapped")
+                                    }
+                                }
+                        }
                     }
                 }
+                .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
             }
-            .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+            .background(Color.mainBackground)
+            
+            if let plant = selectedPlant, showPopUp {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        selectedPlant = nil
+                        showPopUp = false
+                    }
+                
+                PopUp.purchase(plantModel: plant, showPopUp: $showPopUp)
+                    .frame(height: 250)
+                    .transition(.scale)
+            }
         }
-        .background(Color.mainBackground)
+        .animation(.easeInOut, value: selectedPlant)
     }
 }
 
