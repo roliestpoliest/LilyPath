@@ -10,13 +10,21 @@ import Foundation
 class UserPlantManager: ObservableObject {
     static let shared = UserPlantManager()
     
-    @Published var userPlants: [UserPlantModel] = []
+    @Published var userPlants: [UserPlantModel] = [] {
+        didSet {
+            updateCurrentPlant()
+        }
+    }
+    
+    @Published var currentPlant: UserPlantModel?
     
     private init() {
         // TODO: Replace with actual user plants
         userPlants = [
             UserPlantModel(
                 basePlant: .buttercup,
+                plantDate: Calendar.current.date(
+                    byAdding: .day, value: -2, to: Date()) ?? Date(),
                 completionDate: Date(),
                 currentStage: 5,
                 watersCollected: [3, 4, 5, 6, 0].reduce(0, +),
@@ -26,6 +34,8 @@ class UserPlantManager: ObservableObject {
             ),
             UserPlantModel(
                 basePlant: .lily,
+                plantDate: Calendar.current.date(
+                    byAdding: .day, value: -10, to: Date()) ?? Date(),
                 completionDate: Calendar.current.date(
                     byAdding: .day, value: -8, to: Date()),
                 currentStage: 5,
@@ -54,6 +64,21 @@ class UserPlantManager: ObservableObject {
                 status: .growing
             ),
         ]
+    }
+    
+    private func updateCurrentPlant() {
+        currentPlant = userPlants.first { $0.isCurrent }
+    }
+    
+    func waterCurrentPlant() {
+        guard let currentPlant = currentPlant else {
+            print("No current plant to water")
+            return
+        }
+        
+        currentPlant.waterPlant()
+        
+        objectWillChange.send()
     }
     
     // Sort user plants by stage then species name

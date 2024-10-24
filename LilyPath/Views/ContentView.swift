@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var healthManager: HealthManager
+    @StateObject var userPlantManager = UserPlantManager.shared
     @State var selectedTab: Tabs = .home
     
     var body: some View {
@@ -17,15 +18,8 @@ struct ContentView: View {
                 GardenView()
                     .tag(Tabs.garden)
                 
-                // TODO: replace with user's current plant
-                HomeView(
-                    userCurrentPlant:
-                        UserPlantModel(
-                            basePlant: BasePlantModel.buttercup,
-                            currentStage: 3,
-                            watersCollected: 5)
-                )
-                .tag(Tabs.home)
+                HomeView()
+                    .tag(Tabs.home)
                 
                 StatisticsView()
                     .tag(Tabs.stats)
@@ -33,11 +27,14 @@ struct ContentView: View {
             TabBar(selectedTab: $selectedTab)
                 .background(Color.mainBackground)
         }
+        .environmentObject(userPlantManager)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
     }
 }
 
 #Preview {
-    ContentView().environmentObject(HealthManager())
+    ContentView()
+        .environmentObject(HealthManager())
+        .environmentObject(UserPlantManager.shared)
 }

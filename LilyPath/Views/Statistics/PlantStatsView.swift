@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlantStatsView: View {
     @State private var selectedTimePeriod: TimePeriod = .daily
-    @ObservedObject private var plantManager = UserPlantManager.shared
+    @EnvironmentObject var userPlantManager: UserPlantManager
     
     var body: some View {
         NavigationStack {
@@ -42,7 +42,7 @@ struct PlantStatsView: View {
             }
             .background(Color.mainBackground)
             .task(id: selectedTimePeriod) {
-                plantManager.updatePlantStats(for: selectedTimePeriod)
+                userPlantManager.updatePlantStats(for: selectedTimePeriod)
             }
         }
     }
@@ -50,6 +50,7 @@ struct PlantStatsView: View {
 
 #Preview {
     PlantStatsView()
+        .environmentObject(UserPlantManager.shared)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
 }

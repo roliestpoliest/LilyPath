@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlantGalleryCard: View {
-    var userPlantModel: UserPlantModel
+    @ObservedObject var userPlantModel: UserPlantModel
     
     var body: some View {
         VStack {

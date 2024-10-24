@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class UserPlantModel: Identifiable {
+class UserPlantModel: Identifiable, ObservableObject {
     enum PlantStatus: String {
         case growing = "Growing"
         case completed = "Completed"
@@ -16,14 +16,14 @@ class UserPlantModel: Identifiable {
     
     let id = UUID()
     let basePlant: BasePlantModel
-    var plantDate: Date
-    var completionDate: Date?
-    var lastWateredDate: Date?
-    var currentStage: Int
-    var watersCollected: Int
-    var numberOfRevives: Int
-    var status: PlantStatus
-    var isCurrent: Bool
+    @Published var plantDate: Date
+    @Published var completionDate: Date?
+    @Published var lastWateredDate: Date?
+    @Published var currentStage: Int
+    @Published var watersCollected: Int
+    @Published var numberOfRevives: Int
+    @Published var status: PlantStatus
+    @Published var isCurrent: Bool
     
     // 1 water = 1000 water points = 1000 steps
     var stepsCollected: Int {
@@ -67,6 +67,31 @@ class UserPlantModel: Identifiable {
         }
         
         return basePlant.stageImages[currentStage - 1]
+    }
+    
+    func waterPlant() {
+        guard currentStage < basePlant.stageStepGoals.count else { return }
+        
+        watersCollected += 1
+        lastWateredDate = Date()
+        
+        print("Watered \(basePlant.species) - \(watersCollected) waters")
+        
+        // Notify that this plant's state has changed
+        objectWillChange.send()
+        
+        checkNextStage()
+    }
+    
+    func checkNextStage() {
+        if stepsInCurrentStage >= currentStageGoal {
+            currentStage += 1
+            
+            if currentStage == basePlant.stageStepGoals.count {
+                status = .completed
+                completionDate = Date()
+            }
+        }
     }
     
     init(

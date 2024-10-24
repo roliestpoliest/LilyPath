@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PlantStatsDetailView: View {
     @ObservedObject var stat: PlantStatsModel
+    @EnvironmentObject var userPlantManager: UserPlantManager
     let timePeriod: TimePeriod
-    @ObservedObject private var plantManager = UserPlantManager.shared
     
     var body: some View {
         VStack {
@@ -21,7 +21,7 @@ struct PlantStatsDetailView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-                    let filtered = plantManager.filteredPlants(
+                    let filtered = userPlantManager.filteredPlants(
                         for: stat.id, within: timePeriod)
                     
                     if filtered.isEmpty {
@@ -111,6 +111,7 @@ struct PlantRowView: View {
         stat: PlantStatsModel.seedsPlanted,
         timePeriod: .daily
     )
+    .environmentObject(UserPlantManager.shared)
     .background(Color.mainBackground)
     .padding(.horizontal, 30)
 }

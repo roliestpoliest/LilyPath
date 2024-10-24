@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State var userCurrentPlant: UserPlantModel
+    @EnvironmentObject var userPlantManager: UserPlantManager
     
     var body: some View {
         NavigationView {
             ZStack {
                 Color.mainBackground
                     .ignoresSafeArea(.all)
+                
                 VStack {
                     HStack {
                         HowToPlayButton()
-                        
                         UserCurrencyBar()
                     }
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
                     
                     VStack {
-                        CurrentPlantDisplay(userCurrentPlant: $userCurrentPlant)
+                        CurrentPlantDisplay()
                         
                         HomeViewActions()
                             .offset(y: -50)
@@ -76,56 +76,69 @@ struct HowToPlayButton: View {
 }
 
 struct CurrentPlantDisplay: View {
+    @EnvironmentObject var userPlantManager: UserPlantManager
+    
     let lineThickness: CGFloat = 18
-    @Binding var userCurrentPlant: UserPlantModel
     
     var body: some View {
-        VStack {
-            Text(userCurrentPlant.basePlant.species)
-                .font(.viewTitle)
-                .foregroundColor(.customBrown)
-            
-            ZStack {
-                CircularProgressBar(
-                    value: Double(userCurrentPlant.stepsInCurrentStage),
-                    total: Double(userCurrentPlant.currentStageGoal),
-                    lineWidth: lineThickness)
+        if let currentPlant = userPlantManager.currentPlant {
+            VStack {
+                Text(currentPlant.basePlant.species)
+                    .font(.viewTitle)
+                    .foregroundColor(.customBrown)
                 
-                // Sky
-                Circle()
-                    .fill(Color.lightBlue)
-                    .padding(lineThickness * 0.5)
-                
-                // Soil
-                Circle()
-                    .trim(from: 0, to: 0.5)
-                    .fill(Color.customBrown)
-                    .padding(lineThickness * 1.5)
-                
-                // Plant
-                VStack {
-                    Spacer()
+                ZStack {
+                    CircularProgressBar(
+                        value: Double(currentPlant.stepsInCurrentStage),
+                        total: Double(currentPlant.currentStageGoal),
+                        lineWidth: lineThickness
+                    )
                     
-                    Image(userCurrentPlant.currentImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(
-                            maxWidth: userCurrentPlant.currentStage == 1
-                            ? 40 : 70
-                        )
-                        .modifier(
-                            WiltFlowerEffect(
-                                applyEffects: userCurrentPlant.status == .wilted
-                            ))
+                    // Sky
+                    Circle()
+                        .fill(Color.lightBlue)
+                        .padding(lineThickness * 0.5)
+                    
+                    // Soil
+                    Circle()
+                        .trim(from: 0, to: 0.5)
+                        .fill(Color.customBrown)
+                        .padding(lineThickness * 1.5)
+                    
+                    // Plant
+                    VStack {
+                        Spacer()
+                        
+                        Image(currentPlant.currentImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(
+                                maxWidth: currentPlant.currentStage == 1
+                                ? 40 : 70
+                            )
+                            .modifier(
+                                WiltFlowerEffect(
+                                    applyEffects: currentPlant.status == .wilted
+                                )
+                            )
+                    }
+                    .frame(maxHeight: 120)
                 }
-                .frame(maxHeight: 120)
+                .padding(20)
             }
-            .padding(20)
+        } else {
+            // Placeholder when no current plant is selected
+            Text("No current plant selected")
+                .font(.headline)
+                .foregroundColor(.gray)
+                .padding()
         }
     }
 }
 
 struct HomeViewActions: View {
+    @EnvironmentObject var userPlantManager: UserPlantManager
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
             NavigationLink(
@@ -143,7 +156,7 @@ struct HomeViewActions: View {
             // TODO: Implement watering functionality
             Button(
                 action: {
-                    print("Watering plant")
+                    waterCurrentPlant()
                 }
             ) {
                 IconWithText(
@@ -166,6 +179,10 @@ struct HomeViewActions: View {
             }
         }
     }
+    
+    private func waterCurrentPlant() {
+        userPlantManager.waterCurrentPlant()
+    }
 }
 
 struct IconWithText: View {
@@ -185,13 +202,8 @@ struct IconWithText: View {
 }
 
 #Preview {
-    HomeView(
-        userCurrentPlant:
-            UserPlantModel(
-                basePlant: BasePlantModel.buttercup, currentStage: 4,
-                watersCollected: 12,
-                status: .wilted)
-    )
-    .padding(.horizontal, 30)
-    .background(Color.mainBackground)
+    HomeView()
+        .padding(.horizontal, 30)
+        .background(Color.mainBackground)
+        .environmentObject(UserPlantManager.shared)
 }

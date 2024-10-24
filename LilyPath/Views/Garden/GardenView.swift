@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct GardenView: View {
-    @ObservedObject private var userPlantManager = UserPlantManager.shared
-
+    @EnvironmentObject var userPlantManager: UserPlantManager
+    
     var body: some View {
         NavigationStack {
             VStack {
                 GardenNavigationLink(
                     title: "Your Garden",
                     destination: PlantGalleryView())
-
+                
                 YourGardenView()
-
+                
                 // TODO: replace with current plant popup
                 GardenNavigationLink(
                     title: "Current Plant", destination: GardenView())
-
+                
                 Spacer()
             }
             .background(Color.mainBackground)
@@ -31,8 +31,8 @@ struct GardenView: View {
 }
 
 struct YourGardenView: View {
-    @ObservedObject private var userPlantManager = UserPlantManager.shared
-
+    @EnvironmentObject var userPlantManager: UserPlantManager
+    
     private let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 10), count: 6)
     
     var body: some View {
@@ -61,14 +61,14 @@ struct YourGardenView: View {
 struct GardenNavigationLink<Destination: View>: View {
     let title: String
     let destination: Destination
-
+    
     var body: some View {
         NavigationLink(destination: destination) {
             HStack {
                 ViewTitle(title: title)
-
+                
                 Spacer()
-
+                
                 Image(systemName: "chevron.right")
                     .font(.viewTitle)
                     .foregroundColor(Color.customBrown)
@@ -79,6 +79,7 @@ struct GardenNavigationLink<Destination: View>: View {
 
 #Preview {
     GardenView()
+        .environmentObject(UserPlantManager.shared)
         .background(Color.mainBackground)
         .padding(.horizontal, 30)
 }

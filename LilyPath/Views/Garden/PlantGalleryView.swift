@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct PlantGalleryView: View {
-    @ObservedObject private var userPlantManager = UserPlantManager.shared
+    @EnvironmentObject var userPlantManager: UserPlantManager
+    
     private let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 40), count: 2)
-
+    
     var body: some View {
         VStack{
             ViewTitle(title: "Plant Gallery")
@@ -30,7 +31,8 @@ struct PlantGalleryView: View {
 
 #Preview {
     PlantGalleryView()
+        .environmentObject(UserPlantManager.shared)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
-
+    
 }
