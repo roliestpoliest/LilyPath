@@ -22,6 +22,7 @@ struct ContentView: View {
                     .tag(Tabs.home)
                 
                 StatisticsView()
+                    .environmentObject(healthManager)
                     .tag(Tabs.stats)
             }
             TabBar(selectedTab: $selectedTab)

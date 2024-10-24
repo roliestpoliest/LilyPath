@@ -16,10 +16,12 @@ struct HealthDataPoint: Identifiable {
     let value: Double
 }
 
-enum TimeFrame {
-    case daily
-    case weekly
-    case monthly
+enum TimeFrame: String, CaseIterable, Identifiable {
+    case daily = "Past Day"
+    case weekly = "Past Week"
+    case monthly = "Past Month"
+    
+    var id: String { self.rawValue }
 }
 
 extension Double {
