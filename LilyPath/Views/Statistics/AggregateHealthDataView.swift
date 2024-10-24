@@ -18,11 +18,11 @@ struct AggregateHealthDataView: View {
     @State private var selectedMetric: MetricType? = nil
 
     
-    @State private var dailySteps: Double = 0.0
-    @State private var dailyCalories: Double = 0.0
-    @State private var dailyFlightsClimbed: Double = 0.0
-    @State private var dailySleep: Double = 0.0
-    @State private var dailyDistance: Double = 0.0
+    @State private var countSteps: Double = 0.0
+    @State private var countCalories: Double = 0.0
+    @State private var countFlightsClimbed: Double = 0.0
+    @State private var countSleep: Double = 0.0
+    @State private var countDistance: Double = 0.0
     
     
     
@@ -44,27 +44,27 @@ struct AggregateHealthDataView: View {
                 HStack {
                     Text("Steps")
                     Spacer()
-                    Text("\(Int(dailySteps))")
+                    Text("\(Int(countSteps))")
                 }
                 HStack {
                     Text("Calories")
                     Spacer()
-                    Text("\(Int(dailyCalories))")
+                    Text("\(Int(countCalories))")
                 }
                 HStack {
                     Text("Flights Climbed")
                     Spacer()
-                    Text("\(Int(dailyFlightsClimbed))")
+                    Text("\(Int(countFlightsClimbed))")
                 }
                 HStack {
                     Text("Sleep (hrs)")
                     Spacer()
-                    Text("\(dailySleep, specifier: "%.2f")")
+                    Text("\(countSleep, specifier: "%.2f")")
                 }
                 HStack {
                     Text("Distance (mi)")
                     Spacer()
-                    Text("\(dailyDistance, specifier: "%.2f")")
+                    Text("\(countDistance, specifier: "%.2f")")
                 }
             }
             .onAppear {
@@ -104,11 +104,11 @@ struct AggregateHealthDataView: View {
     
     private func fetchDailyData() async {
         // Fetch daily data for all metrics using the modular fetch function
-        dailySteps = await fetchMetricData(using: healthManager.fetchHourlySteps)
-        dailyCalories = await fetchMetricData(using: healthManager.fetchHourlyCalories)
-        dailyFlightsClimbed = await fetchMetricData(using: healthManager.fetchHourlyFlightsClimbed)
-        dailySleep = await fetchMetricData(using: healthManager.fetchHourlySleep)
-        dailyDistance = await fetchMetricData(using: healthManager.fetchHourlyWalkingRunningDistance)
+        countSteps = await fetchMetricData(using: healthManager.fetchHourlySteps)
+        countCalories = await fetchMetricData(using: healthManager.fetchHourlyCalories)
+        countFlightsClimbed = await fetchMetricData(using: healthManager.fetchHourlyFlightsClimbed)
+        countSleep = await fetchMetricData(using: healthManager.fetchHourlySleep)
+        countDistance = await fetchMetricData(using: healthManager.fetchHourlyWalkingRunningDistance)
     }
     
     private func fetchWeeklyData() async {
@@ -116,7 +116,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchWeeklySteps(for: Date.startOfWeek) { weeklySteps in
                 DispatchQueue.main.async {
-                    dailySteps = weeklySteps.reduce(0) { $0 + $1.value }
+                    countSteps = weeklySteps.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -126,7 +126,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchWeeklyCalories(for: Date.startOfWeek) { weeklyCalories in
                 DispatchQueue.main.async {
-                    dailyCalories = weeklyCalories.reduce(0) { $0 + $1.value }
+                    countCalories = weeklyCalories.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -136,7 +136,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchWeeklyFlightsClimbed(for: Date.startOfWeek) { weeklyFlights in
                 DispatchQueue.main.async {
-                    dailyFlightsClimbed = weeklyFlights.reduce(0) { $0 + $1.value }
+                    countFlightsClimbed = weeklyFlights.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -146,7 +146,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchWeeklySleep(for: Date.startOfWeek) { weeklySleep in
                 DispatchQueue.main.async {
-                    dailySleep = weeklySleep.reduce(0) { $0 + $1.value }
+                    countSleep = weeklySleep.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -156,7 +156,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchWeeklyWalkingRunningDistance(for: Date.startOfWeek) { weeklyDistance in
                 DispatchQueue.main.async {
-                    dailyDistance = weeklyDistance.reduce(0) { $0 + $1.value }
+                    countDistance = weeklyDistance.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -168,7 +168,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchMonthlySteps(for: Date.startOfMonth) { monthlySteps in
                 DispatchQueue.main.async {
-                    dailySteps = monthlySteps.reduce(0) { $0 + $1.value }
+                    countSteps = monthlySteps.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -178,7 +178,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchMonthlyCalories(for: Date.startOfMonth) { monthlyCalories in
                 DispatchQueue.main.async {
-                    dailyCalories = monthlyCalories.reduce(0) { $0 + $1.value }
+                    countCalories = monthlyCalories.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -188,7 +188,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchMonthlyFlightsClimbed(for: Date.startOfMonth) { monthlyFlights in
                 DispatchQueue.main.async {
-                    dailyFlightsClimbed = monthlyFlights.reduce(0) { $0 + $1.value }
+                    countFlightsClimbed = monthlyFlights.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -198,7 +198,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchMonthlySleep(for: Date.startOfMonth) { monthlySleep in
                 DispatchQueue.main.async {
-                    dailySleep = monthlySleep.reduce(0) { $0 + $1.value }
+                    countSleep = monthlySleep.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
@@ -208,7 +208,7 @@ struct AggregateHealthDataView: View {
         await withCheckedContinuation { continuation in
             healthManager.fetchMonthlyWalkingRunningDistance(for: Date.startOfMonth) { monthlyDistance in
                 DispatchQueue.main.async {
-                    dailyDistance = monthlyDistance.reduce(0) { $0 + $1.value }
+                    countDistance = monthlyDistance.reduce(0) { $0 + $1.value }
                     continuation.resume()
                 }
             }
