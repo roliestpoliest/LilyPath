@@ -14,9 +14,8 @@ import HealthKit
 struct AggregateHealthDataView: View {
     @EnvironmentObject var healthManager: HealthManager
     
-    @State private var selectedChartPeriod: TimeFrame = .daily
+    @State private var selectedChartPeriod: ChartPeriod = .day
     @State private var selectedMetric: MetricType? = nil
-
     
     @State private var countSteps: Double = 0.0
     @State private var countCalories: Double = 0.0
@@ -24,69 +23,88 @@ struct AggregateHealthDataView: View {
     @State private var countSleep: Double = 0.0
     @State private var countDistance: Double = 0.0
     
-    
-    
     var body: some View {
-        VStack {
-            Text("Health Data Aggregates")
-                .font(.title)
+        NavigationStack {
+            VStack {
+                Text("Health Data Aggregates")
+                    .font(.title)
+                    .padding()
+                
+                Picker("Select Time Frame", selection: $selectedChartPeriod) {
+                    ForEach(ChartPeriod.allCases) { period in
+                        Text(period.rawValue).tag(period)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
                 .padding()
-            
-            Picker("Select Time Period", selection: $selectedChartPeriod) {
-                Text("Day").tag(TimeFrame.daily)
-                Text("Week").tag(TimeFrame.weekly)
-                Text("Month").tag(TimeFrame.monthly)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            List {
-                HStack {
-                    Text("Steps")
-                    Spacer()
-                    Text("\(Int(countSteps))")
+
+                List {
+                    NavigationLink(destination: ChartsView(metricType: .steps, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                        HStack {
+                            Text("Steps")
+                            Spacer()
+                            Text("\(Int(countSteps))")
+                        }
+                    }
+                    
+                    NavigationLink(destination: ChartsView(metricType: .calories, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                        HStack {
+                            Text("Calories")
+                            Spacer()
+                            Text("\(Int(countCalories))")
+                        }
+                    }
+                    
+                    NavigationLink(destination: ChartsView(metricType: .flightsClimbed, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                        HStack {
+                            Text("Flights Climbed")
+                            Spacer()
+                            Text("\(Int(countFlightsClimbed))")
+                        }
+                    }
+                    
+                    NavigationLink(destination: ChartsView(metricType: .sleep, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                        HStack {
+                            Text("Sleep (hrs)")
+                            Spacer()
+                            Text("\(countSleep, specifier: "%.2f")")
+                        }
+                    }
+                    
+                    NavigationLink(destination: ChartsView(metricType: .walkingRunningDistance, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                        HStack {
+                            Text("Distance (mi)")
+                            Spacer()
+                            Text("\(countDistance, specifier: "%.2f")")
+                        }
+                    }
                 }
-                HStack {
-                    Text("Calories")
-                    Spacer()
-                    Text("\(Int(countCalories))")
+                .onAppear {
+                    Task {
+                        await fetchMetricDataForSelectedTypeAndPeriod()
+                    }
                 }
-                HStack {
-                    Text("Flights Climbed")
-                    Spacer()
-                    Text("\(Int(countFlightsClimbed))")
+                .onChange(of: selectedMetric) { _ in
+                    Task {
+                        await fetchMetricDataForSelectedTypeAndPeriod()
+                    }
                 }
-                HStack {
-                    Text("Sleep (hrs)")
-                    Spacer()
-                    Text("\(countSleep, specifier: "%.2f")")
-                }
-                HStack {
-                    Text("Distance (mi)")
-                    Spacer()
-                    Text("\(countDistance, specifier: "%.2f")")
-                }
-            }
-            .onAppear {
-                Task {
-                    await fetchMetricDataForSelectedTypeAndPeriod()
-                }
-            }
-            .onChange(of: selectedChartPeriod) { _ in
-                Task {
-                    await fetchMetricDataForSelectedTypeAndPeriod()
+                .onChange(of: selectedChartPeriod) { _ in
+                    Task {
+                        await fetchMetricDataForSelectedTypeAndPeriod()
+                    }
                 }
             }
         }
     }
-    
+
     private func fetchMetricDataForSelectedTypeAndPeriod() async {
         switch selectedChartPeriod {
-        case .daily:
+        case .day:
             await fetchDailyData()
-        case .weekly:
+        case .week:
             await fetchWeeklyData() // Replace with your weekly aggregation if needed
-        case .monthly:
+        case .month:
             await fetchMonthlyData() // Replace with your monthly aggregation if needed
         }
     }

@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ChartsView: View {
     @EnvironmentObject var healthManager: HealthManager
-    var metricType: MetricType  // Add the selected metric type
-    var selectedChartPeriod: ChartPeriod  // Add the selected chart period
+    var metricType: MetricType
+    var selectedChartPeriod: ChartPeriod
 
     var body: some View {
         GeometryReader { geometry in
@@ -21,8 +21,7 @@ struct ChartsView: View {
                 } else {
                     Chart(selectedChartData()) { dataPoint in
                         BarMark(
-                            x: .value(
-                                "Date", dataPoint.date, unit: chartUnit()),
+                            x: .value("Date", dataPoint.date, unit: chartUnit()),
                             y: .value("Value", dataPoint.value)
                         )
                         .foregroundStyle(getBarColor(for: dataPoint.date))
@@ -56,7 +55,7 @@ struct ChartsView: View {
                         }
                     }
                     .chartYScale(domain: 0...maxYValue())  // Ensure Y-axis goes from 0 to max value
-                    .frame(width: geometry.size.width - 20, height: 300)
+                    .frame(width: max(geometry.size.width - 20, 300), height: 300)  // Safeguard minimum width
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                 }
