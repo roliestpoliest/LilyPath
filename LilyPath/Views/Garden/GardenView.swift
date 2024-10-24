@@ -10,31 +10,74 @@ import SwiftUI
 struct GardenView: View {
     @EnvironmentObject var userPlantManager: UserPlantManager
     
+    @State var selectedPlant: UserPlantModel? = nil
+    @State var showPopUp: Bool = false
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack {
+                VStack(spacing: 30) {
                     GardenNavigationLink(
                         title: "Your Garden",
-                        destination: PlantGalleryView())
+                        destination: PlantGalleryView()
+                    )
                     
                     YourGardenView()
                         .padding(.bottom, 30)
                     
-                    // TODO: replace with current plant popup
-                    //                    GardenNavigationLink(
-                    //                        title: "Current Plant", destination: GardenView())
-                    Text("Current Plant")
+                    Button(action: {
+                        withAnimation {
+                            
+                            if let currentPlant = userPlantManager.currentPlant
+                            {
+                                selectedPlant = currentPlant
+                                showPopUp = true
+                            }
+                        }
+                    }) {
+                        HStack {
+                            Text("Current Plant")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                        }
                         .font(.viewTitle)
                         .foregroundColor(.customBrown)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                     
                     CurrentPlantView()
                     
                     Spacer()
                 }
+                .padding()
             }
             .background(Color.mainBackground)
+            .overlay(
+                ZStack {
+                    if let plants = selectedPlant, showPopUp {
+                        Color.mainBackground.opacity(0.4)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                dismissStatPopup()
+                            }
+                        
+                        PopUp.plantStats(
+                            currentPlantModel: plants,
+                            swapabblePlantModel: plants,
+                            showPopUp: $showPopUp
+                        )
+                        .frame(width: 300, height: 250)
+                        .transition(.scale)
+                    }
+                }
+            )
+        }
+    }
+    
+    private func dismissStatPopup() {
+        withAnimation {
+            showPopUp = false
+            selectedPlant = nil
         }
     }
 }

@@ -276,9 +276,7 @@ class PopUp {
                         ProgressBar(
                             value: Double(
                                 currentPlantModel.stepsInCurrentStage),
-                            total: Double(currentPlantModel.currentStageGoal),
-                            foregroundColor: .darkerBlue,
-                            backgroundColor: .waterBlue
+                            total: Double(currentPlantModel.currentStageGoal)
                         )
                         .frame(maxWidth: .infinity)
                         

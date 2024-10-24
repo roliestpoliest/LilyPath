@@ -45,7 +45,7 @@ struct PlantShopView: View {
             .background(Color.mainBackground)
             
             if let plant = selectedPlant, showPopUp {
-                Color.black.opacity(0.4)
+                Color.mainBackground.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
                         dismissPopup()
