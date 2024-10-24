@@ -39,6 +39,15 @@ class UserPlantModel: Identifiable, ObservableObject {
             Double(stepsCollected) / Double(basePlant.overallStepGoal), 1.0)
     }
     
+    var stageProgress: Double {
+        guard currentStageGoal > 0 else {
+            return 0
+        }
+        
+        return min(
+            Double(stepsInCurrentStage) / Double(currentStageGoal), 1.0)
+    }
+    
     var stepsInCurrentStage: Int {
         guard currentStage > 1 else {
             return stepsCollected

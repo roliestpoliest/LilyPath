@@ -30,6 +30,11 @@ extension Font {
         return .system(size: 14, weight: .medium, design: .rounded)
     }
     
+    // MARK: - Garden
+    static var currentPlant: Font {
+        return .system(size: 24, weight: .bold, design: .rounded)
+    }
+    
     // MARK: - Stats
     static var statsCard: Font {
         return .system(size: 18, weight: .medium, design: .rounded)
