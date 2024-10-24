@@ -88,10 +88,10 @@ struct MetricStatsModel {
     var icon: Icon {
         switch metricType {
         case .steps: return .steps
-        case .calories: return .distance
+        case .calories: return .calories
         case .flightsClimbed: return .climbed
         case .sleep: return .slept
-        case .walkingRunningDistance: return .calories
+        case .walkingRunningDistance: return .distance
         }
     }
     
