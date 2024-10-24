@@ -15,7 +15,6 @@ struct AggregateHealthDataView: View {
     @EnvironmentObject var healthManager: HealthManager
     
     @State private var selectedChartPeriod: ChartPeriod = .day
-    @State private var selectedMetric: MetricType? = nil
     
     @State private var countSteps: Double = 0.0
     @State private var countCalories: Double = 0.0
@@ -37,8 +36,9 @@ struct AggregateHealthDataView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
-
+                
                 List {
+                    // For each metric, display the aggregate data and link to the chart view
                     NavigationLink(destination: ChartsView(metricType: .steps, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
                         HStack {
                             Text("Steps")
@@ -79,40 +79,38 @@ struct AggregateHealthDataView: View {
                         }
                     }
                 }
-                .onAppear {
-                    Task {
-                        await fetchMetricDataForSelectedTypeAndPeriod()
-                    }
+                .background(Color.mainBackground)
+            }
+            .onAppear {
+                Task {
+                    await fetchMetricDataForSelectedPeriod()
                 }
-                .onChange(of: selectedMetric) { _ in
-                    Task {
-                        await fetchMetricDataForSelectedTypeAndPeriod()
-                    }
-                }
-                .onChange(of: selectedChartPeriod) { _ in
-                    Task {
-                        await fetchMetricDataForSelectedTypeAndPeriod()
-                    }
+            }
+            .onChange(of: selectedChartPeriod) { _ in
+                Task {
+                    await fetchMetricDataForSelectedPeriod()
                 }
             }
         }
     }
-
-    private func fetchMetricDataForSelectedTypeAndPeriod() async {
+    
+    // Function to fetch data based on the selected period
+    private func fetchMetricDataForSelectedPeriod() async {
         switch selectedChartPeriod {
         case .day:
             await fetchDailyData()
         case .week:
-            await fetchWeeklyData() // Replace with your weekly aggregation if needed
+            await fetchWeeklyData()
         case .month:
-            await fetchMonthlyData() // Replace with your monthly aggregation if needed
+            await fetchMonthlyData()
         }
     }
     
+    // Helper function to fetch metric data using async and the HealthManager fetch functions
     private func fetchMetricData(using fetchFunction: @escaping (Date, @escaping ([HealthDataPoint]) -> Void) -> Void) async -> Double {
         return await withCheckedContinuation { continuation in
-            fetchFunction(Date.startOfDay) { hourlyData in
-                let totalValue = hourlyData.reduce(0) { $0 + $1.value }
+            fetchFunction(Date.startOfDay) { dataPoints in
+                let totalValue = dataPoints.reduce(0) { $0 + $1.value }
                 DispatchQueue.main.async {
                     continuation.resume(returning: totalValue)
                 }
@@ -120,15 +118,15 @@ struct AggregateHealthDataView: View {
         }
     }
     
+    // Fetch daily data for all metrics
     private func fetchDailyData() async {
-        // Fetch daily data for all metrics using the modular fetch function
         countSteps = await fetchMetricData(using: healthManager.fetchHourlySteps)
         countCalories = await fetchMetricData(using: healthManager.fetchHourlyCalories)
         countFlightsClimbed = await fetchMetricData(using: healthManager.fetchHourlyFlightsClimbed)
         countSleep = await fetchMetricData(using: healthManager.fetchHourlySleep)
         countDistance = await fetchMetricData(using: healthManager.fetchHourlyWalkingRunningDistance)
     }
-    
+
     private func fetchWeeklyData() async {
         // Fetch weekly data for steps
         await withCheckedContinuation { continuation in

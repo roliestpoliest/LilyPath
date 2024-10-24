@@ -18,8 +18,8 @@ enum ChartPeriod: String, CaseIterable, Identifiable {
 
 struct TempStatsView: View {
     @EnvironmentObject var healthManager: HealthManager
-    @State private var selectedMetric: MetricType = .steps  // Default to Steps
-    @State private var selectedChartPeriod: ChartPeriod = .day  // Default to Past Day
+    @State private var selectedMetric: MetricType = .steps
+    @State private var selectedChartPeriod: ChartPeriod = .day
 
     var body: some View {
         VStack {
@@ -50,6 +50,7 @@ struct TempStatsView: View {
             )
             .environmentObject(healthManager)
         }
+        .background(Color.mainBackground)
         .onAppear {
             Task {
                 await fetchMetricDataForSelectedTypeAndPeriod()

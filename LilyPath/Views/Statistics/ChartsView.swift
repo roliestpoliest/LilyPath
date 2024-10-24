@@ -12,7 +12,7 @@ struct ChartsView: View {
     @EnvironmentObject var healthManager: HealthManager
     var metricType: MetricType
     var selectedChartPeriod: ChartPeriod
-
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -60,50 +60,59 @@ struct ChartsView: View {
                     .padding(.top, 10)
                 }
             }
+            .onAppear {
+                Task {
+                    await fetchMetricDataForSelectedTypeAndPeriod()
+                }
+            }
+        }
+        .background(Color.mainBackground)
+    }
+    
+    // Fetch data for the selected metric and time period
+    private func fetchMetricDataForSelectedTypeAndPeriod() async {
+        switch selectedChartPeriod {
+        case .day:
+            await healthManager.fetchPastDayData(for: metricType)
+        case .week:
+            await healthManager.fetchPastWeekData(for: metricType)
+        case .month:
+            await healthManager.fetchPastMonthData(for: metricType)
         }
     }
-
+    
     // Helper function to select the correct chart data based on the selected period
     private func selectedChartData() -> [HealthDataPoint] {
         switch selectedChartPeriod {
         case .day:
             return healthManager.oneDayChartData.isEmpty
-                ? generateZeroValueData(for: .day)
-                : healthManager.oneDayChartData
+            ? generateZeroValueData(for: .day)
+            : healthManager.oneDayChartData
         case .week:
             return healthManager.oneWeekChartData.isEmpty
-                ? generateZeroValueData(for: .week)
-                : healthManager.oneWeekChartData
+            ? generateZeroValueData(for: .week)
+            : healthManager.oneWeekChartData
         case .month:
             return healthManager.oneMonthChartData.isEmpty
-                ? generateZeroValueData(for: .month)
-                : healthManager.oneMonthChartData
+            ? generateZeroValueData(for: .month)
+            : healthManager.oneMonthChartData
         }
     }
-
+    
     // Generate placeholder zero data for the given period
-    private func generateZeroValueData(for period: ChartPeriod)
-        -> [HealthDataPoint]
-    {
+    private func generateZeroValueData(for period: ChartPeriod) -> [HealthDataPoint] {
         let dates: [Date]
         switch period {
         case .day:
-            dates = stride(
-                from: Date.startOfDay, to: Date.endOfDay, by: 60 * 60
-            ).map { $0 }  // Hourly for the current day
+            dates = stride(from: Date.startOfDay, to: Date.endOfDay, by: 60 * 60).map { $0 }  // Hourly for the current day
         case .week:
-            dates = stride(
-                from: Date.startOfWeek, to: Date.endOfWeek, by: 60 * 60 * 24
-            ).map { $0 }
+            dates = stride(from: Date.startOfWeek, to: Date.endOfWeek, by: 60 * 60 * 24).map { $0 }
         case .month:
-            dates = stride(
-                from: Date.startOfMonth, through: Date.endOfMonth,
-                by: 60 * 60 * 24 * 7
-            ).map { $0 }
+            dates = stride(from: Date.startOfMonth, through: Date.endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
         }
         return dates.map { HealthDataPoint(date: $0, value: 0) }
     }
-
+    
     // Helper function to format the X-axis labels dynamically
     private func formatXAxisLabel(for date: Date) -> String {
         switch selectedChartPeriod {
@@ -115,34 +124,23 @@ struct ChartsView: View {
             return date.formatted(.dateTime.day())
         }
     }
-
+    
     // Helper function to determine X-axis values based on the selected chart period
     private func xAxisValues() -> [Date] {
         let calendar = Calendar.current
-
+        
         switch selectedChartPeriod {
         case .day:
-            // Ensure endOfDay is 12 AM of the *next* day, covering all necessary intervals
             let startOfDay = Date.startOfDay
-            let endOfDay =
-                calendar.date(byAdding: .day, value: 1, to: startOfDay)
-                ?? Date()
-
-            // Return every 6 hours including 12 AM, 6 AM, 12 PM, and 6 PM
-            return stride(from: startOfDay, to: endOfDay, by: 60 * 60 * 6).map {
-                $0
-            }
-
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? Date()
+            return stride(from: startOfDay, to: endOfDay, by: 60 * 60 * 6).map { $0 }  // Every 6 hours
         case .week:
-            return stride(from: .startOfWeek, to: .endOfWeek, by: 60 * 60 * 24)
-                .map { $0 }
-
+            return stride(from: .startOfWeek, to: .endOfWeek, by: 60 * 60 * 24).map { $0 }
         case .month:
-            return stride(
-                from: .startOfMonth, through: .endOfMonth, by: 60 * 60 * 24 * 7
-            ).map { $0 }
+            return stride(from: .startOfMonth, through: .endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
         }
     }
+    
     // Determine the appropriate unit for the X-axis
     private func chartUnit() -> Calendar.Component {
         switch selectedChartPeriod {
@@ -152,27 +150,25 @@ struct ChartsView: View {
             return .day
         }
     }
-
+    
     private func getBarColor(for date: Date) -> Color {
         let calendar = Calendar.current
         switch selectedChartPeriod {
         case .day:
             return calendar.isDateInToday(date)
-                && calendar.component(.hour, from: date)
-                    == calendar.component(.hour, from: Date())
-                ? Color.waterBlue : Color.darkerBlue
+            && calendar.component(.hour, from: date) == calendar.component(.hour, from: Date())
+            ? Color.waterBlue : Color.darkerBlue
         case .week, .month:
-            return calendar.isDateInToday(date)
-                ? Color.waterBlue : Color.darkerBlue
+            return calendar.isDateInToday(date) ? Color.waterBlue : Color.darkerBlue
         }
     }
-
+    
     // Get the maximum Y value for the chart to ensure it fits correctly
     private func maxYValue() -> Double {
         let maxValue = selectedChartData().map { $0.value }.max() ?? 0
         return maxValue > 0 ? (maxValue * 1.2) : 10  // Add buffer (20%) for better scaling, no rounding
     }
-
+    
     // Helper function to format the Y-axis values dynamically, truncating unnecessary zeros
     private func formatYValue(_ value: Double) -> String {
         if value.truncatingRemainder(dividingBy: 1) == 0 {
