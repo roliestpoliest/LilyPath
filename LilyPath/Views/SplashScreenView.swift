@@ -19,18 +19,20 @@ struct SplashScreenView: View {
         } else {
             VStack {
                 Spacer()
-                Text("""
-                     Ubiq 2024 -
-                     Semester Project
-                     """
-                )
-                .font(.largeTitle)
-                .bold()
-                .foregroundColor(.blue)
+                HStack{
+                    Text("LilyPath")
+                    .font(.viewTitle)
+                    .foregroundColor(.customBrown)
+                    Image("Lily Stage 5")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 50, maxHeight: 50)
+
+                }
                 Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .background()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.mainBackground)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation {
