@@ -191,7 +191,7 @@ struct HomeViewActions: View {
                 "Watered plant. Remaining water points: \(userModel.waterPoints)"
             )
         } else {
-            print("Not enough water points to water the plant.")
+            print("Cannot water plant.")
         }
     }
 }

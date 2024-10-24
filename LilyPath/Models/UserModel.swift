@@ -21,7 +21,7 @@ class UserModel: ObservableObject {
 
     // TODO: Replace with actual user data
     private func initializeStartingData() {
-        waterPoints = 20000
+        waterPoints = 13000
         gems = 12
         level = 1
         xpProgress = 0.5
