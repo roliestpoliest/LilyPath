@@ -10,10 +10,11 @@ import SwiftUI
 struct PlantShopCard: View {
     var plantModel: BasePlantModel
     
+    @ObservedObject var userModel = UserModel.shared
+    
     // TODO: remove on implementation
-    var userLevel: Int = 1
     var isLocked: Bool {
-        return userLevel < plantModel.requiredLevelToBuy
+        return userModel.level < plantModel.requiredLevelToBuy
     }
     
     var body: some View {
@@ -62,19 +63,19 @@ struct PlantShopCard: View {
 #Preview {
     VStack {
         HStack {
-            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: 100)
+            PlantShopCard(plantModel: BasePlantModel.lily, userModel: UserModel.shared)
             Spacer()
-            PlantShopCard(plantModel: BasePlantModel.lily, userLevel: -1)
+            PlantShopCard(plantModel: BasePlantModel.lily, userModel: UserModel.shared)
         }
         HStack{
-            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: 100)
+            PlantShopCard(plantModel: BasePlantModel.lavender, userModel: UserModel.shared)
             Spacer()
-            PlantShopCard(plantModel: BasePlantModel.lavender, userLevel: -1)
+            PlantShopCard(plantModel: BasePlantModel.lavender, userModel: UserModel.shared)
         }
         HStack{
-            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: 100)
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userModel: UserModel.shared)
             Spacer()
-            PlantShopCard(plantModel: BasePlantModel.delphinium, userLevel: -1)
+            PlantShopCard(plantModel: BasePlantModel.delphinium, userModel: UserModel.shared)
         }
     }
     .padding(30)
