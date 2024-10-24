@@ -14,17 +14,21 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                GardenView()
+//                GardenView()
+                AggregateHealthDataView()
+                    .environmentObject(healthManager)
                     .tag(Tabs.garden)
                 
                 // TODO: replace with user's current plant
-                HomeView(
-                    userCurrentPlant:
-                        UserPlantModel(
-                            basePlant: BasePlantModel.buttercup,
-                            currentStage: 3,
-                            stepsCollected: [100, 200, 100].reduce(0, +))
-                )
+//                HomeView(
+//                    userCurrentPlant:
+//                        UserPlantModel(
+//                            basePlant: BasePlantModel.buttercup,
+//                            currentStage: 3,
+//                            stepsCollected: [100, 200, 100].reduce(0, +))
+//                )
+                TempStatsView()
+                    .environmentObject(healthManager)
                 .tag(Tabs.home)
                 
                 StatisticsView()

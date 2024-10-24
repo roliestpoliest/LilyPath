@@ -40,6 +40,7 @@
 		823A18802CC9B20E00289917 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A187F2CC9B20E00289917 /* ChartsView.swift */; };
 		823A18822CC9B28000289917 /* FitnessStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */; };
 		823A18862CC9B96600289917 /* MetricType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18852CC9B96600289917 /* MetricType.swift */; };
+		823A18882CCA17E800289917 /* AggregateHealthDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18872CCA17E800289917 /* AggregateHealthDataView.swift */; };
 		8258D9CF2CC9989400E04273 /* TempStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8258D9CE2CC9989400E04273 /* TempStatsView.swift */; };
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
 		8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF202CC62BC900455EC4 /* HealthManager.swift */; };
@@ -112,6 +113,7 @@
 		823A187F2CC9B20E00289917 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
 		823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsDetailView.swift; sourceTree = "<group>"; };
 		823A18852CC9B96600289917 /* MetricType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricType.swift; sourceTree = "<group>"; };
+		823A18872CCA17E800289917 /* AggregateHealthDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AggregateHealthDataView.swift; sourceTree = "<group>"; };
 		8258D9CE2CC9989400E04273 /* TempStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempStatsView.swift; sourceTree = "<group>"; };
 		827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopView.swift; sourceTree = "<group>"; };
 		8280FF1F2CC60EA000455EC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				23F44A872CC8F14500721D6E /* StatsCard.swift */,
 				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 				8258D9CE2CC9989400E04273 /* TempStatsView.swift */,
+				823A18872CCA17E800289917 /* AggregateHealthDataView.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */,
 				2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */,
 				23F44A862CC8C08D00721D6E /* PlantStatsModel.swift in Sources */,
+				823A18882CCA17E800289917 /* AggregateHealthDataView.swift in Sources */,
 				23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				823A18802CC9B20E00289917 /* ChartsView.swift in Sources */,
