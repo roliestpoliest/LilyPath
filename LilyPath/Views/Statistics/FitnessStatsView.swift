@@ -30,22 +30,25 @@ struct FitnessStatsView: View {
                         radius: ShadowConstants.radius,
                         y: ShadowConstants.yOffset)
                 
-                ForEach(MetricType.allCases, id: \.self) { metric in
-                    NavigationLink(
-                        destination: ChartsView(
-                            metricType: metric,
-                            selectedChartPeriod: selectedChartPeriod
-                        )
-                        .environmentObject(healthManager)
-                    ) {
-                        StatsCard(
-                            stat: MetricStatsModel(
+                ScrollView {
+                    ForEach(MetricType.allCases, id: \.self) { metric in
+                        NavigationLink(
+                            destination: ChartsView(
                                 metricType: metric,
-                                value: displayMetricValue(for: metric)),
-                            timePeriod: selectedTimePeriod)
+                                selectedChartPeriod: selectedChartPeriod
+                            )
+                            .environmentObject(healthManager)
+                        ) {
+                            StatsCard(
+                                stat: MetricStatsModel(
+                                    metricType: metric,
+                                    value: displayMetricValue(for: metric)),
+                                timePeriod: selectedTimePeriod)
+                        }
+                        .padding(.vertical, 10)
                     }
-                    .padding(.vertical, 10)
                 }
+                
                 Spacer()
             }
             .background(Color.mainBackground)
