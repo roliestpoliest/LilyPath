@@ -12,9 +12,9 @@ struct StatisticsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                StatNavigationLink(title: "Plant Stats", destination: PlantStatsView())
+                StatNavigationLink(title: "Plant Stats", destination: PlantStatsView().environmentObject(healthManager))
                 
-                StatNavigationLink(title: "Fitness Stats", destination: FitnessStatsView())
+                StatNavigationLink(title: "Fitness Stats", destination: FitnessStatsView().environmentObject(healthManager))
                 
                 Spacer()
             }

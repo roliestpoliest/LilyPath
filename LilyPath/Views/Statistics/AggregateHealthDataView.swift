@@ -14,8 +14,9 @@ import HealthKit
 struct AggregateHealthDataView: View {
     @EnvironmentObject var healthManager: HealthManager
     
+    @State private var selectedTimePeriod: TimePeriod = .daily
     @State private var selectedChartPeriod: ChartPeriod = .day
-    
+
     @State private var countSteps: Double = 0.0
     @State private var countCalories: Double = 0.0
     @State private var countFlightsClimbed: Double = 0.0
@@ -29,68 +30,81 @@ struct AggregateHealthDataView: View {
                     .font(.title)
                     .padding()
                 
-                Picker("Select Time Frame", selection: $selectedChartPeriod) {
-                    ForEach(ChartPeriod.allCases) { period in
-                        Text(period.rawValue).tag(period)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
+                // Use the custom TimePeriodPicker
+                TimePeriodPicker(selectedTimePeriod: $selectedTimePeriod)
+                    .padding(.bottom, 20)
+                    .shadow(
+                        radius: ShadowConstants.radius,
+                        y: ShadowConstants.yOffset)
                 
-                List {
-                    // For each metric, display the aggregate data and link to the chart view
-                    NavigationLink(destination: ChartsView(metricType: .steps, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
+                ForEach(MetricType.allCases, id: \.self) { metric in
+                    NavigationLink(
+                        destination: ChartsView(
+                            metricType: metric,
+                            selectedChartPeriod: selectedChartPeriod
+                        )
+                        .environmentObject(healthManager)
+                    ) {
                         HStack {
-                            Text("Steps")
+                            Text(metric.displayName)
                             Spacer()
-                            Text("\(Int(countSteps))")
+                            Text(displayMetricValue(for: metric))
                         }
                     }
-                    
-                    NavigationLink(destination: ChartsView(metricType: .calories, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
-                        HStack {
-                            Text("Calories")
-                            Spacer()
-                            Text("\(Int(countCalories))")
-                        }
-                    }
-                    
-                    NavigationLink(destination: ChartsView(metricType: .flightsClimbed, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
-                        HStack {
-                            Text("Flights Climbed")
-                            Spacer()
-                            Text("\(Int(countFlightsClimbed))")
-                        }
-                    }
-                    
-                    NavigationLink(destination: ChartsView(metricType: .sleep, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
-                        HStack {
-                            Text("Sleep (hrs)")
-                            Spacer()
-                            Text("\(countSleep, specifier: "%.2f")")
-                        }
-                    }
-                    
-                    NavigationLink(destination: ChartsView(metricType: .walkingRunningDistance, selectedChartPeriod: selectedChartPeriod).environmentObject(healthManager)) {
-                        HStack {
-                            Text("Distance (mi)")
-                            Spacer()
-                            Text("\(countDistance, specifier: "%.2f")")
-                        }
-                    }
+                    .padding(.vertical, 5)
                 }
-                .background(Color.mainBackground)
             }
+            .background(Color.mainBackground)
             .onAppear {
+                updateChartPeriod()
                 Task {
-                    await fetchMetricDataForSelectedPeriod()
+                    await fetchMetricDataForSelectedTypeAndPeriod()
                 }
             }
-            .onChange(of: selectedChartPeriod) { _ in
+            .onChange(of: selectedTimePeriod) { _ in
+                updateChartPeriod()
                 Task {
-                    await fetchMetricDataForSelectedPeriod()
+                    await fetchMetricDataForSelectedTypeAndPeriod()
                 }
             }
+        }
+    }
+
+    private func fetchMetricDataForSelectedTypeAndPeriod() async {
+        switch selectedChartPeriod {
+        case .day:
+            await fetchDailyData()
+        case .week:
+            await fetchWeeklyData()
+        case .month:
+            await fetchMonthlyData()
+        }
+    }
+
+    
+    private func updateChartPeriod() {
+        switch selectedTimePeriod {
+        case .daily:
+            selectedChartPeriod = .day
+        case .weekly:
+            selectedChartPeriod = .week
+        case .monthly:
+            selectedChartPeriod = .month
+        }
+    }
+
+    private func displayMetricValue(for metric: MetricType) -> String {
+        switch metric {
+        case .steps:
+            return "\(Int(countSteps))"
+        case .calories:
+            return "\(Int(countCalories))"
+        case .flightsClimbed:
+            return "\(Int(countFlightsClimbed))"
+        case .sleep:
+            return String(format: "%.2f", countSleep)
+        case .walkingRunningDistance:
+            return String(format: "%.2f", countDistance)
         }
     }
     

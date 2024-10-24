@@ -24,14 +24,15 @@ struct FitnessStatsView: View {
                 
                 ScrollView {
                     VStack(spacing: 30) {
-                        ForEach(statsManager.fitnessStats, id: \.id) { stat in
-                            NavigationLink(
-                                destination: FitnessStatsDetailView(
-                                    stat: stat, timePeriod: selectedTimePeriod)
-                            ) {
+                        Text("foo")
+//                        ForEach(statsManager.fitnessStats, id: \.id) { stat in
+//                            NavigationLink(
+//                                destination: FitnessStatsDetailView(
+//                                    stat: stat, timePeriod: selectedTimePeriod)
+//                            ) {
                                 StatsCard(stat: stat, timePeriod: selectedTimePeriod)
-                            }
-                        }
+//                            }
+//                        }
                     }
                 }
                 .shadow(
