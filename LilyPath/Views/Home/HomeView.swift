@@ -138,6 +138,7 @@ struct CurrentPlantDisplay: View {
 
 struct HomeViewActions: View {
     @EnvironmentObject var userPlantManager: UserPlantManager
+    @ObservedObject var userModel = UserModel.shared
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
@@ -181,7 +182,17 @@ struct HomeViewActions: View {
     }
     
     private func waterCurrentPlant() {
-        userPlantManager.waterCurrentPlant()
+        if userModel.waterPoints >= 1000
+            && userPlantManager.currentPlant?.status != .completed
+        {
+            userPlantManager.waterCurrentPlant()
+            userModel.updateWaterPoints(by: -1000)
+            print(
+                "Watered plant. Remaining water points: \(userModel.waterPoints)"
+            )
+        } else {
+            print("Not enough water points to water the plant.")
+        }
     }
 }
 

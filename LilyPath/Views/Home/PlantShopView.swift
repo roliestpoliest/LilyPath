@@ -16,6 +16,8 @@ struct PlantShopView: View {
     
     var body: some View {
         VStack {
+            UserCurrencyBar()
+
             ViewTitle(title: "Plant Shop")
             
             ScrollView(showsIndicators: false) {

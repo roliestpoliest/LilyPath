@@ -13,6 +13,8 @@ struct DailyTasksView: View {
 
     var body: some View {
         VStack {
+            UserCurrencyBar()
+
             ViewTitle(title: "Daily Tasks")
 
             ScrollView(showsIndicators: false) {
