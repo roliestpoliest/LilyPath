@@ -81,9 +81,11 @@ struct GenericPopUpView<Content: View>: View {
 
 // MARK: Pop Up Class
 class PopUp {
-    static func purchase(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
-    -> some View
-    {
+    static func purchase(
+        plantModel: BasePlantModel,
+        showPopUp: Binding<Bool>,
+        onPurchase: @escaping () -> Void
+    ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
             headerText: "Purchase",
@@ -95,10 +97,10 @@ class PopUp {
                         Text(plantModel.species)
                             .font(Font.popupBody)
                             .foregroundColor(.customBrown)
-                        
-                        actionButton(text: String(plantModel.price), icon: .gem)
-                        {
-                            showPopUp.wrappedValue = false
+
+                        actionButton(text: String(plantModel.price), icon: .gem) {
+                            onPurchase()  // Trigger purchase logic
+                            showPopUp.wrappedValue = false  // Close popup
                             print("Purchase button tapped")
                         }
                     }
@@ -106,6 +108,7 @@ class PopUp {
             }
         )
     }
+    
     // MARK: locked
     static func locked(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
     -> some View
@@ -378,7 +381,8 @@ class PopUp {
                 
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
-                    showPopUp: .constant(true)
+                    showPopUp: .constant(true),
+                    onPurchase: {}
                 )
                 .frame(height: 250)
                 PopUp.locked(
