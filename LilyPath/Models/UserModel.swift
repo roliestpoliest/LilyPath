@@ -27,8 +27,10 @@ class UserModel: ObservableObject {
         xpProgress = 0.5
     }
 
-    func updateWaterPoints(by amount: Int) {
+    func updateWaterPoints(by amount: Int = -1000) {
         waterPoints += amount
+        
+        gainXP(0.05)
     }
 
     func updateGems(by amount: Int) {

@@ -24,13 +24,18 @@ struct HomeView: View {
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
                     
+                    UserLevelBar()
+                        .padding(.top, 20)
+                        .padding(.horizontal, 5)
+                    
                     VStack {
                         CurrentPlantDisplay()
+                            .padding(.horizontal)
                         
                         HomeViewActions()
                             .offset(y: -50)
                     }
-                    .padding(.top, 50)
+                    .padding(.top, 20)
                     
                     Spacer()
                 }
@@ -38,6 +43,35 @@ struct HomeView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+struct UserLevelBar: View {
+    @ObservedObject var userModel = UserModel.shared
+    
+    var body: some View {
+        HStack {
+            Text("Lvl \(userModel.level)")
+                .font(.customBody)
+                .foregroundColor(Color.customBrown)
+            
+            Spacer()
+            
+            ZStack {
+                ProgressBar(
+                    value: Double(userModel.xpProgress),
+                    total: Double(1),
+                    frameHeight: 30,
+                    foregroundColor: Color.darkerBlue,
+                    backgroundColor: Color.waterBlue
+                )
+                .frame(height: 40)
+                
+                Text("\(Int(userModel.xpProgress * 100))/100 XP")
+                    .font(.label)
+                    .foregroundColor(.white)
+            }
+        }
     }
 }
 
@@ -126,12 +160,6 @@ struct CurrentPlantDisplay: View {
                 }
                 .padding(20)
             }
-        } else {
-            // Placeholder when no current plant is selected
-            Text("No current plant selected")
-                .font(.headline)
-                .foregroundColor(.gray)
-                .padding()
         }
     }
 }
@@ -154,7 +182,6 @@ struct HomeViewActions: View {
                 .frame(height: 150)
             }
             
-            // TODO: Implement watering functionality
             Button(
                 action: {
                     waterCurrentPlant()
@@ -167,7 +194,6 @@ struct HomeViewActions: View {
                 )
             }
             
-            // TODO: Replace tasks with actual daily tasks
             NavigationLink(
                 destination: DailyTasksView()
             ) {
@@ -186,7 +212,7 @@ struct HomeViewActions: View {
             && userPlantManager.currentPlant?.status != .completed
         {
             userPlantManager.waterCurrentPlant()
-            userModel.updateWaterPoints(by: -1000)
+            userModel.updateWaterPoints()
             print(
                 "Watered plant. Remaining water points: \(userModel.waterPoints)"
             )

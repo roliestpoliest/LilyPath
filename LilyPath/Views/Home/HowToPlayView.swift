@@ -58,6 +58,7 @@ struct HowToPlayView: View {
             "Water your plant 10 times to unlock its next growth stage!",
             "Miss a day of watering, and your plant will start to wilt. Don’t let it wilt!",
             "Looking for a new plant? Use gems to buy one or head to your garden's plant gallery to swap it out.",
+            "Earn XP by watering and completing your plant. Level up to earn more gems and unlock new plants!",
             "Complete daily tasks to earn extra water points and gems – keep the rewards coming!"
         ]
     }
