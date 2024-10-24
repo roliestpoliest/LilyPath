@@ -16,6 +16,24 @@ struct ChartsView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
+                // Header and metric summary section
+                VStack(alignment: .leading, spacing: 10) {
+                    ViewTitle(title: metricType.displayName)
+                    Text(selectedChartPeriod.rawValue)
+                        .font(.headline)
+                        .foregroundColor(.customBrown)
+                    
+                    Text("Total \(metricType.displayName): \(Int(totalMetricCount()))")
+                        .font(.subheadline)
+                        .foregroundColor(.customBrown)
+                    
+                    Text("Average \(metricType.displayName) per \(selectedChartPeriod == .day ? "hour" : selectedChartPeriod == .week ? "day" : "week"): \(String(format: "%.1f", averageMetricCountPerPeriod()))")
+                        .font(.subheadline)
+                        .foregroundColor(.customBrown)
+                }
+                .padding(.leading)
+                .padding(.bottom, 10)
+                
                 if selectedChartData().isEmpty {
                     Text("Loading chart data...")
                 } else {
@@ -111,6 +129,17 @@ struct ChartsView: View {
             dates = stride(from: Date.startOfMonth, through: Date.endOfMonth, by: 60 * 60 * 24 * 7).map { $0 }
         }
         return dates.map { HealthDataPoint(date: $0, value: 0) }
+    }
+    
+    // Helper function to calculate total metric count
+    private func totalMetricCount() -> Double {
+        selectedChartData().reduce(0) { $0 + $1.value }
+    }
+    
+    // Helper function to calculate average metric per period
+    private func averageMetricCountPerPeriod() -> Double {
+        let dataCount = selectedChartData().count
+        return dataCount > 0 ? totalMetricCount() / Double(dataCount) : 0
     }
     
     // Helper function to format the X-axis labels dynamically
