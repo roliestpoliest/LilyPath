@@ -16,6 +16,7 @@ struct PlantShopView: View {
     
     @State var selectedPlant: BasePlantModel? = nil
     @State var showPopUp: Bool = false
+    @ObservedObject var userModel = UserModel.shared
     
     var body: some View {
         ZStack {
@@ -33,6 +34,7 @@ struct PlantShopView: View {
                                         selectedPlant = plant
                                         showPopUp = true
                                         print("\(plant.species) card tapped")
+                                        print("user level: \(userModel.level) plant level: \(plant.requiredLevelToBuy)")
                                     }
                                 }
                         }
@@ -46,16 +48,28 @@ struct PlantShopView: View {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        selectedPlant = nil
-                        showPopUp = false
+                        dismissPopup()
                     }
                 
-                PopUp.purchase(plantModel: plant, showPopUp: $showPopUp)
-                    .frame(height: 250)
-                    .transition(.scale)
+                if plant.requiredLevelToBuy > userModel.level {
+                    PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
+                        .frame(height: 250)
+                        .transition(.scale)
+                } else {
+                    PopUp.purchase(plantModel: plant, showPopUp: $showPopUp)
+                        .frame(height: 250)
+                        .transition(.scale)
+                }
             }
         }
-        .animation(.easeInOut, value: selectedPlant)
+        .animation(.easeInOut, value: showPopUp)
+    }
+    
+    private func dismissPopup() {
+        withAnimation {
+            showPopUp = false
+            selectedPlant = nil
+        }
     }
 }
 
