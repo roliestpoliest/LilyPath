@@ -63,13 +63,15 @@ struct UserLevelBar: View {
                     total: Double(1),
                     frameHeight: 30,
                     foregroundColor: Color.darkerBlue,
-                    backgroundColor: Color.waterBlue
+                    backgroundColor: Color.waterBlue,
+                    applyShadow: true
                 )
                 .frame(height: 40)
                 
                 Text("\(Int(userModel.xpProgress * 100))/100 XP")
                     .font(.label)
                     .foregroundColor(.white)
+                    .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
             }
         }
     }
