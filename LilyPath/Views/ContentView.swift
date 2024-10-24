@@ -23,7 +23,7 @@ struct ContentView: View {
                         UserPlantModel(
                             basePlant: BasePlantModel.buttercup,
                             currentStage: 3,
-                            stepsCollected: [100, 200, 100].reduce(0, +))
+                            watersCollected: 5)
                 )
                 .tag(Tabs.home)
                 

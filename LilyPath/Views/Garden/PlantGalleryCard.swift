@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlantGalleryCard: View {
     var userPlantModel: UserPlantModel
-
+    
     var body: some View {
         VStack {
             VStack {
@@ -17,9 +17,9 @@ struct PlantGalleryCard: View {
                     Rectangle()
                         .fill(Color.customBrown)
                         .cornerRadius(15)
-
+                    
                     Spacer()
-
+                    
                     VStack {
                         Spacer()
                         ZStack {
@@ -34,22 +34,22 @@ struct PlantGalleryCard: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 45, height: 65)
-
+                            
                         }
                         .padding(.top, 5)
-
+                        
                         Spacer()
-
+                        
                         VStack(spacing: 5) {
                             Text(userPlantModel.basePlant.species)
-
+                            
                             HStack(spacing: 5) {
                                 Image(
                                     systemName:
                                         "\(userPlantModel.currentStage).circle.fill"
                                 )
                                 .foregroundColor(.lightGreen)
-
+                                
                                 ProgressBar(
                                     value: Double(
                                         userPlantModel.stepsInCurrentStage),
@@ -57,12 +57,11 @@ struct PlantGalleryCard: View {
                                         userPlantModel.currentStageGoal))
                             }
                             .padding(.horizontal, 10)
-
                         }
                         .font(Font.statsCard)
                         .foregroundStyle(.white)
                         .bold()
-
+                        
                         Spacer()
                     }
                 }
@@ -79,21 +78,13 @@ struct PlantGalleryCard: View {
 
 #Preview {
     VStack {
-        PlantGalleryCard(
-            userPlantModel: UserPlantModel(
-                basePlant: BasePlantModel.buttercup, currentStage: 3,
-                stepsCollected: [100, 200, 100].reduce(0, +)))
-        PlantGalleryCard(
-            userPlantModel: UserPlantModel(
-                basePlant: BasePlantModel.buttercup, currentStage: 3,
-                stepsCollected: [100, 200, 100].reduce(0, +)))
-        PlantGalleryCard(
-            userPlantModel: UserPlantModel(
-                basePlant: BasePlantModel.lavender, currentStage: 5,
-                stepsCollected: [110, 210, 310, 410, 0].reduce(0, +)))
+        ForEach(UserPlantManager.shared.userPlants) {
+            userPlant in
+            PlantGalleryCard(userPlantModel: userPlant)
+        }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(.horizontal, 30)
     .background(Color.mainBackground)
-
+    
 }

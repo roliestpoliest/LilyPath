@@ -21,11 +21,13 @@ struct GenericPopUpView<Content: View>: View {
     var content: () -> Content
     var width: CGFloat = 275
     var height: CGFloat = 200
-
+    
     var body: some View {
         ZStack {
             VStack {
-                header(text: headerText, headerColor: headerColor, textColor: textColor, x_color: x_color)
+                header(
+                    text: headerText, headerColor: headerColor,
+                    textColor: textColor, x_color: x_color)
                 Spacer()
                 content()
                 Spacer()
@@ -56,12 +58,12 @@ struct GenericPopUpView<Content: View>: View {
             .fill(headerColor)
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
             .frame(height: 50)
-
+            
             ZStack {
                 Text(text.uppercased())
                     .font(Font.popupTitle)
                     .foregroundColor(textColor)
-
+                
                 HStack {
                     Spacer()
                     Button(action: {
@@ -85,12 +87,12 @@ class PopUp {
             content: {
                 HStack(spacing: 30) {
                     plantImage(image: plantModel.stageImages[4])
-
+                    
                     VStack(spacing: 15) {
                         Text(plantModel.species)
                             .font(Font.popupBody)
                             .foregroundColor(.customBrown)
-
+                        
                         actionButton(text: String(plantModel.price), icon: .gem)
                         {
                             print("Purchase button tapped")
@@ -107,7 +109,7 @@ class PopUp {
             content: {
                 HStack(spacing: 20) {
                     plantImage(image: plantModel.stageImages[4])
-
+                    
                     VStack(alignment: .center, spacing: 15) {
                         Text(
                             "\(plantModel.species) is locked!\nUnlock at level \(plantModel.requiredLevelToBuy)"
@@ -120,7 +122,7 @@ class PopUp {
             }
         )
     }
-
+    
     // MARK: wilt
     static func wilt(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
@@ -129,13 +131,13 @@ class PopUp {
                 HStack(spacing: 10) {
                     plantImage(
                         image: plantModel.stageImages[4], applyEffects: true)
-
+                    
                     VStack(spacing: 15) {
                         Text("Your \(plantModel.species) is wilting!")
                             .multilineTextAlignment(.center)
                             .font(Font.popupBody)
                             .foregroundColor(.customBrown)
-
+                        
                         actionButton(
                             text: "-1000", secondText: "Revive?",
                             icon: .waterDrop
@@ -147,7 +149,7 @@ class PopUp {
             }
         )
     }
-
+    
     // MARK: level up
     static func levelUp(plantModel: BasePlantModel) -> some View {
         GenericPopUpView(
@@ -155,13 +157,13 @@ class PopUp {
             content: {
                 HStack(spacing: 10) {
                     plantImage(image: plantModel.stageImages[4])
-
+                    
                     VStack(spacing: 15) {
                         Text("Your \(plantModel.species) is growing!")
                             .multilineTextAlignment(.center)
                             .font(Font.popupBody)
                             .foregroundColor(.customBrown)
-
+                        
                         actionButton(text: "+1", icon: .gem) {
                             print("Level Up button tapped")
                         }
@@ -171,14 +173,14 @@ class PopUp {
             }
         )
     }
-
+    
     // MARK: stats
     static func plantStats(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swapabblePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
-
+        
         return GenericPopUpView(
             headerText: currentPlantModel.basePlant.species,
             content: {
@@ -189,7 +191,7 @@ class PopUp {
                             Text("Plant Date")
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
-
+                            
                             Text(
                                 currentPlantModel.plantDate.formatted(
                                     .dateTime.month(.abbreviated).day(
@@ -199,13 +201,13 @@ class PopUp {
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
-
+                            
                         }
                         GridRow {
                             Text("Completion Date")
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
-
+                            
                             Text(
                                 currentPlantModel.completionDate.map {
                                     $0.formatted(
@@ -216,7 +218,7 @@ class PopUp {
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
-
+                            
                         }
                         GridRow {
                             Text("Species")
@@ -225,37 +227,37 @@ class PopUp {
                             Text(currentPlantModel.basePlant.species)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .font(.statsBody)
-
+                            
                         }
                         GridRow {
                             Text("Overall Progress")
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
-
+                            
                             Text(
                                 "\(Int((currentPlantModel.overallProgress) * 100))%"
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
-
+                            
                         }
                         GridRow {
                             Text("Steps Left")
                                 .frame(width: width, alignment: .leading)
                                 .font(.statsBodyBold)
                             Text(
-                                "\(currentPlantModel.basePlant.stepGoal - currentPlantModel.stepsCollected)"
+                                "\(currentPlantModel.basePlant.overallStepGoal - currentPlantModel.stepsCollected)"
                             )
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.statsBody)
                         }
                     }
-
+                    
                     HStack {
                         Text("Stage \(currentPlantModel.currentStage)")
                             .font(.stageLabel)
                             .layoutPriority(1)
-
+                        
                         ProgressBar(
                             value: Double(
                                 currentPlantModel.stepsInCurrentStage),
@@ -264,7 +266,7 @@ class PopUp {
                             backgroundColor: .waterBlue
                         )
                         .frame(maxWidth: .infinity)
-
+                        
                         if showSwapButton {
                             actionButton(text: "Swap") {
                                 print("Swap button tapped")
@@ -279,7 +281,7 @@ class PopUp {
             width: 300, height: 215 + additionalHeight
         )
     }
-
+    
     // MARK: swap
     static func swapPlant(
         currentPlantModel: UserPlantModel, swapabblePlantModel: UserPlantModel
@@ -296,7 +298,7 @@ class PopUp {
                         .multilineTextAlignment(.center)
                         .font(Font.popupBody)
                         .foregroundColor(.customBrown)
-
+                        
                         actionButton(text: "Yes") {
                             print("Swap button tapped")
                         }
@@ -306,10 +308,10 @@ class PopUp {
             }
         )
     }
-        
+    
     // MARK: plant image
     private static func plantImage(image: String, applyEffects: Bool = false)
-        -> some View
+    -> some View
     {
         Image(image)
             .resizable()
@@ -317,7 +319,7 @@ class PopUp {
             .frame(width: 50, height: 75)
             .modifier(WiltFlowerEffect(applyEffects: applyEffects))
     }
-
+    
     // MARK: action button
     private static func actionButton(
         text: String, secondText: String? = nil, icon: Icon? = nil,
@@ -352,30 +354,30 @@ class PopUp {
         ScrollView(showsIndicators: false) {
             VStack {
                 let myPlant1 = UserPlantModel(
-                    basePlant: .peony, currentStage: 4, stepsCollected: 1000
+                    basePlant: .peony, currentStage: 4, watersCollected: 24
                 )
                 let myPlant2 = UserPlantModel(
-                    basePlant: .lily, currentStage: 4, stepsCollected: 1000
+                    basePlant: .lily, currentStage: 4, watersCollected: 24
                 )
-
-//                PopUp.purchase(plantModel: BasePlantModel.delphinium)
-//                    .frame(height: 250)
-//                PopUp.locked(plantModel: BasePlantModel.delphinium)
-//                    .frame(height: 250)
-//                PopUp.wilt(plantModel: BasePlantModel.lavender)
-//                    .frame(height: 250)
-//                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
-//                    .frame(height: 250)
-//                PopUp.plantStats(
-//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
-//                PopUp.plantStats(
-//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
-//                )
-//                .frame(height: 275)
-//                PopUp.swapPlant(
-//                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
-//                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
-//                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
+                
+                PopUp.purchase(plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250)
+                PopUp.locked(plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250)
+                PopUp.wilt(plantModel: BasePlantModel.lavender)
+                    .frame(height: 250)
+                PopUp.levelUp(plantModel: BasePlantModel.delphinium)
+                    .frame(height: 250)
+                PopUp.plantStats(
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+                PopUp.plantStats(
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant1
+                )
+                .frame(height: 275)
+                PopUp.swapPlant(
+                    currentPlantModel: myPlant1, swapabblePlantModel: myPlant2)
+                //                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
+                //                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
             }
             .padding(.horizontal)
             .padding()

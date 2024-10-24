@@ -9,35 +9,49 @@ import Foundation
 
 class UserPlantManager: ObservableObject {
     static let shared = UserPlantManager()
-
+    
     @Published var userPlants: [UserPlantModel] = []
-
+    
     private init() {
         // TODO: Replace with actual user plants
         userPlants = [
             UserPlantModel(
-                basePlant: .peony,
-                completionDate: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
-                currentStage: 3,
-                stepsCollected: 1000,
-                lastWateredDate: Calendar.current.date(byAdding: .day, value: -8, to: Date()),
+                basePlant: .buttercup,
+                completionDate: Date(),
+                currentStage: 5,
+                watersCollected: [3, 4, 5, 6, 0].reduce(0, +),
+                lastWateredDate: Date(),
+                isCurrent: false,
                 status: .completed
             ),
             UserPlantModel(
                 basePlant: .lily,
-                completionDate: Date(),
-                currentStage: 1,
-                stepsCollected: 1000,
-                lastWateredDate: Date(),
+                completionDate: Calendar.current.date(
+                    byAdding: .day, value: -8, to: Date()),
+                currentStage: 5,
+                watersCollected: [2, 3, 4, 5, 0].reduce(0, +),
+                lastWateredDate: Calendar.current.date(
+                    byAdding: .day, value: -8, to: Date()),
+                isCurrent: false,
                 status: .completed
             ),
             UserPlantModel(
-                basePlant: .peony,
-                completionDate: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
-                currentStage: 5,
-                stepsCollected: 1000,
-                lastWateredDate: Calendar.current.date(byAdding: .day, value: -8, to: Date()),
-                status: .completed
+                basePlant: .carnation,
+                currentStage: 2,
+                watersCollected: [3, 2].reduce(0, +),
+                lastWateredDate: Calendar.current.date(
+                    byAdding: .day, value: -2, to: Date()),
+                isCurrent: false,
+                status: .growing
+            ),
+            UserPlantModel(
+                basePlant: .petunia,
+                completionDate: nil,
+                currentStage: 1,
+                watersCollected: 1,
+                lastWateredDate: Date(),
+                isCurrent: true,
+                status: .growing
             ),
         ]
     }
@@ -52,14 +66,14 @@ class UserPlantManager: ObservableObject {
             }
         }
     }
-
+    
     func updatePlantStats(for timePeriod: TimePeriod) {
         ["seedsPlanted", "plantsCompleted", "plantsWatered"].forEach { stat in
             let count = filteredPlants(for: stat, within: timePeriod).count
             updateStatCount(for: stat, to: count)
         }
     }
-
+    
     private func updateStatCount(for stat: String, to count: Int) {
         switch stat {
         case "seedsPlanted": PlantStatsModel.seedsPlanted.count = count
@@ -68,47 +82,62 @@ class UserPlantManager: ObservableObject {
         default: break
         }
     }
-
-    func filteredPlants(for stat: String, within timePeriod: TimePeriod) -> [UserPlantModel] {
+    
+    func filteredPlants(for stat: String, within timePeriod: TimePeriod)
+    -> [UserPlantModel]
+    {
         let startDate = startDate(for: timePeriod)
-
+        
         let filtered = userPlants.filter { plant in
-            guard let date = relevantDate(for: plant, stat: stat) else { return false }
+            guard let date = relevantDate(for: plant, stat: stat) else {
+                return false
+            }
             return date >= startDate
         }
-
+        
         return filtered.sorted(by: plantSortPredicate(for: stat))
     }
-
+    
     private func startDate(for timePeriod: TimePeriod) -> Date {
         let now = Date()
         let calendar = Calendar.current
-
+        
         switch timePeriod {
         case .daily: return calendar.startOfDay(for: now)
         case .weekly:
-            return calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)) ?? now
+            return calendar.date(
+                from: calendar.dateComponents(
+                    [.yearForWeekOfYear, .weekOfYear], from: now)) ?? now
         case .monthly:
-            return calendar.date(from: calendar.dateComponents([.year, .month], from: now)) ?? now
+            return calendar.date(
+                from: calendar.dateComponents([.year, .month], from: now))
+            ?? now
         }
     }
     
-    private func plantSortPredicate(for stat: String) -> (UserPlantModel, UserPlantModel) -> Bool {
+    private func plantSortPredicate(for stat: String) -> (
+        UserPlantModel, UserPlantModel
+    ) -> Bool {
         { first, second in
             let calendar = Calendar.current
-
-            let firstDate = self.relevantDate(for: first, stat: stat)
-                .map { date in calendar.startOfDay(for: date) } ?? Date.distantPast
-            let secondDate = self.relevantDate(for: second, stat: stat)
-                .map { date in calendar.startOfDay(for: date) } ?? Date.distantPast
-
+            
+            let firstDate =
+            self.relevantDate(for: first, stat: stat)
+                .map { date in calendar.startOfDay(for: date) }
+            ?? Date.distantPast
+            let secondDate =
+            self.relevantDate(for: second, stat: stat)
+                .map { date in calendar.startOfDay(for: date) }
+            ?? Date.distantPast
+            
             return firstDate == secondDate
-                ? first.basePlant.species < second.basePlant.species
-                : firstDate < secondDate
+            ? first.basePlant.species < second.basePlant.species
+            : firstDate < secondDate
         }
     }
-
-    private func relevantDate(for plant: UserPlantModel, stat: String) -> Date? {
+    
+    private func relevantDate(for plant: UserPlantModel, stat: String) -> Date?
+    {
         switch stat {
         case "seedsPlanted": return plant.plantDate
         case "plantsCompleted": return plant.completionDate
