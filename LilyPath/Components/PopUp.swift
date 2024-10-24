@@ -282,6 +282,7 @@ class PopUp {
                         
                         if showSwapButton {
                             actionButton(text: "Swap") {
+                                showPopUp.wrappedValue = false
                                 print("Swap button tapped")
                             }
                             .layoutPriority(2)
