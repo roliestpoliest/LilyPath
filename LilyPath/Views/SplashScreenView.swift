@@ -34,7 +34,7 @@ struct SplashScreenView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.mainBackground)
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
                     withAnimation {
                         self.isActive = true
                     }
