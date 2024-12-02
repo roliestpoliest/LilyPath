@@ -27,7 +27,7 @@ extension Font {
     }
     
     static var rewards: Font {
-        return .system(size: 14, weight: .medium, design: .rounded)
+        return .system(size: 10, weight: .medium, design: .rounded)
     }
     
     // MARK: - Garden
