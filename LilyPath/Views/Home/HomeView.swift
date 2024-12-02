@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @EnvironmentObject var userPlantManager: UserPlantManager
@@ -168,7 +169,8 @@ struct CurrentPlantDisplay: View {
 
 struct HomeViewActions: View {
     @EnvironmentObject var userPlantManager: UserPlantManager
-    @ObservedObject var userModel = UserModel.shared
+    @Environment(\.modelContext) private var context
+    @Query private var currencyModels: [CurrencyModel] // Fetch CurrencyModel
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
@@ -210,16 +212,25 @@ struct HomeViewActions: View {
     }
     
     private func waterCurrentPlant() {
-        if userModel.waterPoints >= 1000
+        guard let currencyModel = currencyModels.first else {
+            print("No CurrencyModel found.")
+            return
+        }
+        
+        if currencyModel.waterPoints >= 1000
             && userPlantManager.currentPlant?.status != .completed
         {
             userPlantManager.waterCurrentPlant()
-            userModel.updateWaterPoints()
-            print(
-                "Watered plant. Remaining water points: \(userModel.waterPoints)"
-            )
+            currencyModel.waterPoints -= 1000 // Subtract 1000 water points
+            
+            do {
+                try context.save()
+                print("Watered plant. Remaining water points: \(currencyModel.waterPoints)")
+            } catch {
+                print("Failed to save updated water points: \(error)")
+            }
         } else {
-            print("Cannot water plant.")
+            print("Cannot water plant. Not enough water points or plant is already completed.")
         }
     }
 }
