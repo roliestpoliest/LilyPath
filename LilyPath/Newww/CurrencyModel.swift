@@ -1,9 +1,10 @@
 //
 //  CurrencyModel.swift
-//  databased
+//  LilyPath
 //
 //  Created by Carolyn Heron on 12/1/24.
 //
+
 
 import Foundation
 import SwiftData

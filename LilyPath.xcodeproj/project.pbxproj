@@ -147,7 +147,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		82BFBE4E2CFC742D000CD940 /* TBD */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TBD; sourceTree = "<group>"; };
+		82BFBE5D2CFD5D74000CD940 /* Newww */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Newww; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,7 +262,7 @@
 		8298A0E42CA9F65B0062563F /* LilyPath */ = {
 			isa = PBXGroup;
 			children = (
-				82BFBE4E2CFC742D000CD940 /* TBD */,
+				82BFBE5D2CFD5D74000CD940 /* Newww */,
 				8280FF1F2CC60EA000455EC4 /* Info.plist */,
 				820667702CC60ADF00D2CC47 /* LilyPath.entitlements */,
 				8298A0E52CA9F65B0062563F /* LilyPathApp.swift */,
@@ -371,7 +371,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				82BFBE4E2CFC742D000CD940 /* TBD */,
+				82BFBE5D2CFD5D74000CD940 /* Newww */,
 			);
 			name = LilyPath;
 			productName = LilyPath;
