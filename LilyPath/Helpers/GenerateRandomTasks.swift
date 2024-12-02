@@ -8,19 +8,19 @@
 func generateRandomTasks() -> [TaskModel] {
     func generateRandomGoal(for taskType: TaskType) -> Int {
         let range = stride(
-            from: taskType.goalRange.lowerBound,
-            through: taskType.goalRange.upperBound,
+            from: taskType.lowerBound,
+            through: taskType.upperBound,
             by: taskType.incrementFactor
         )
         
-        return Array(range).randomElement() ?? taskType.goalRange.lowerBound
+        return Array(range).randomElement() ?? taskType.lowerBound
     }
     
     func calculateRewards(for taskType: TaskType, goal: Int) -> (
         waterPoints: Int, gems: Int
     ) {
-        let maxGoal = taskType.goalRange.upperBound
-        let minGoal = taskType.goalRange.lowerBound
+        let maxGoal = taskType.upperBound
+        let minGoal = taskType.lowerBound
         
         let progress = Double(goal - minGoal) / Double(maxGoal - minGoal)
         

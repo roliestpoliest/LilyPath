@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct TaskCard: View {
-    @ObservedObject var task: TaskModel
+    var task: TaskModel
     @Environment(\.modelContext) private var context
     @Query private var currencyModels: [CurrencyModel]
     
@@ -46,7 +46,7 @@ struct TaskCard: View {
             rewards
                 .padding(.horizontal)
             
-            TaskButton(status: $task.status, onCollect: collectRewards)
+            TaskButton(status: task.status, onCollect: collectRewards)
         }
     }
     
@@ -68,15 +68,15 @@ struct TaskCard: View {
         currencyModel.waterPoints += task.waterPointReward
         currencyModel.gems += task.gemReward
         
+        // Update task status to completed
+        task.status = .completed
+        
         do {
             try context.save()
             print("Rewards added successfully!")
         } catch {
             print("Failed to update CurrencyModel: \(error)")
         }
-        
-        // Update task status to completed
-        task.status = .completed
     }
     
     var debugButton: some View {
@@ -127,7 +127,7 @@ struct RewardItem: View {
 }
 
 struct TaskButton: View {
-    @Binding var status: TaskStatus
+    var status: TaskStatus
     var onCollect: () -> Void
     
     var body: some View {

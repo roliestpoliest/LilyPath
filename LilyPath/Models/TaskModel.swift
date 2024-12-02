@@ -5,24 +5,21 @@
 //  Created by Chelsea Nguyen on 10/4/24.
 //
 
-import Foundation
+import SwiftData
+import SwiftUI
 
-class TaskModel: ObservableObject {
-    let type: TaskType
-    let goal: Int
-    let waterPointReward: Int
-    let gemReward: Int
-    @Published var userProgress: Int
-    @Published var status: TaskStatus
-    
-    init(
-        type: TaskType,
-        goal: Int,
-        waterPointReward: Int,
-        gemReward: Int,
-        userProgress: Int = 0,
-        status: TaskStatus = .inProgress
-    ) {
+@Model
+class TaskModel: Identifiable {
+    @Attribute(.unique) var id: UUID = UUID()
+    var type: TaskType
+    var goal: Int
+    var waterPointReward: Int
+    var gemReward: Int
+    var userProgress: Int
+    var status: TaskStatus
+    var timestamp: Date = Date()
+
+    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, userProgress: Int = 0, status: TaskStatus = .inProgress) {
         self.type = type
         self.goal = goal
         self.waterPointReward = waterPointReward
@@ -34,41 +31,27 @@ class TaskModel: ObservableObject {
     var taskName: String {
         type.description(for: goal)
     }
-    
-    func updateStatus(to status: TaskStatus) {
-        self.status = status
-    }
-    
-    func checkProgress() {
-        if userProgress >= goal {
-            updateStatus(to: .completed)
-        }
-    }
-    
-    // TODO: update functionality
-    func updateUserProgress(to newProgress: Int) {
-        userProgress = newProgress
-        checkProgress()
-    }
 }
 
-enum TaskStatus: String {
+enum TaskStatus: String, Codable {
     case inProgress = "In Progress"
     case collect = "Collect"
     case completed = "Completed"
 }
 
-struct TaskType {
+struct TaskType: Codable {
     let descriptionTemplate: String
-    let goalRange: ClosedRange<Int>
+    let lowerBound: Int
+    let upperBound: Int
     let incrementFactor: Int
     
     init(
-        descriptionTemplate: String, goalRange: ClosedRange<Int>,
+        descriptionTemplate: String, lowerBound: Int, upperBound: Int,
         incrementFactor: Int = 1
     ) {
         self.descriptionTemplate = descriptionTemplate
-        self.goalRange = goalRange
+        self.lowerBound = lowerBound
+        self.upperBound = upperBound
         self.incrementFactor = incrementFactor
     }
     
@@ -78,26 +61,31 @@ struct TaskType {
 }
 
 extension TaskType {
-    static let walk = TaskType(
-        descriptionTemplate: "Walk %@ steps",
-        goalRange: 5000...10000,
-        incrementFactor: 100
-    )
-    static let distance = TaskType(
-        descriptionTemplate: "Walk & run %@ miles",
-        goalRange: 2...5
+    static let calories = TaskType(
+        descriptionTemplate: "Burn %@ calories",
+        lowerBound: 300,
+        upperBound: 600
     )
     static let climb = TaskType(
         descriptionTemplate: "Climb %@ flights of stairs",
-        goalRange: 8...18
+        lowerBound: 8,
+        upperBound: 18
     )
     static let sleep = TaskType(
         descriptionTemplate: "Get %@ hours of sleep",
-        goalRange: 7...9
+        lowerBound: 7,
+        upperBound: 9
     )
-    static let calories = TaskType(
-        descriptionTemplate: "Burn %@ calories",
-        goalRange: 300...600
+    static let distance = TaskType(
+        descriptionTemplate: "Walk & run %@ miles",
+        lowerBound: 2,
+        upperBound: 5
+    )
+    static let walk = TaskType(
+        descriptionTemplate: "Walk %@ steps",
+        lowerBound: 5000,
+        upperBound: 10000,
+        incrementFactor: 100
     )
     
     static let allTasks: [TaskType] = [
