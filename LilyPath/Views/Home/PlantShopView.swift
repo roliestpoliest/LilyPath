@@ -70,10 +70,11 @@ struct PlantShopView: View {
     }
     
     private func getPopup(for plant: BasePlantModel) -> some View {
-        if plant.requiredLevelToBuy > userModel.level {
-            return PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
-                .eraseToAnyView()
-        } else if userModel.gems >= plant.price {
+//        if plant.requiredLevelToBuy > userModel.level {
+//            return PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
+//                .eraseToAnyView()
+//        } else
+        if userModel.gems >= plant.price {
             return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp) {
                 handlePlantPurchase(plant)
             }.eraseToAnyView()
