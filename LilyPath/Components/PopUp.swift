@@ -192,8 +192,10 @@ class PopUp {
     
     // MARK: stats
     static func plantStats(
-        currentPlantModel: UserPlantModel, swappablePlantModel: UserPlantModel,
-        showPopUp: Binding<Bool>
+        currentPlantModel: UserPlantModel,
+        swappablePlantModel: UserPlantModel,
+        showPopUp: Binding<Bool>,
+        onSwap: @escaping () -> Void
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swappablePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
@@ -285,6 +287,7 @@ class PopUp {
                         
                         if showSwapButton {
                             actionButton(text: "Swap") {
+                                onSwap()
                                 showPopUp.wrappedValue = false
                                 print("Swap button tapped")
                             }
@@ -402,10 +405,13 @@ class PopUp {
                 .frame(height: 250)
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
-                    showPopUp: .constant(true))
+                    showPopUp: .constant(true),
+                    onSwap: {}
+                )
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
-                    showPopUp: .constant(true)
+                    showPopUp: .constant(true),
+                    onSwap: {}
                 )
                 .frame(height: 275)
                 PopUp.swapPlant(

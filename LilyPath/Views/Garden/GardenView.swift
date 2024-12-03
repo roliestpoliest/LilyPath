@@ -30,7 +30,9 @@ struct GardenView: View {
                     
                     Button(action: {
                         withAnimation {
-                            if let currentPlant = userPlants.first(where: { $0.isCurrent }) {
+                            if let currentPlant = userPlants.first(where: {
+                                $0.isCurrent
+                            }) {
                                 selectedPlant = currentPlant
                                 showPopUp = true
                             }
@@ -46,7 +48,8 @@ struct GardenView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
-                    CurrentPlantView(currentPlant: userPlants.first(where: { $0.isCurrent }))
+                    CurrentPlantView(
+                        currentPlant: userPlants.first(where: { $0.isCurrent }))
                     
                     Spacer()
                 }
@@ -65,9 +68,9 @@ struct GardenView: View {
                             currentPlantModel: plant,
                             swappablePlantModel: plant,
                             showPopUp: $showPopUp
-                        )
-                        .frame(width: 300, height: 250)
-                        .transition(.scale)
+                        ) {}
+                            .frame(width: 300, height: 250)
+                            .transition(.scale)
                     }
                 }
             )
