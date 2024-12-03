@@ -53,8 +53,9 @@ struct ProgressBar: View {
         ProgressBar(value: 25, total: 100, frameHeight: 30)
         ProgressBar(value: 25, total: 100, frameHeight: 20)
         ProgressBar(
-            value: 25, total: 100, foregroundColor: Color(hex: "#6E7AA2"),
-            backgroundColor: Color(hex: "#A8B1CD"))
+            value: 25, total: 100,
+            foregroundColor: .darkerBlue,
+            backgroundColor: .lightBlue)
         ProgressBar(value: 50, total: 100)
         ProgressBar(value: 75, total: 100)
         ProgressBar(value: 1, total: 1)
