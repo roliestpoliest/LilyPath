@@ -5,13 +5,14 @@
 //  Created by Chelsea Nguyen on 10/23/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct PlantStatsDetailView: View {
     @ObservedObject var stat: PlantStatsModel
-    @EnvironmentObject var userPlantManager: UserPlantManager
+    @Environment(\.modelContext) private var context
     let timePeriod: TimePeriod
-    
+
     var body: some View {
         VStack {
             ViewTitle(
@@ -21,9 +22,8 @@ struct PlantStatsDetailView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-                    let filtered = userPlantManager.filteredPlants(
-                        for: stat.id, within: timePeriod)
-                    
+                    let filtered = filteredPlants(for: stat.id, within: timePeriod)
+
                     if filtered.isEmpty {
                         Text("No \(stat.plant)s \(stat.action) yet")
                             .font(.headline)
@@ -35,7 +35,8 @@ struct PlantStatsDetailView: View {
                         }
                         .shadow(
                             radius: ShadowConstants.radius,
-                            y: ShadowConstants.yOffset)
+                            y: ShadowConstants.yOffset
+                        )
                     }
                 }
             }
@@ -45,6 +46,72 @@ struct PlantStatsDetailView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("\(timePeriod.rawValue.capitalized)")
         .background(Color.mainBackground)
+    }
+    
+    // MARK: - Helper Functions
+
+    private func filteredPlants(for stat: String, within timePeriod: TimePeriod) -> [UserPlantModel] {
+        let startDate = startDate(for: timePeriod)
+
+        // Fetch all user plants
+        let fetchDescriptor = FetchDescriptor<UserPlantModel>()
+
+        do {
+            let plants = try context.fetch(fetchDescriptor)
+            return plants
+                .filter { plant in
+                    guard let date = relevantDate(for: plant, stat: stat) else {
+                        return false
+                    }
+                    return date >= startDate
+                }
+                .sorted(by: plantSortPredicate(for: stat))
+        } catch {
+            print("Failed to fetch filtered plants: \(error)")
+            return []
+        }
+    }
+
+    private func relevantDate(for plant: UserPlantModel, stat: String) -> Date? {
+        switch stat {
+        case "seedsPlanted": return plant.plantDate
+        case "plantsCompleted": return plant.completionDate
+        case "plantsWatered": return plant.lastWateredDate
+        default: return nil
+        }
+    }
+
+    private func startDate(for timePeriod: TimePeriod) -> Date {
+        let now = Date()
+        let calendar = Calendar.current
+        
+        switch timePeriod {
+        case .daily:
+            return calendar.startOfDay(for: now)
+        case .weekly:
+            return calendar.date(
+                from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)
+            ) ?? now
+        case .monthly:
+            return calendar.date(
+                from: calendar.dateComponents([.year, .month], from: now)
+            ) ?? now
+        }
+    }
+
+    private func plantSortPredicate(for stat: String) -> (UserPlantModel, UserPlantModel) -> Bool {
+        { first, second in
+            let calendar = Calendar.current
+            
+            let firstDate = self.relevantDate(for: first, stat: stat)
+                .map { calendar.startOfDay(for: $0) } ?? Date.distantPast
+            let secondDate = self.relevantDate(for: second, stat: stat)
+                .map { calendar.startOfDay(for: $0) } ?? Date.distantPast
+            
+            return firstDate == secondDate
+                ? first.basePlant.species < second.basePlant.species
+                : firstDate < secondDate
+        }
     }
 }
 
@@ -111,7 +178,6 @@ struct PlantRowView: View {
         stat: PlantStatsModel.seedsPlanted,
         timePeriod: .daily
     )
-    .environmentObject(UserPlantManager.shared)
     .background(Color.mainBackground)
     .padding(.horizontal, 30)
 }

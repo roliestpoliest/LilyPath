@@ -9,9 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var healthManager: HealthManager
-    @StateObject var userPlantManager = UserPlantManager.shared
-    @State var selectedTab: Tabs = .home
-    
+    @State private var selectedTab: Tabs = .home
+
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
@@ -28,7 +27,6 @@ struct ContentView: View {
             TabBar(selectedTab: $selectedTab)
                 .background(Color.mainBackground)
         }
-        .environmentObject(userPlantManager)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
     }
@@ -37,5 +35,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(HealthManager())
-        .environmentObject(UserPlantManager.shared)
 }

@@ -21,7 +21,7 @@ struct PlantShopView: View {
     @State var selectedPlant: BasePlantModel? = nil
     @State var showPopUp: Bool = false
     @ObservedObject var userModel = UserModel.shared
-    @EnvironmentObject var userPlantManager: UserPlantManager
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         ZStack {
@@ -65,7 +65,7 @@ struct PlantShopView: View {
             selectedPlant = plant
             showPopUp = true
             print("\(plant.species) card tapped")
-            print("user level: \(userModel.level) plant level: \(plant.requiredLevelToBuy)")
+            print("User level: \(userModel.level), Plant level: \(plant.requiredLevelToBuy)")
         }
     }
     
@@ -75,30 +75,51 @@ struct PlantShopView: View {
                 .eraseToAnyView()
         } else if userModel.gems >= plant.price {
             return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp) {
-                userModel.updateGems(by: -plant.price)
-                
-                if let currentPlant = userPlantManager.currentPlant {
-                    currentPlant.isCurrent = false
-                }
-                
-                let newPlant = UserPlantModel(
-                    basePlant: plant,
-                    plantDate: Date(),
-                    currentStage: 1,
-                    watersCollected: 0,
-                    lastWateredDate: nil,
-                    isCurrent: true,
-                    status: .growing
-                )
-                
-                userPlantManager.userPlants.append(newPlant)
-                userPlantManager.currentPlant = newPlant
-                
-                print("Added and set new plant: \(newPlant.basePlant.species)")
+                handlePlantPurchase(plant)
             }.eraseToAnyView()
         } else {
             return EmptyView().eraseToAnyView()
         }
+    }
+    
+    private func handlePlantPurchase(_ plant: BasePlantModel) {
+        guard userModel.gems >= plant.price else {
+            print("Not enough gems to purchase \(plant.species).")
+            return
+        }
+        
+        userModel.updateGems(by: -plant.price)
+
+        // Mark current plant as no longer current
+        if let currentPlant = fetchCurrentPlant() {
+            currentPlant.isCurrent = false
+        }
+
+        // Create and save new plant
+        let newPlant = UserPlantModel(
+            basePlant: plant,
+            plantDate: Date(),
+            currentStage: 1,
+            watersCollected: 0,
+            lastWateredDate: nil,
+            isCurrent: true,
+            status: .growing
+        )
+        modelContext.insert(newPlant)
+
+        do {
+            try modelContext.save()
+            print("Added and set new plant: \(newPlant.basePlant.species)")
+        } catch {
+            print("Failed to save new plant: \(error)")
+        }
+    }
+    
+    private func fetchCurrentPlant() -> UserPlantModel? {
+        let fetchDescriptor = FetchDescriptor<UserPlantModel>(
+            predicate: #Predicate { $0.isCurrent == true }
+        )
+        return try? modelContext.fetch(fetchDescriptor).first
     }
     
     private func dismissPopup() {

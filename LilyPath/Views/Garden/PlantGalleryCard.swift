@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlantGalleryCard: View {
-    @ObservedObject var userPlantModel: UserPlantModel
+    @Bindable var userPlantModel: UserPlantModel
     
     var body: some View {
         VStack {
@@ -73,14 +73,5 @@ struct PlantGalleryCard: View {
 }
 
 #Preview {
-    VStack {
-        ForEach(UserPlantManager.shared.userPlants) {
-            userPlant in
-            PlantGalleryCard(userPlantModel: userPlant)
-        }
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .padding(.horizontal, 30)
-    .background(Color.mainBackground)
-    
+
 }

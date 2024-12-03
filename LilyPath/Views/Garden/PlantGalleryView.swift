@@ -5,10 +5,14 @@
 //  Created by Carolyn Heron on 10/6/24.
 //
 
+import SwiftData
 import SwiftUI
 
 struct PlantGalleryView: View {
-    @EnvironmentObject var userPlantManager: UserPlantManager
+    @Environment(\.modelContext) private var context
+    @Query(sort: [SortDescriptor(\UserPlantModel.currentStage, order: .forward),
+                  SortDescriptor(\UserPlantModel.basePlant.species, order: .forward)])
+    private var userPlants: [UserPlantModel]
     
     @State private var selectedPlant: UserPlantModel? = nil
     @State private var showPopUp: Bool = false
@@ -22,7 +26,7 @@ struct PlantGalleryView: View {
 
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 40) {
-                        ForEach(userPlantManager.getUserPlantsSorted()) { plant in
+                        ForEach(userPlants) { plant in
                             PlantGalleryCard(userPlantModel: plant)
                                 .onTapGesture {
                                     withAnimation {
@@ -38,13 +42,14 @@ struct PlantGalleryView: View {
             .background(Color.mainBackground)
 
             if let plant = selectedPlant, showPopUp {
-                Color.mainBackground.opacity(0.4)  .ignoresSafeArea()
+                Color.mainBackground.opacity(0.4)
+                    .ignoresSafeArea()
                     .onTapGesture {
                         dismissPopup()
                     }
 
                 PopUp.plantStats(
-                    currentPlantModel: userPlantManager.currentPlant!,
+                    currentPlantModel: userPlants.first(where: { $0.isCurrent })!,
                     swappablePlantModel: plant,
                     showPopUp: $showPopUp
                 )
@@ -52,6 +57,7 @@ struct PlantGalleryView: View {
                 .transition(.scale)
             }
         }
+        .animation(.easeInOut, value: showPopUp)
     }
 
     private func dismissPopup() {
@@ -64,7 +70,6 @@ struct PlantGalleryView: View {
 
 #Preview {
     PlantGalleryView()
-        .environmentObject(UserPlantManager.shared)
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
     

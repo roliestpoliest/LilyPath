@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @EnvironmentObject var userPlantManager: UserPlantManager
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -46,6 +44,7 @@ struct HomeView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .environment(\.modelContext, AppModelContainer.shared.container.mainContext)
     }
 }
 
@@ -115,12 +114,17 @@ struct HowToPlayButton: View {
 }
 
 struct CurrentPlantDisplay: View {
-    @EnvironmentObject var userPlantManager: UserPlantManager
+    @Query(
+        filter: #Predicate { (plant: UserPlantModel) in
+            plant.isCurrent == true
+        }
+    )
+    private var currentPlants: [UserPlantModel] // Real-time query for the current plant
     
     let lineThickness: CGFloat = 18
-    
+
     var body: some View {
-        if let currentPlant = userPlantManager.currentPlant {
+        if let currentPlant = currentPlants.first { // Take the first current plant if it exists
             VStack {
                 Text(currentPlant.basePlant.species)
                     .font(.viewTitle)
@@ -165,15 +169,25 @@ struct CurrentPlantDisplay: View {
                 }
                 .padding(20)
             }
+        } else {
+            Text("No current plant to display...")
+                .font(.customBody)
+                .foregroundColor(.customBrown)
         }
     }
 }
 
 struct HomeViewActions: View {
-    @EnvironmentObject var userPlantManager: UserPlantManager
     @Environment(\.modelContext) private var context
-    @Query private var currencyModels: [CurrencyModel] // Fetch CurrencyModel
-    @Query private var basePlants: [BasePlantModel] // Fetch BasePlantModel instances dynamically
+    @Query private var currencyModels: [CurrencyModel]
+    @Query private var basePlants: [BasePlantModel]
+    
+    private var currentPlant: UserPlantModel? {
+        let fetchDescriptor = FetchDescriptor<UserPlantModel>(
+            predicate: #Predicate { $0.isCurrent == true }
+        )
+        return try? context.fetch(fetchDescriptor).first
+    }
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
@@ -188,11 +202,7 @@ struct HomeViewActions: View {
                 .frame(height: 150)
             }
             
-            Button(
-                action: {
-                    waterCurrentPlant()
-                }
-            ) {
+            Button(action: waterCurrentPlant) {
                 IconWithText(
                     icon: .waterDrop,
                     color: Color.waterBlue,
@@ -219,24 +229,29 @@ struct HomeViewActions: View {
             return
         }
         
-        if currencyModel.waterPoints >= 1000,
-           let currentPlant = userPlantManager.currentPlant,
-           currentPlant.status != .completed {
-            
-            userPlantManager.waterCurrentPlant()
-            currencyModel.waterPoints -= 1000 // Subtract 1000 water points
-            
-            do {
-                try context.save()
-                print("Watered plant. Remaining water points: \(currencyModel.waterPoints)")
-            } catch {
-                print("Failed to save updated water points: \(error)")
-            }
-        } else {
+        guard let currentPlant = currentPlant else {
+            print("No current plant found.")
+            return
+        }
+        
+        guard currencyModel.waterPoints >= 1000, currentPlant.status != .completed else {
             print("Cannot water plant. Not enough water points or plant is already completed.")
+            return
+        }
+        
+        // Perform watering and deduct water points
+        currentPlant.waterPlant()
+        currencyModel.waterPoints -= 1000
+        
+        do {
+            try context.save()
+            print("Watered plant. Remaining water points: \(currencyModel.waterPoints)")
+        } catch {
+            print("Failed to save updated water points: \(error)")
         }
     }
 }
+
 struct IconWithText: View {
     let icon: Icon
     let color: Color
@@ -257,5 +272,4 @@ struct IconWithText: View {
     HomeView()
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
-        .environmentObject(UserPlantManager.shared)
 }
