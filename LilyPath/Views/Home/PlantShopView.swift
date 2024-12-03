@@ -9,9 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct PlantShopView: View {
-    // Query for BasePlantModel sorted by id in ascending order
     @Query(sort: [SortDescriptor(\BasePlantModel.id, order: .forward)])
     private var plants: [BasePlantModel]
+    
+    @Query private var currencyModels: [CurrencyModel]
     
     let columns = [
         GridItem(.flexible(), spacing: 40),
@@ -20,7 +21,6 @@ struct PlantShopView: View {
     
     @State var selectedPlant: BasePlantModel? = nil
     @State var showPopUp: Bool = false
-    @ObservedObject var userModel = UserModel.shared
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
@@ -65,36 +65,39 @@ struct PlantShopView: View {
             selectedPlant = plant
             showPopUp = true
             print("\(plant.species) card tapped")
-            print("User level: \(userModel.level), Plant level: \(plant.requiredLevelToBuy)")
         }
     }
     
     private func getPopup(for plant: BasePlantModel) -> some View {
-//        if plant.requiredLevelToBuy > userModel.level {
-//            return PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
-//                .eraseToAnyView()
-//        } else
-        let hasEnoughGems = userModel.gems >= plant.price
-                
+        guard let currencyModel = getCurrencyModel() else {
+            return EmptyView().eraseToAnyView()
+        }
+        
+        let hasEnoughGems = currencyModel.gems >= plant.price
+        
+        print("Plant price: \(plant.price), User gems: \(currencyModel.gems), Has enough gems: \(hasEnoughGems)")
+        
         return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp, hasEnoughGems: hasEnoughGems) {
             handlePlantPurchase(plant)
         }.eraseToAnyView()
     }
     
     private func handlePlantPurchase(_ plant: BasePlantModel) {
-        guard userModel.gems >= plant.price else {
-            print("Not enough gems to purchase \(plant.species).")
+        guard let currencyModel = getCurrencyModel() else {
             return
         }
         
-        userModel.updateGems(by: -plant.price)
+        guard currencyModel.gems >= plant.price else {
+            print("Not enough gems to purchase \(plant.species).")
+            return
+        }
+                
+        currencyModel.gems -= plant.price
 
-        // Mark current plant as no longer current
         if let currentPlant = fetchCurrentPlant() {
             currentPlant.isCurrent = false
         }
 
-        // Create and save new plant
         let newPlant = UserPlantModel(
             basePlant: plant,
             plantDate: Date(),
@@ -112,6 +115,14 @@ struct PlantShopView: View {
         } catch {
             print("Failed to save new plant: \(error)")
         }
+    }
+    
+    private func getCurrencyModel() -> CurrencyModel? {
+        guard let currencyModel = currencyModels.first else {
+            print("No CurrencyModel found.")
+            return nil
+        }
+        return currencyModel
     }
     
     private func fetchCurrentPlant() -> UserPlantModel? {
@@ -139,5 +150,4 @@ extension View {
 #Preview {
     PlantShopView()
         .padding(.horizontal, 30)
-        .environmentObject(UserModel.shared)
 }
