@@ -74,13 +74,11 @@ struct PlantShopView: View {
 //            return PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
 //                .eraseToAnyView()
 //        } else
-        if userModel.gems >= plant.price {
-            return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp) {
-                handlePlantPurchase(plant)
-            }.eraseToAnyView()
-        } else {
-            return EmptyView().eraseToAnyView()
-        }
+        let hasEnoughGems = userModel.gems >= plant.price
+                
+        return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp, hasEnoughGems: hasEnoughGems) {
+            handlePlantPurchase(plant)
+        }.eraseToAnyView()
     }
     
     private func handlePlantPurchase(_ plant: BasePlantModel) {

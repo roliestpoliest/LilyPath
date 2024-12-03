@@ -84,6 +84,7 @@ class PopUp {
     static func purchase(
         plantModel: BasePlantModel,
         showPopUp: Binding<Bool>,
+        hasEnoughGems: Bool, // New parameter
         onPurchase: @escaping () -> Void
     ) -> some View {
         GenericPopUpView(
@@ -94,15 +95,30 @@ class PopUp {
                     plantImage(image: plantModel.stageImages[4])
                     
                     VStack(spacing: 15) {
-                        Text(plantModel.species)
-                            .font(Font.popupBody)
-                            .foregroundColor(.customBrown)
-
-                        actionButton(text: String(plantModel.price), icon: .gem) {
-                            onPurchase()  // Trigger purchase logic
-                            showPopUp.wrappedValue = false  // Close popup
-                            print("Purchase button tapped")
+                        if hasEnoughGems {
+                            Text(plantModel.species)
+                                .font(Font.popupBody)
+                                .foregroundColor(.customBrown)
+                        } else {
+                            Text("Not enough gems!")
+                                .font(Font.popupBody)
+                                .foregroundColor(.customBrown)
                         }
+                        
+                        actionButton(
+                            text: String(plantModel.price),
+                            icon: .gem,
+                            isDisabled: !hasEnoughGems // Disable if not enough gems
+                        ) {
+                            if hasEnoughGems {
+                                onPurchase()  // Trigger purchase logic
+                                showPopUp.wrappedValue = false  // Close popup
+                                print("Purchase button tapped")
+                            } else {
+                                print("Attempted to purchase with insufficient gems")
+                            }
+                        }
+                        .foregroundColor(hasEnoughGems ? .customBrown : .gray) // Grey out button if disabled
                     }
                 }
             }
@@ -344,10 +360,17 @@ class PopUp {
     
     // MARK: action button
     static func actionButton(
-        text: String, secondText: String? = nil, icon: Icon? = nil,
+        text: String,
+        secondText: String? = nil,
+        icon: Icon? = nil,
+        isDisabled: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action) {
+        Button(action: {
+            if !isDisabled {
+                action()
+            }
+        }) {
             HStack(spacing: 10) {
                 secondText.map {
                     Text($0)
@@ -364,10 +387,13 @@ class PopUp {
             .padding(.vertical, 10)
             .padding(.horizontal, 25)
             .background(Color.customBrown)
+            .clipShape(Capsule())
+            .overlay(
+                isDisabled ? Capsule().fill(.lockGrey.opacity(0.5)) : nil
+            )
+            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
         }
-        .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
-        .buttonStyle(PlainButtonStyle())
+        .disabled(isDisabled)
     }
 }
 
@@ -385,6 +411,7 @@ class PopUp {
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
+                    hasEnoughGems: true,
                     onPurchase: {}
                 )
                 .frame(height: 250)
