@@ -14,7 +14,7 @@ struct LilyPathApp: App {
     
     init() {
         // Uncomment the line below to clear data for testing
-        // clearData()
+//        clearData()
         
         // Seed the models during app initialization
         seedInitialData()
@@ -24,7 +24,7 @@ struct LilyPathApp: App {
         WindowGroup {
             SplashScreenView()
                 .environmentObject(healthManager)
-                .modelContainer(for: [CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self])
+                .modelContainer(AppModelContainer.shared.container)
         }
     }
     
@@ -32,7 +32,7 @@ struct LilyPathApp: App {
     private func seedInitialData() {
         do {
             // Initialize the ModelContainer
-            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self)
+            let modelContainer = AppModelContainer.shared.container
             let context = modelContainer.mainContext
             
             // Seed CurrencyModel
@@ -78,38 +78,26 @@ struct LilyPathApp: App {
     /// Function to clear all data for testing
     private func clearData() {
         do {
-            // Initialize the ModelContainer
-            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self)
+            let modelContainer = AppModelContainer.shared.container
             let context = modelContainer.mainContext
-            
-            // Delete all instances of CurrencyModel
-            let currencyFetchDescriptor = FetchDescriptor<CurrencyModel>()
-            let currencies = try context.fetch(currencyFetchDescriptor)
-            for currency in currencies {
-                context.delete(currency)
+
+            func clearAll<T: PersistentModel>(_ type: T.Type) throws {
+                let fetchDescriptor = FetchDescriptor<T>()
+                let items = try context.fetch(fetchDescriptor)
+                for item in items {
+                    context.delete(item)
+                }
             }
+
+            // Clear data for all models
+            try clearAll(CurrencyModel.self)
+            try clearAll(TaskModel.self)
+            try clearAll(UserPlantModel.self)
+            try clearAll(BasePlantModel.self)
             
-            // Delete all instances of TaskModel
-            let taskFetchDescriptor = FetchDescriptor<TaskModel>()
-            let tasks = try context.fetch(taskFetchDescriptor)
-            for task in tasks {
-                context.delete(task)
-            }
-            
-            // Delete all instances of UserPlantModel
-            let userPlantFetchDescriptor = FetchDescriptor<UserPlantModel>()
-            let userPlants = try context.fetch(userPlantFetchDescriptor)
-            for userPlant in userPlants {
-                context.delete(userPlant)
-            }
-            
-            // Delete all instances of BasePlantModel
-            let basePlantFetchDescriptor = FetchDescriptor<BasePlantModel>()
-            let basePlants = try context.fetch(basePlantFetchDescriptor)
-            for basePlant in basePlants {
-                context.delete(basePlant)
-            }
-            
+            // Remove UserDefaults for daily task generation
+            UserDefaults.standard.removeObject(forKey: "lastGeneratedDate")
+
             // Save changes
             try context.save()
             print("All data cleared successfully.")
