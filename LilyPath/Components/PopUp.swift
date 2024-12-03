@@ -16,7 +16,7 @@ struct GenericPopUpView<Content: View>: View {
     @Binding var showPopUp: Bool
     var headerColor: Color = .customPink
     var textColor: Color = .customBrown
-    var x_color: Color = .darkPink
+    var x_color: Color = .redButton
     var headerText: String
     var content: () -> Content
     var width: CGFloat = 275

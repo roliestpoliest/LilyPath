@@ -152,7 +152,7 @@ struct TaskButton: View {
     private var buttonBackgroundColor: Color {
         switch status {
         case .inProgress:
-            return Color.greyDarkenBg
+            return Color.lockGrey.opacity(0.3)
         case .collect:
             return Color.lightBlue
         case .completed:
