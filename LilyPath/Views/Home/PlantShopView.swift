@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PlantShopView: View {
-    let plants: [BasePlantModel]
+    // Query for BasePlantModel sorted by id in ascending order
+    @Query(sort: [SortDescriptor(\BasePlantModel.id, order: .forward)])
+    private var plants: [BasePlantModel]
+    
     let columns = [
         GridItem(.flexible(), spacing: 40),
         GridItem(.flexible(), spacing: 40),
@@ -18,7 +22,7 @@ struct PlantShopView: View {
     @State var showPopUp: Bool = false
     @ObservedObject var userModel = UserModel.shared
     @EnvironmentObject var userPlantManager: UserPlantManager
-
+    
     var body: some View {
         ZStack {
             VStack {
@@ -46,7 +50,7 @@ struct PlantShopView: View {
                     .onTapGesture {
                         dismissPopup()
                     }
-
+                
                 getPopup(for: plant)
                     .frame(height: 250)
                     .transition(.scale)
@@ -54,7 +58,7 @@ struct PlantShopView: View {
         }
         .animation(.easeInOut, value: showPopUp)
     }
-
+    
     // MARK: - Helper Functions
     private func handlePlantSelection(_ plant: BasePlantModel) {
         withAnimation {
@@ -64,7 +68,7 @@ struct PlantShopView: View {
             print("user level: \(userModel.level) plant level: \(plant.requiredLevelToBuy)")
         }
     }
-
+    
     private func getPopup(for plant: BasePlantModel) -> some View {
         if plant.requiredLevelToBuy > userModel.level {
             return PopUp.locked(plantModel: plant, showPopUp: $showPopUp)
@@ -89,14 +93,14 @@ struct PlantShopView: View {
                 
                 userPlantManager.userPlants.append(newPlant)
                 userPlantManager.currentPlant = newPlant
-
+                
                 print("Added and set new plant: \(newPlant.basePlant.species)")
             }.eraseToAnyView()
         } else {
             return EmptyView().eraseToAnyView()
         }
     }
-
+    
     private func dismissPopup() {
         withAnimation {
             showPopUp = false
@@ -113,7 +117,7 @@ extension View {
 }
 
 #Preview {
-    PlantShopView(plants: BasePlantModel.allPlants)
+    PlantShopView()
         .padding(.horizontal, 30)
         .environmentObject(UserModel.shared)
 }

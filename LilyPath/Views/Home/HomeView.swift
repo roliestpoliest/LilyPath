@@ -173,12 +173,12 @@ struct HomeViewActions: View {
     @EnvironmentObject var userPlantManager: UserPlantManager
     @Environment(\.modelContext) private var context
     @Query private var currencyModels: [CurrencyModel] // Fetch CurrencyModel
+    @Query private var basePlants: [BasePlantModel] // Fetch BasePlantModel instances dynamically
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
             NavigationLink(
-                destination: PlantShopView(
-                    plants: BasePlantModel.allPlants)
+                destination: PlantShopView()
             ) {
                 IconWithText(
                     icon: .newPlant,
@@ -219,9 +219,10 @@ struct HomeViewActions: View {
             return
         }
         
-        if currencyModel.waterPoints >= 1000
-            && userPlantManager.currentPlant?.status != .completed
-        {
+        if currencyModel.waterPoints >= 1000,
+           let currentPlant = userPlantManager.currentPlant,
+           currentPlant.status != .completed {
+            
             userPlantManager.waterCurrentPlant()
             currencyModel.waterPoints -= 1000 // Subtract 1000 water points
             
@@ -236,7 +237,6 @@ struct HomeViewActions: View {
         }
     }
 }
-
 struct IconWithText: View {
     let icon: Icon
     let color: Color

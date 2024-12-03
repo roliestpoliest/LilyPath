@@ -1,31 +1,27 @@
-//
-//  UserPlant.swift
-//  LilyPath
-//
-//  Created by Chelsea Nguyen on 9/30/24.
-//
-
 import SwiftUI
+import SwiftData
 
-class UserPlantModel: Identifiable, ObservableObject {
-    enum PlantStatus: String {
+@Model
+class UserPlantModel: ObservableObject, Identifiable {
+    enum PlantStatus: String, Codable {
         case growing = "Growing"
         case completed = "Completed"
         case wilted = "Wilted"
     }
     
-    let id = UUID()
-    let basePlant: BasePlantModel
-    @Published var plantDate: Date
-    @Published var completionDate: Date?
-    @Published var lastWateredDate: Date?
-    @Published var currentStage: Int
-    @Published var watersCollected: Int
-    @Published var numberOfRevives: Int
-    @Published var status: PlantStatus
-    @Published var isCurrent: Bool
+    // Properties
+    var id: UUID
+    var basePlant: BasePlantModel // Reference to the immutable base plant
+    var plantDate: Date
+    var completionDate: Date?
+    var lastWateredDate: Date?
+    var currentStage: Int
+    var watersCollected: Int
+    var numberOfRevives: Int
+    var status: PlantStatus
+    var isCurrent: Bool
     
-    // 1 water = 1000 water points = 1000 steps
+    // Computed Properties
     var stepsCollected: Int {
         return watersCollected * 1000
     }
@@ -36,7 +32,8 @@ class UserPlantModel: Identifiable, ObservableObject {
         }
         
         return min(
-            Double(stepsCollected) / Double(basePlant.overallStepGoal), 1.0)
+            Double(stepsCollected) / Double(basePlant.overallStepGoal), 1.0
+        )
     }
     
     var stageProgress: Double {
@@ -45,7 +42,8 @@ class UserPlantModel: Identifiable, ObservableObject {
         }
         
         return min(
-            Double(stepsInCurrentStage) / Double(currentStageGoal), 1.0)
+            Double(stepsInCurrentStage) / Double(currentStageGoal), 1.0
+        )
     }
     
     var stepsInCurrentStage: Int {
@@ -78,6 +76,31 @@ class UserPlantModel: Identifiable, ObservableObject {
         return basePlant.stageImages[currentStage - 1]
     }
     
+    // Initializer
+    init(
+        basePlant: BasePlantModel,
+        plantDate: Date = Date(),
+        completionDate: Date? = nil,
+        currentStage: Int = 1,
+        watersCollected: Int = 0,
+        lastWateredDate: Date? = nil,
+        numberOfRevives: Int = 0,
+        isCurrent: Bool = true,
+        status: PlantStatus = .growing
+    ) {
+        self.id = UUID()
+        self.basePlant = basePlant
+        self.plantDate = plantDate
+        self.completionDate = completionDate
+        self.currentStage = currentStage
+        self.watersCollected = watersCollected
+        self.lastWateredDate = lastWateredDate
+        self.numberOfRevives = numberOfRevives
+        self.isCurrent = isCurrent
+        self.status = status
+    }
+    
+    // Methods
     func waterPlant() {
         guard currentStage < basePlant.stageStepGoals.count else { return }
         
@@ -101,27 +124,5 @@ class UserPlantModel: Identifiable, ObservableObject {
                 completionDate = Date()
             }
         }
-    }
-    
-    init(
-        basePlant: BasePlantModel,
-        plantDate: Date = Date(),
-        completionDate: Date? = nil,
-        currentStage: Int = 1,
-        watersCollected: Int = 0,
-        lastWateredDate: Date? = nil,
-        numberOfRevives: Int = 0,
-        isCurrent: Bool = true,
-        status: PlantStatus = .growing
-    ) {
-        self.basePlant = basePlant
-        self.plantDate = plantDate
-        self.completionDate = completionDate
-        self.currentStage = currentStage
-        self.watersCollected = watersCollected
-        self.lastWateredDate = lastWateredDate
-        self.numberOfRevives = numberOfRevives
-        self.isCurrent = isCurrent
-        self.status = status
     }
 }

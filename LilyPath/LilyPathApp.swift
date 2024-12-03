@@ -13,66 +13,106 @@ struct LilyPathApp: App {
     @StateObject var healthManager = HealthManager()
     
     init() {
-//        clearData() // Clear existing data for testing
-        // Seed the CurrencyModel during app initialization
-        seedCurrencyModel()
+        // Uncomment the line below to clear data for testing
+        // clearData()
+        
+        // Seed the models during app initialization
+        seedInitialData()
     }
     
     var body: some Scene {
         WindowGroup {
             SplashScreenView()
                 .environmentObject(healthManager)
-                .modelContainer(for: [CurrencyModel.self, TaskModel.self])
+                .modelContainer(for: [CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self])
         }
     }
     
-    /// Function to seed a single CurrencyModel instance
-    private func seedCurrencyModel() {
+    /// Function to seed the initial data for all models
+    private func seedInitialData() {
         do {
             // Initialize the ModelContainer
-            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self)
+            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self)
             let context = modelContainer.mainContext
             
-            // Fetch existing CurrencyModel instances
-            let fetchDescriptor = FetchDescriptor<CurrencyModel>()
-            if let existingCurrency = try? context.fetch(fetchDescriptor), existingCurrency.isEmpty {
-                // If no CurrencyModel exists, create a new one
-                let currency = CurrencyModel(waterPoints: 0, gems: 0)
+            // Seed CurrencyModel
+            let currencyFetchDescriptor = FetchDescriptor<CurrencyModel>()
+            if let existingCurrencies = try? context.fetch(currencyFetchDescriptor), existingCurrencies.isEmpty {
+                let currency = CurrencyModel(waterPoints: 1000, gems: 10) // Default values
                 context.insert(currency)
-                try context.save()
                 print("CurrencyModel seeded successfully.")
             } else {
                 print("CurrencyModel already exists.")
             }
+            
+            // Seed BasePlantModel
+            let basePlantFetchDescriptor = FetchDescriptor<BasePlantModel>()
+            if let existingBasePlants = try? context.fetch(basePlantFetchDescriptor), existingBasePlants.isEmpty {
+                for plant in BasePlantModel.allPlants {
+                    context.insert(plant)
+                }
+                print("BasePlantModel seeded successfully.")
+            } else {
+                print("BasePlantModel already exists.")
+            }
+            
+            // Seed UserPlantModel
+            let userPlantFetchDescriptor = FetchDescriptor<UserPlantModel>()
+            if let existingUserPlants = try? context.fetch(userPlantFetchDescriptor), existingUserPlants.isEmpty {
+                if let firstBasePlant = BasePlantModel.allPlants.first {
+                    let userPlant = UserPlantModel(basePlant: firstBasePlant)
+                    context.insert(userPlant)
+                }
+                print("UserPlantModel seeded successfully.")
+            } else {
+                print("UserPlantModel already exists.")
+            }
+            
+            // Save changes
+            try context.save()
         } catch {
-            fatalError("Failed to seed CurrencyModel: \(error)")
+            fatalError("Failed to seed initial data: \(error)")
         }
     }
     
-    /// Function to clear all CurrencyModel and TaskModel instances
+    /// Function to clear all data for testing
     private func clearData() {
         do {
-            // Initialize the ModelContainer for both models
-            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self)
+            // Initialize the ModelContainer
+            let modelContainer = try ModelContainer(for: CurrencyModel.self, TaskModel.self, UserPlantModel.self, BasePlantModel.self)
             let context = modelContainer.mainContext
-
-            // Fetch and delete all CurrencyModel instances
+            
+            // Delete all instances of CurrencyModel
             let currencyFetchDescriptor = FetchDescriptor<CurrencyModel>()
             let currencies = try context.fetch(currencyFetchDescriptor)
             for currency in currencies {
                 context.delete(currency)
             }
-
-            // Fetch and delete all TaskModel instances
+            
+            // Delete all instances of TaskModel
             let taskFetchDescriptor = FetchDescriptor<TaskModel>()
             let tasks = try context.fetch(taskFetchDescriptor)
             for task in tasks {
                 context.delete(task)
             }
-
-            // Save changes to persist the deletion
+            
+            // Delete all instances of UserPlantModel
+            let userPlantFetchDescriptor = FetchDescriptor<UserPlantModel>()
+            let userPlants = try context.fetch(userPlantFetchDescriptor)
+            for userPlant in userPlants {
+                context.delete(userPlant)
+            }
+            
+            // Delete all instances of BasePlantModel
+            let basePlantFetchDescriptor = FetchDescriptor<BasePlantModel>()
+            let basePlants = try context.fetch(basePlantFetchDescriptor)
+            for basePlant in basePlants {
+                context.delete(basePlant)
+            }
+            
+            // Save changes
             try context.save()
-            print("All CurrencyModel and TaskModel instances have been cleared.")
+            print("All data cleared successfully.")
         } catch {
             fatalError("Failed to clear data: \(error)")
         }
