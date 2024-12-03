@@ -25,7 +25,9 @@ struct HomeView: View {
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
                     
-                    UserLevelBar()
+//                    UserLevelBar()
+                    Rectangle()
+                        .frame(height: 0)
                         .padding(.top, 20)
                         .padding(.horizontal, 5)
                     
@@ -47,36 +49,36 @@ struct HomeView: View {
     }
 }
 
-struct UserLevelBar: View {
-    @ObservedObject var userModel = UserModel.shared
-    
-    var body: some View {
-        HStack {
-            Text("Lvl \(userModel.level)")
-                .font(.customBody)
-                .foregroundColor(Color.customBrown)
-            
-            Spacer()
-            
-            ZStack {
-                ProgressBar(
-                    value: Double(userModel.xpProgress),
-                    total: Double(1),
-                    frameHeight: 30,
-                    foregroundColor: Color.darkerBlue,
-                    backgroundColor: Color.waterBlue,
-                    applyShadow: true
-                )
-                .frame(height: 40)
-                
-                Text("\(Int(userModel.xpProgress * 100))/100 XP")
-                    .font(.label)
-                    .foregroundColor(.white)
-                    .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-            }
-        }
-    }
-}
+//struct UserLevelBar: View {
+//    @ObservedObject var userModel = UserModel.shared
+//    
+//    var body: some View {
+//        HStack {
+//            Text("Lvl \(userModel.level)")
+//                .font(.customBody)
+//                .foregroundColor(Color.customBrown)
+//            
+//            Spacer()
+//            
+//            ZStack {
+//                ProgressBar(
+//                    value: Double(userModel.xpProgress),
+//                    total: Double(1),
+//                    frameHeight: 30,
+//                    foregroundColor: Color.darkerBlue,
+//                    backgroundColor: Color.waterBlue,
+//                    applyShadow: true
+//                )
+//                .frame(height: 40)
+//                
+//                Text("\(Int(userModel.xpProgress * 100))/100 XP")
+//                    .font(.label)
+//                    .foregroundColor(.white)
+//                    .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+//            }
+//        }
+//    }
+//}
 
 struct HowToPlayButton: View {
     @State private var showSheet = false
