@@ -180,24 +180,36 @@ class PopUp {
     }
     
     // MARK: level up
-    static func levelUp(plantModel: BasePlantModel, showPopUp: Binding<Bool>)
-    -> some View
-    {
-        GenericPopUpView(
+    static func levelUp(
+        currentPlant: UserPlantModel,
+        showPopUp: Binding<Bool>,
+        onLevelUp: @escaping () -> Void
+    ) -> some View {
+        let isGrowing = currentPlant.status == .growing
+
+        return GenericPopUpView(
             showPopUp: showPopUp,
-            headerText: "Level Up!",
+            headerText: isGrowing ? "Level Up!" : "CONGRATS!",
             content: {
                 HStack(spacing: 10) {
-                    plantImage(image: plantModel.stageImages[4])
+                    plantImage(image: currentPlant.basePlant.stageImages[currentPlant.currentStage])
                     
                     VStack(spacing: 15) {
-                        Text("Your \(plantModel.species) is growing!")
-                            .multilineTextAlignment(.center)
-                            .font(Font.popupBody)
-                            .foregroundColor(.customBrown)
+                        Text(
+                            isGrowing
+                            ? "Your \(currentPlant.basePlant.species) is at a new stage"
+                            : "You completed this \(currentPlant.basePlant.species)"
+                        )
+                        .multilineTextAlignment(.center)
+                        .font(Font.popupBody)
+                        .foregroundColor(.customBrown)
                         
-                        actionButton(text: "+1", icon: .gem) {
-                            print("Level Up button tapped")
+                        actionButton(
+                            text: isGrowing ? "+1" : "+\(String(currentPlant.basePlant.gemReward))",
+                            icon: .gem
+                        ) {
+                            onLevelUp()
+                            print(isGrowing ? "Level up button tapped" : "Completed button tapped")
                         }
                     }
                     .frame(width: 175)
@@ -402,10 +414,10 @@ class PopUp {
         ScrollView(showsIndicators: false) {
             VStack {
                 let myPlant1 = UserPlantModel(
-                    basePlant: .peony, currentStage: 4, watersCollected: 24
+                    basePlant: .peony, currentStage: 3, watersCollected: 24, status: .growing
                 )
                 let myPlant2 = UserPlantModel(
-                    basePlant: .lily, currentStage: 4, watersCollected: 24
+                    basePlant: .lily, currentStage: 4, watersCollected: 24, status: .completed
                 )
                 
                 PopUp.purchase(
@@ -426,8 +438,15 @@ class PopUp {
                 )
                 .frame(height: 250)
                 PopUp.levelUp(
-                    plantModel: BasePlantModel.delphinium,
-                    showPopUp: .constant(true)
+                    currentPlant: myPlant1,
+                    showPopUp: .constant(true),
+                    onLevelUp: {}
+                )
+                .frame(height: 250)
+                PopUp.levelUp(
+                    currentPlant: myPlant2,
+                    showPopUp: .constant(true),
+                    onLevelUp: {}
                 )
                 .frame(height: 250)
                 PopUp.plantStats(

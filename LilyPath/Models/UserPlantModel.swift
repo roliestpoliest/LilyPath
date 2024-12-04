@@ -7,14 +7,14 @@
 import SwiftUI
 import SwiftData
 
+enum PlantStatus: String, Codable {
+    case growing = "Growing"
+    case completed = "Completed"
+    case wilted = "Wilted"
+}
+
 @Model
 class UserPlantModel {
-    enum PlantStatus: String, Codable {
-        case growing = "Growing"
-        case completed = "Completed"
-        case wilted = "Wilted"
-    }
-    
     // Properties
     @Attribute(.unique) var id: UUID
     @Relationship(deleteRule: .cascade) var basePlant: BasePlantModel // Reference to the immutable base plant
