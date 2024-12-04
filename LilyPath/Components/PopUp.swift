@@ -118,7 +118,7 @@ class PopUp {
                                 print("Attempted to purchase with insufficient gems")
                             }
                         }
-                        .foregroundColor(hasEnoughGems ? .customBrown : .gray)
+                        .foregroundColor(.customBrown)
                     }
                 }
             }
@@ -400,9 +400,7 @@ class PopUp {
             .padding(.horizontal, 25)
             .background(Color.customBrown)
             .clipShape(Capsule())
-            .overlay(
-                isDisabled ? Capsule().fill(.lockGrey.opacity(0.5)) : nil
-            )
+            .colorMultiply(isDisabled ? .disabledLightGrey.opacity(0.6) : .white)
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
         }
         .disabled(isDisabled)
@@ -419,11 +417,17 @@ class PopUp {
                 let myPlant2 = UserPlantModel(
                     basePlant: .lily, currentStage: 4, watersCollected: 24, status: .completed
                 )
-                
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: true,
+                    onPurchase: {}
+                )
+                .frame(height: 250)
+                PopUp.purchase(
+                    plantModel: BasePlantModel.delphinium,
+                    showPopUp: .constant(true),
+                    hasEnoughGems: false,
                     onPurchase: {}
                 )
                 .frame(height: 250)

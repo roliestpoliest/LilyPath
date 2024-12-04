@@ -196,6 +196,7 @@ struct HomeViewActions: View {
     @Query private var basePlants: [BasePlantModel]
     
     @Binding var showPopUp: Bool
+    @State var canWaterPlant: Bool = false
     
     private var currentPlant: UserPlantModel? {
         let fetchDescriptor = FetchDescriptor<UserPlantModel>(
@@ -221,9 +222,11 @@ struct HomeViewActions: View {
                 IconWithText(
                     icon: .waterDrop,
                     color: Color.waterBlue,
-                    text: "Water"
+                    text: "Water",
+                    isDisabled: !canWater()
                 )
             }
+            .disabled(!canWater())
             
             NavigationLink(
                 destination: DailyTasksView()
@@ -236,6 +239,25 @@ struct HomeViewActions: View {
                 .frame(height: 160)
             }
         }
+    }
+    
+    private func canWater() -> Bool {
+        guard let currencyModel = currencyModels.first else {
+            print("No CurrencyModel found.")
+            return false
+        }
+        
+        guard let currentPlant = currentPlant else {
+            print("No current plant found.")
+            return false
+        }
+        
+        guard currencyModel.waterPoints >= 1000, currentPlant.status != .completed else {
+            print("Cannot water plant. Not enough water points or plant is already completed.")
+            return false
+        }
+        
+        return true
     }
     
     private func waterCurrentPlant() {
@@ -273,6 +295,14 @@ struct IconWithText: View {
     let icon: Icon
     let color: Color
     let text: String
+    let isDisabled: Bool
+    
+    init(icon: Icon, color: Color, text: String, isDisabled: Bool = false) {
+        self.icon = icon
+        self.color = color
+        self.text = text
+        self.isDisabled = isDisabled
+    }
     
     var body: some View {
         VStack {
@@ -282,6 +312,7 @@ struct IconWithText: View {
                 .font(Font.customBody)
                 .foregroundColor(.customBrown)
         }
+        .colorMultiply(isDisabled ? .disabledLightGrey.opacity(0.6) : .white)
     }
 }
 

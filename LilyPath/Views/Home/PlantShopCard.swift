@@ -38,7 +38,7 @@ struct PlantShopCard: View {
                             .frame(width: 62, height: 62)
                         
                         UnevenRoundedRectangle(topLeadingRadius: 8, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 8)
-                            .colorMultiply(Color.lockGrey.opacity(isLocked ? 0.4 : 0.0))
+                            .colorMultiply(.disabledLightGrey.opacity(isLocked ? 0.4 : 0.0))
                     }
                     .frame(width: 125, height: 125)
                     

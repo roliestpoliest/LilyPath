@@ -90,7 +90,7 @@ struct TaskCard: View {
         Group {
             if task.status == .inProgress {
                 Button(action: incrementProgress) {
-                    Text("Debug: +\(task.goal / 3)")
+                    Text("Debug: +\(task.goal / 2)")
                         .font(.caption)
                         .padding(5)
                         .background(Color.orange)
@@ -103,7 +103,7 @@ struct TaskCard: View {
     }
     
     func incrementProgress() {
-        let increment = task.goal / 3
+        let increment = task.goal / 2
         task.userProgress = min(task.userProgress + increment, task.goal)
         
         if task.userProgress >= task.goal {
@@ -135,7 +135,7 @@ struct RewardItem: View {
 
 struct TaskButton: View {
     var status: TaskStatus
-    var collected: Bool // Accept collected as a parameter
+    var collected: Bool
     var onCollect: () -> Void
     
     var body: some View {
@@ -163,7 +163,7 @@ struct TaskButton: View {
         }
         switch status {
         case .inProgress:
-            return Color.lockGrey.opacity(0.3)
+            return Color.disabledDarkGrey
         case .collect:
             return Color.lightBlue
         case .completed:
