@@ -22,7 +22,7 @@ struct TaskCard: View {
         .frame(height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
-        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
+//        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
     }
     
     var taskAndProgress: some View {
@@ -46,7 +46,7 @@ struct TaskCard: View {
             rewards
                 .padding(.horizontal)
             
-            TaskButton(status: task.status, onCollect: collectRewards)
+            TaskButton(status: task.status, collected: task.collected, onCollect: collectRewards) // Pass collected
         }
     }
     
@@ -64,12 +64,19 @@ struct TaskCard: View {
             return
         }
         
+        // Check if rewards have already been collected
+        guard !task.collected else {
+            print("Rewards already collected for this task.")
+            return
+        }
+        
         // Add task rewards to the CurrencyModel
         currencyModel.waterPoints += task.waterPointReward
         currencyModel.gems += task.gemReward
         
-        // Update task status to completed
+        // Update task status to completed and mark as collected
         task.status = .completed
+        task.collected = true
         
         do {
             try context.save()
@@ -128,11 +135,12 @@ struct RewardItem: View {
 
 struct TaskButton: View {
     var status: TaskStatus
+    var collected: Bool // Accept collected as a parameter
     var onCollect: () -> Void
     
     var body: some View {
         Button(action: handleCollect) {
-            Text(status.rawValue)
+            Text(collected ? "Collected" : status.rawValue)
                 .font(.customBody)
                 .frame(maxWidth: .infinity)
                 .foregroundColor(buttonTextColor)
@@ -144,12 +152,15 @@ struct TaskButton: View {
     }
     
     private func handleCollect() {
-        if status == .collect {
+        if status == .collect && !collected {
             onCollect()
         }
     }
     
     private var buttonBackgroundColor: Color {
+        if collected {
+            return Color.darkerGreen
+        }
         switch status {
         case .inProgress:
             return Color.lockGrey.opacity(0.3)
@@ -161,6 +172,9 @@ struct TaskButton: View {
     }
     
     private var buttonTextColor: Color {
+        if collected {
+            return Color.lightGreen
+        }
         switch status {
         case .inProgress:
             return Color.gray
@@ -172,34 +186,6 @@ struct TaskButton: View {
     }
     
     private var isButtonDisabled: Bool {
-        return status == .inProgress || status == .completed
+        return collected || status == .inProgress || status == .completed
     }
 }
-
-//struct TaskListView: View {
-//    @Query private var tasks: [TaskModel]
-//    @Query private var currencyModels: [CurrencyModel]
-//    
-//    var body: some View {
-//        List {
-//            ForEach(tasks) { task in
-//                TaskCard(task: task)
-//            }
-//        }
-//    }
-//}
-
-//#Preview {
-//    let sampleTask = TaskModel(
-//        type: .climb,
-//        goal: 12,
-//        waterPointReward: 1000,
-//        gemReward: 3,
-//        userProgress: 12,
-//        status: .collect
-//    )
-//
-//    TaskCard(task: sampleTask)
-//        .padding(30)
-//        .background(Color.mainBackground)
-//}

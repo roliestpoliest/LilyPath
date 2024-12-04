@@ -17,15 +17,17 @@ class TaskModel: Identifiable {
     var gemReward: Int
     var userProgress: Int
     var status: TaskStatus
+    var collected: Bool = false // New attribute
     var timestamp: Date = Date()
-
-    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, userProgress: Int = 0, status: TaskStatus = .inProgress) {
+    
+    init(type: TaskType, goal: Int, waterPointReward: Int, gemReward: Int, userProgress: Int = 0, status: TaskStatus = .inProgress, collected: Bool = false) {
         self.type = type
         self.goal = goal
         self.waterPointReward = waterPointReward
         self.gemReward = gemReward
         self.userProgress = userProgress
         self.status = status
+        self.collected = collected
     }
     
     var taskName: String {
@@ -89,6 +91,6 @@ extension TaskType {
     )
     
     static let allTasks: [TaskType] = [
-        .walk, .distance, .climb, .sleep, .calories,
+        .walk, .calories, .climb, .sleep, .distance,
     ]
 }
