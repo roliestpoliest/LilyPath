@@ -252,8 +252,13 @@ struct HomeViewActions: View {
             return false
         }
         
-        guard currencyModel.waterPoints >= 1000, currentPlant.status != .completed else {
-            print("Cannot water plant. Not enough water points or plant is already completed.")
+        guard currencyModel.waterPoints >= 1000 else {
+            print("Not enough water points to water the plant.")
+            return false
+        }
+        
+        guard currentPlant.status != .completed else {
+            print("Plant is already completed.")
             return false
         }
         
@@ -261,20 +266,10 @@ struct HomeViewActions: View {
     }
     
     private func waterCurrentPlant() {
-        guard let currencyModel = currencyModels.first else {
-            print("No CurrencyModel found.")
-            return
-        }
+        guard canWater() else { return }
         
-        guard let currentPlant = currentPlant else {
-            print("No current plant found.")
-            return
-        }
-        
-        guard currencyModel.waterPoints >= 1000, currentPlant.status != .completed else {
-            print("Cannot water plant. Not enough water points or plant is already completed.")
-            return
-        }
+        guard let currencyModel = currencyModels.first,
+              let currentPlant = currentPlant else { return }
         
         // Perform watering and deduct water points
         let isNextStage = currentPlant.waterPlant()
