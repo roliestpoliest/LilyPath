@@ -84,7 +84,7 @@ class PopUp {
     static func purchase(
         plantModel: BasePlantModel,
         showPopUp: Binding<Bool>,
-        hasEnoughGems: Bool, // New parameter
+        hasEnoughGems: Bool,
         onPurchase: @escaping () -> Void
     ) -> some View {
         GenericPopUpView(
@@ -108,17 +108,17 @@ class PopUp {
                         actionButton(
                             text: String(plantModel.price),
                             icon: .gem,
-                            isDisabled: !hasEnoughGems // Disable if not enough gems
+                            isDisabled: !hasEnoughGems
                         ) {
                             if hasEnoughGems {
-                                onPurchase()  // Trigger purchase logic
-                                showPopUp.wrappedValue = false  // Close popup
+                                onPurchase()
+                                showPopUp.wrappedValue = false
                                 print("Purchase button tapped")
                             } else {
                                 print("Attempted to purchase with insufficient gems")
                             }
                         }
-                        .foregroundColor(hasEnoughGems ? .customBrown : .gray) // Grey out button if disabled
+                        .foregroundColor(hasEnoughGems ? .customBrown : .gray)
                     }
                 }
             }
@@ -192,7 +192,7 @@ class PopUp {
             headerText: isGrowing ? "Level Up!" : "CONGRATS!",
             content: {
                 HStack(spacing: 10) {
-                    plantImage(image: currentPlant.basePlant.stageImages[currentPlant.currentStage])
+                    plantImage(image: currentPlant.currentImage)
                     
                     VStack(spacing: 15) {
                         Text(

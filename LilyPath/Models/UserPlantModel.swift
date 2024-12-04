@@ -96,22 +96,26 @@ class UserPlantModel {
             return "Wilt"
         }
         
+        if currentStage > basePlant.stageImages.count {
+            return basePlant.stageImages[basePlant.stageImages.count - 1]
+        }
+        
         return basePlant.stageImages[currentStage - 1]
     }
     
     // Methods
-    func waterPlant() {
-        guard currentStage < basePlant.stageStepGoals.count else { return }
+    func waterPlant() -> Bool {
+        guard currentStage < basePlant.stageStepGoals.count else { return false }
         
         watersCollected += 1
         lastWateredDate = Date()
         
         print("Watered \(basePlant.species) - \(watersCollected) waters")
         
-        checkNextStage()
+        return isNextStage()
     }
     
-    func checkNextStage() {
+    func isNextStage() -> Bool {
         if stepsInCurrentStage >= currentStageGoal {
             currentStage += 1
             
@@ -119,6 +123,10 @@ class UserPlantModel {
                 status = .completed
                 completionDate = Date()
             }
+            
+            return true
         }
+        
+        return false
     }
 }

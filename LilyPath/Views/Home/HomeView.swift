@@ -9,6 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @Query(
+        filter: #Predicate { (plant: UserPlantModel) in
+            plant.isCurrent == true
+        }
+    )
+    private var currentPlants: [UserPlantModel]
+    
+    @Query private var currencyModels: [CurrencyModel]
+    
+    @State var showPopUp: Bool = false
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -23,7 +34,6 @@ struct HomeView: View {
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
                     
-//                    UserLevelBar()
                     Rectangle()
                         .frame(height: 0)
                         .padding(.top, 20)
@@ -33,7 +43,7 @@ struct HomeView: View {
                         CurrentPlantDisplay()
                             .padding(.horizontal)
                         
-                        HomeViewActions()
+                        HomeViewActions(showPopUp: $showPopUp)
                             .offset(y: -50)
                     }
                     .padding(.top, 20)
@@ -45,39 +55,42 @@ struct HomeView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .environment(\.modelContext, AppModelContainer.shared.container.mainContext)
+        .overlay(
+            ZStack {
+                if showPopUp {
+                    Color.mainBackground.opacity(0.4)
+                        .ignoresSafeArea()
+
+                    if let currentPlant = currentPlants.first {
+                        PopUp.levelUp(currentPlant: currentPlant, showPopUp: $showPopUp) {
+                                onLevelUp()
+                        }
+                    }
+                }
+            }.animation(.easeInOut, value: showPopUp)
+        )
+    }
+    
+    func onLevelUp() {
+        showPopUp = false
+
+        guard let currentPlant = currentPlants.first else {
+            print("No current plant found.")
+            return
+        }
+
+        guard let currencyModel = currencyModels.first else {
+            print("No CurrencyModel found.")
+            return
+        }
+
+        if currentPlant.status == .growing {
+            currencyModel.gems += 1
+        } else if currentPlant.status == .completed {
+            currencyModel.gems += currentPlant.basePlant.gemReward
+        }
     }
 }
-
-//struct UserLevelBar: View {
-//    @ObservedObject var userModel = UserModel.shared
-//    
-//    var body: some View {
-//        HStack {
-//            Text("Lvl \(userModel.level)")
-//                .font(.customBody)
-//                .foregroundColor(Color.customBrown)
-//            
-//            Spacer()
-//            
-//            ZStack {
-//                ProgressBar(
-//                    value: Double(userModel.xpProgress),
-//                    total: Double(1),
-//                    frameHeight: 30,
-//                    foregroundColor: Color.darkerBlue,
-//                    backgroundColor: Color.waterBlue,
-//                    applyShadow: true
-//                )
-//                .frame(height: 40)
-//                
-//                Text("\(Int(userModel.xpProgress * 100))/100 XP")
-//                    .font(.label)
-//                    .foregroundColor(.white)
-//                    .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-//            }
-//        }
-//    }
-//}
 
 struct HowToPlayButton: View {
     @State private var showSheet = false
@@ -119,12 +132,12 @@ struct CurrentPlantDisplay: View {
             plant.isCurrent == true
         }
     )
-    private var currentPlants: [UserPlantModel] // Real-time query for the current plant
+    private var currentPlants: [UserPlantModel]
     
     let lineThickness: CGFloat = 18
 
     var body: some View {
-        if let currentPlant = currentPlants.first { // Take the first current plant if it exists
+        if let currentPlant = currentPlants.first {
             VStack {
                 Text(currentPlant.basePlant.species)
                     .font(.viewTitle)
@@ -181,6 +194,8 @@ struct HomeViewActions: View {
     @Environment(\.modelContext) private var context
     @Query private var currencyModels: [CurrencyModel]
     @Query private var basePlants: [BasePlantModel]
+    
+    @Binding var showPopUp: Bool
     
     private var currentPlant: UserPlantModel? {
         let fetchDescriptor = FetchDescriptor<UserPlantModel>(
@@ -240,8 +255,10 @@ struct HomeViewActions: View {
         }
         
         // Perform watering and deduct water points
-        currentPlant.waterPlant()
+        let isNextStage = currentPlant.waterPlant()
         currencyModel.waterPoints -= 1000
+        
+        showPopUp = isNextStage
         
         do {
             try context.save()
