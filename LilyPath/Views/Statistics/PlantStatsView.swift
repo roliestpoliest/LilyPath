@@ -1,3 +1,4 @@
+// TODO: DELETE UNUSED FILE
 //
 //  PlantStatsView.swift
 //  LilyPath
@@ -5,7 +6,7 @@
 //  Created by Chelsea Nguyen on 10/21/24.
 //
 
-import SwiftUI
+//import SwiftUI
 
 //struct PlantStatsView: View {
 //    @State private var selectedTimePeriod: TimePeriod = .daily

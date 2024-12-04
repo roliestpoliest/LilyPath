@@ -41,6 +41,7 @@
 		822FF6FF2CB1154000F8F5DC /* BasePlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */; };
 		822FF7002CB1154000F8F5DC /* UserPlantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */; };
 		822FF7022CB118EC00F8F5DC /* PopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822FF7012CB118EC00F8F5DC /* PopUp.swift */; };
+		82363ADF2D0019BE000223C8 /* ChartPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82363ADE2D0019BE000223C8 /* ChartPeriod.swift */; };
 		823A18802CC9B20E00289917 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A187F2CC9B20E00289917 /* ChartsView.swift */; };
 		823A18822CC9B28000289917 /* FitnessStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */; };
 		823A18862CC9B96600289917 /* MetricType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823A18852CC9B96600289917 /* MetricType.swift */; };
@@ -119,6 +120,7 @@
 		822FF6FD2CB1154000F8F5DC /* BasePlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlantModel.swift; sourceTree = "<group>"; };
 		822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlantModel.swift; sourceTree = "<group>"; };
 		822FF7012CB118EC00F8F5DC /* PopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUp.swift; sourceTree = "<group>"; };
+		82363ADE2D0019BE000223C8 /* ChartPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriod.swift; sourceTree = "<group>"; };
 		823A187F2CC9B20E00289917 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
 		823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsDetailView.swift; sourceTree = "<group>"; };
 		823A18852CC9B96600289917 /* MetricType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricType.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		2306B1522CADD2FB00ECC155 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				82363ADE2D0019BE000223C8 /* ChartPeriod.swift */,
 				823A18852CC9B96600289917 /* MetricType.swift */,
 				23F44A812CC7619300721D6E /* NumberFormatter.swift */,
 				231DE64B2CB3AA4F008EFABA /* Tabs.swift */,
@@ -510,6 +513,7 @@
 				8298A1192CAA04430062563F /* StatisticsView.swift in Sources */,
 				82D166002CB4F4C000A91D5E /* ImageModifier.swift in Sources */,
 				23F44A8E2CC8FD5900721D6E /* FitnessStatsManager.swift in Sources */,
+				82363ADF2D0019BE000223C8 /* ChartPeriod.swift in Sources */,
 				8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */,
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */,
