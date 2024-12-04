@@ -58,7 +58,7 @@ struct StatisticsView: View {
                     await fetchMetricDataForSelectedTypeAndPeriod()
                 }
             }
-            .onChange(of: selectedTimePeriod) { _ in
+            .onChange(of: selectedTimePeriod) {
                 updateChartPeriod()
                 Task {
                     await fetchMetricDataForSelectedTypeAndPeriod()
