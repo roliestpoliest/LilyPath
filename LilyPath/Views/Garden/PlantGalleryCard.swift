@@ -50,11 +50,14 @@ struct PlantGalleryCard: View {
                                 )
                                 .foregroundColor(.lightGreen)
                                 
+                                let stageProgress: Double = userPlantModel.currentStage == 5
+                                    ? 1 // Mark as full progress for final stage 5
+                                    : Double(userPlantModel.stepsInCurrentStage)
+                                
                                 ProgressBar(
-                                    value: Double(
-                                        userPlantModel.stepsInCurrentStage),
-                                    total: Double(
-                                        userPlantModel.currentStageGoal))
+                                    value: stageProgress,
+                                    total: Double(userPlantModel.currentStageGoal)
+                                )
                             }
                             .padding(.horizontal, 10)
                         }
@@ -73,5 +76,17 @@ struct PlantGalleryCard: View {
 }
 
 #Preview {
-
+    let plant1 = UserPlantModel(
+        basePlant: BasePlantModel.lily,
+        currentStage: 1,
+        watersCollected: 1000
+    )
+    
+    let plant2 = UserPlantModel(
+        basePlant: BasePlantModel.lily,
+        currentStage: 1
+    )
+    
+    PlantGalleryCard(userPlantModel: plant1)
+    PlantGalleryCard(userPlantModel: plant2)
 }

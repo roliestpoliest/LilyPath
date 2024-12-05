@@ -122,19 +122,35 @@ struct CurrentPlantView: View {
                     .padding(.leading, 10)
                 
                 VStack(alignment: .leading) {
-                    Text(currentPlant.basePlant.species)
-                        .font(.currentPlant)
-                        .foregroundColor(.white)
+                    HStack {
+                        Text(currentPlant.basePlant.species)
+                            .font(.currentPlant)
+                            .foregroundColor(.white)
+                    }
                     
                     HStack {
+                        Image(
+                            systemName:
+                                "\(currentPlant.currentStage).circle.fill"
+                        )
+                        .foregroundColor(.lightGreen)
+                        .bold()
+                        
+                        let stepsInCurrentStage: Double = currentPlant.currentStage == 5
+                            ? 1 // Mark as full steps for final stage 5
+                            : Double(currentPlant.stepsInCurrentStage)
+                        
                         ProgressBar(
-                            value: Double(currentPlant.stepsInCurrentStage),
+                            value: stepsInCurrentStage,
                             total: Double(currentPlant.currentStageGoal),
                             frameHeight: 16
                         )
-                        .padding(.bottom, 5)
                         
-                        Text("\(Int(currentPlant.stageProgress * 100))%")
+                        let stageProgress = currentPlant.currentStage == 5
+                            ? 100 // Mark as full progress for final stage 5
+                            : (currentPlant.stageProgress * 100)
+                        
+                        Text("\(Int(stageProgress))%")
                             .font(Font.label)
                             .foregroundColor(.white)
                             .frame(width: 35)

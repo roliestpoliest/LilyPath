@@ -40,8 +40,10 @@ struct TaskCard: View {
                 .layoutPriority(1)
             
             ProgressBar(
-                value: Double(task.userProgress), total: Double(task.goal),
-                frameHeight: 11)
+                value: Double(task.userProgress),
+                total: Double(task.goal),
+                frameHeight: 11
+            )
         }
     }
     

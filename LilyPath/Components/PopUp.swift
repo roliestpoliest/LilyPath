@@ -300,9 +300,12 @@ class PopUp {
                             .font(.stageLabel)
                             .layoutPriority(1)
                         
+                        let stageProgress: Double = swappablePlantModel.currentStage == 5
+                            ? 1 // Mark as full progress for final stage 5
+                            : Double(swappablePlantModel.stepsInCurrentStage)
+                        
                         ProgressBar(
-                            value: Double(
-                                swappablePlantModel.stepsInCurrentStage),
+                            value: stageProgress,
                             total: Double(swappablePlantModel.currentStageGoal)
                         )
                         .frame(maxWidth: .infinity)

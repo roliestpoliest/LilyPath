@@ -89,6 +89,7 @@ struct UserCurrencyBar: View {
                     .frame(width: 39, height: 39)
                 
                 IconImage(icon: .plus, height: 40, color: .customPink)
+                    .bold()
             }
         }
     }
