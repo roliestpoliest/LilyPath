@@ -22,7 +22,7 @@ struct TaskCard: View {
         .frame(height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
-//        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
+        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
     }
     
     var taskAndProgress: some View {

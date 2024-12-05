@@ -50,6 +50,7 @@
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
 		8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF202CC62BC900455EC4 /* HealthManager.swift */; };
 		8280FF232CC63B4D00455EC4 /* ActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF222CC63B4D00455EC4 /* ActivityModel.swift */; };
+		8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8284012B2D015A520006F8DA /* PlantStatsCard.swift */; };
 		828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828897642CAE40D10089C5DD /* PlantShopCard.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
 		8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E72CA9F65B0062563F /* ContentView.swift */; };
@@ -130,6 +131,7 @@
 		8280FF1F2CC60EA000455EC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8280FF202CC62BC900455EC4 /* HealthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		8280FF222CC63B4D00455EC4 /* ActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModel.swift; sourceTree = "<group>"; };
+		8284012B2D015A520006F8DA /* PlantStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsCard.swift; sourceTree = "<group>"; };
 		828897642CAE40D10089C5DD /* PlantShopCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopCard.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8298A0E52CA9F65B0062563F /* LilyPathApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LilyPathApp.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
 				823A18812CC9B28000289917 /* FitnessStatsDetailView.swift */,
 				23F44A872CC8F14500721D6E /* StatsCard.swift */,
+				8284012B2D015A520006F8DA /* PlantStatsCard.swift */,
 				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 				8258D9CE2CC9989400E04273 /* TempStatsView.swift */,
 				823A18872CCA17E800289917 /* AggregateHealthDataView.swift */,
@@ -498,6 +501,7 @@
 			files = (
 				23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */,
 				2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */,
+				8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */,
 				2353BDAD2CC7183F0019412C /* TimePeriodPicker.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */,

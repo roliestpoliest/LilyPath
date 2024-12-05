@@ -94,9 +94,9 @@ struct OvalCurrencyDisplay: View {
     }
 }
 
-#Preview {
-    let mockCurrency = CurrencyModel(waterPoints: 1200, gems: 45)
-    
-    UserCurrencyBar()
-        .modelContainer(for: [CurrencyModel.self])
-}
+//#Preview {
+//    let mockCurrency = CurrencyModel(waterPoints: 1200, gems: 45)
+//    
+//    UserCurrencyBar()
+//        .modelContainer(for: [CurrencyModel.self])
+//}
