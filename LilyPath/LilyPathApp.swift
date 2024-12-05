@@ -38,7 +38,7 @@ struct LilyPathApp: App {
             // Seed CurrencyModel
             let currencyFetchDescriptor = FetchDescriptor<CurrencyModel>()
             if let existingCurrencies = try? context.fetch(currencyFetchDescriptor), existingCurrencies.isEmpty {
-                let currency = CurrencyModel(waterPoints: 1000, gems: 10) // Default values
+                let currency = CurrencyModel(waterPoints: 1000, gems: 5) // Default values
                 context.insert(currency)
                 print("CurrencyModel seeded successfully.")
             } else {

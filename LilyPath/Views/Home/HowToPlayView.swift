@@ -52,6 +52,8 @@ struct HowToPlayView: View {
 
     private var rules: [String] {
         [
+            "Welcome to Lily Path!",
+            "As a welcome gift, you’ve received a Lily, 1000 water points, and 5 gems to help you get started on your journey.",
             "Take walks to grow your plant – every step counts!",
             "Convert your steps into water points – 1 step equals 1 water point.",
             "Collect 1,000 water points to water your plant.",
