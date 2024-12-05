@@ -9,10 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Query private var currencyModels: [CurrencyModel]
-    
-    @EnvironmentObject var healthManager: HealthManager
-    
     @State private var selectedTab: Tabs = .home
     @State var unconvertedSteps: Int = 0
 
@@ -26,7 +22,6 @@ struct ContentView: View {
                     .tag(Tabs.home)
                 
                 StatisticsView()
-                    .environmentObject(healthManager)
                     .tag(Tabs.stats)
             }
             TabBar(selectedTab: $selectedTab)

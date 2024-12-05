@@ -30,6 +30,10 @@ struct HomeView: View {
                 Color.mainBackground
                     .ignoresSafeArea(.all)
                 
+                // Hidden text to trigger unconvertedSteps updates on home
+                Text("\(unconvertedSteps)")
+                    .hidden()
+                
                 VStack {
                     HStack {
                         HowToPlayButton()

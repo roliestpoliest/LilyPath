@@ -77,12 +77,10 @@ struct UserCurrencyBar: View {
     private func addWaterPointsButton() -> some View {
         Button {
             Task {
-                let steps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
-                DispatchQueue.main.async {
-                    unconvertedSteps = steps
-                    print("Fetched unconverted steps: \(unconvertedSteps)")
-                    showPopUp = true // Toggle only after update
-                }
+                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
+                print("Fetched unconverted steps: \(unconvertedSteps)")
+                
+                showPopUp = true
             }
         } label: {
             ZStack {
