@@ -8,9 +8,10 @@
 import SwiftUI
 
 enum Icon: String {
-    // MARK: - Currency
+    // MARK: - Currency Bar
     case waterDrop = "drop.fill"
     case gem = "gem"
+    case plus = "plus.circle.fill"
     
     // MARK: - X
     case x = "xmark.circle.fill"

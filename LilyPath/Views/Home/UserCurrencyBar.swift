@@ -5,11 +5,11 @@
 //  Created by Chelsea Nguyen on 10/23/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct UserCurrencyBar: View {
-    @Query private var currency: [CurrencyModel] // Fetch the single CurrencyModel instance
+    @Query private var currency: [CurrencyModel]
     
     var body: some View {
         VStack {
@@ -17,12 +17,13 @@ struct UserCurrencyBar: View {
                 Spacer()
                 
                 if let currentCurrency = currency.first {
-                    OvalDisplay(
+                    OvalCurrencyDisplay(
                         icon: .waterDrop,
-                        value: currentCurrency.waterPoints
+                        value: currentCurrency.waterPoints,
+                        canAdd: true
                     )
                     
-                    OvalDisplay(
+                    OvalCurrencyDisplay(
                         icon: .gem,
                         value: currentCurrency.gems
                     )
@@ -36,32 +37,54 @@ struct UserCurrencyBar: View {
     }
 }
 
-struct OvalDisplay: View {
+struct OvalCurrencyDisplay: View {
     let icon: Icon
     let value: Int
+    let canAdd: Bool
+    
+    init(icon: Icon, value: Int, canAdd: Bool = false) {
+        self.icon = icon
+        self.value = value
+        self.canAdd = canAdd
+    }
     
     var body: some View {
-        HStack(spacing: 8) {
-            IconImage(icon: icon, height: 20, color: .waterBlue)
+        ZStack(alignment: .trailing) {
+            HStack(spacing: 8) {
+                IconImage(icon: icon, height: 20, color: .waterBlue)
+                
+                Text("\(formatNumber(value))")
+                    .foregroundColor(.white)
+                    .font(.customBody)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 15)
+            .padding(.trailing, canAdd ? 30 : 0)
+            .background(
+                Capsule()
+                    .fill(Color.customBrown)
+                    .overlay(
+                        Capsule()
+                            .inset(by: 2.5)
+                            .stroke(Color.customPink, lineWidth: 5)
+                    )
+                    .shadow(
+                        radius: ShadowConstants.radius,
+                        y: ShadowConstants.yOffset)
+            )
             
-            Text("\(formatNumber(value))")
-                .foregroundColor(.white)
-                .font(.customBody)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
+            if canAdd {
+                Button {
+                    print("Tapped add water points")
+                } label: {
+                    IconImage(icon: .plus, height: 40, color: .customPink)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                }
+            }
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 15)
-        .background(
-            Capsule()
-                .fill(Color.customBrown)
-                .overlay(
-                    Capsule()
-                        .inset(by: 2.5)
-                        .stroke(Color.customPink, lineWidth: 5)
-                )
-                .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
-        )
     }
     
     private func formatNumber(_ value: Int) -> String {
@@ -72,8 +95,8 @@ struct OvalDisplay: View {
 }
 
 #Preview {
-    // Simulate the CurrencyModel for preview
     let mockCurrency = CurrencyModel(waterPoints: 1200, gems: 45)
+    
     UserCurrencyBar()
-        .modelContainer(for: [CurrencyModel.self]) // Attach the model container for the preview
+        .modelContainer(for: [CurrencyModel.self])
 }
