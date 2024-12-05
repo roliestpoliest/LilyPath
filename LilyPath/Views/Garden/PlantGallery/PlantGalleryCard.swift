@@ -22,20 +22,30 @@ struct PlantGalleryCard: View {
                     
                     VStack {
                         Spacer()
+                        
                         ZStack {
                             UnevenRoundedRectangle(
                                 topLeadingRadius: 8, bottomLeadingRadius: 0,
                                 bottomTrailingRadius: 0, topTrailingRadius: 8
                             )
                             .fill(Color.lightBlue)
-                            .frame(width: 125, height: 125)
+                            
                             Spacer()
+                            
                             Image(userPlantModel.currentImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 45, height: 65)
                             
+                            if userPlantModel.isCurrent {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.darkGreen)
+                                    .font(Font.statsCard)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                    .offset(x: 8, y: 8)
+                            }
                         }
+                        .frame(width: 125, height: 125)
                         .padding(.top, 5)
                         
                         Spacer()
@@ -79,12 +89,14 @@ struct PlantGalleryCard: View {
     let plant1 = UserPlantModel(
         basePlant: BasePlantModel.lily,
         currentStage: 1,
-        watersCollected: 1000
+        watersCollected: 1000,
+        isCurrent: false
     )
     
     let plant2 = UserPlantModel(
         basePlant: BasePlantModel.lily,
-        currentStage: 1
+        currentStage: 1,
+        isCurrent: true
     )
     
     PlantGalleryCard(userPlantModel: plant1)
