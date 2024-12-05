@@ -272,6 +272,22 @@ class PopUp {
                             value: "\(Int((swappablePlantModel.overallProgress) * 100))%"
                         )
                     }
+                    
+                    HStack(spacing: 30) {
+                        ForEach(swappablePlantModel.basePlant.stageImages, id: \.self) { imageName in
+                            Image(imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25, height: 40, alignment: .bottom)
+                                .colorMultiply(
+                                    imageName <= swappablePlantModel.currentImage
+                                    ? .white
+                                    : .disabledDarkGrey.opacity(0.5)
+                                )
+                        }
+                    }
+                    .padding(5)
+                    .padding(.top, 10)
 
                     if showSwapButton {
                         actionButton(text: "Swap to Current") {
@@ -285,7 +301,7 @@ class PopUp {
                 .padding()
             },
             width: 300,
-            height: 310 + additionalHeight
+            height: 380 + additionalHeight
         )
     }
     
