@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
-import HealthKit
 
 struct Activity {
     let id: Int

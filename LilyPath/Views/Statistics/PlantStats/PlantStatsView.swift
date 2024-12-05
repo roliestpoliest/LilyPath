@@ -28,49 +28,21 @@ struct PlantStatsView: View {
 
                 ScrollView {
                     VStack(spacing: 30) {
-                        NavigationLink(
-                            destination: PlantStatsDetailView(
-                                title: "Plants Completed",
-                                action: "Completed",
-                                plants: completedPlants
-                            )
-                        ) {
-                            PlantStatsCard(
-                                stat: "Plants Completed",
-                                value: completedPlants.count,
-                                icon: .garden
-                            )
-                            .darkCustomShadow()
-                        }
-
-                        NavigationLink(
-                            destination: PlantStatsDetailView(
-                                title: "Plants Watered",
-                                action: "Last watered",
-                                plants: wateredPlants
-                            )
-                        ) {
-                            PlantStatsCard(
-                                stat: "Plants Watered",
-                                value: wateredPlants.count,
-                                icon: .waterDrop
-                            )
-                            .darkCustomShadow()
-                        }
-
-                        NavigationLink(
-                            destination: PlantStatsDetailView(
-                                title: "Seeds Planted",
-                                action: "Planted",
-                                plants: seedsPlanted
-                            )
-                        ) {
-                            PlantStatsCard(
-                                stat: "Seeds Planted",
-                                value: seedsPlanted.count,
-                                icon: .newPlant
-                            )
-                            .darkCustomShadow()
+                        ForEach(plantStats, id: \.title) { stat in
+                            NavigationLink(
+                                destination: PlantStatsDetailView(
+                                    title: stat.title,
+                                    action: stat.action,
+                                    plants: stat.plants
+                                )
+                            ) {
+                                PlantStatsCard(
+                                    stat: stat.title,
+                                    value: stat.plants.count,
+                                    icon: stat.icon
+                                )
+                                .darkCustomShadow()
+                            }
                         }
                     }
                 }
@@ -79,26 +51,35 @@ struct PlantStatsView: View {
         }
     }
 
-    // MARK: - Filtered Plants
-    private var completedPlants: [UserPlantModel] {
-        fetchPlants(for: selectedTimePeriod).filter { $0.currentStage == 5 }
+    // MARK: - Filtered Stats
+    private var plantStats: [PlantStatsModel] {
+        [
+            PlantStatsModel(
+                title: "Plants Completed",
+                action: "Completed",
+                icon: .garden,
+                plants: filteredPlants { $0.currentStage == 5 }
+            ),
+            PlantStatsModel(
+                title: "Plants Watered",
+                action: "Last watered",
+                icon: .waterDrop,
+                plants: filteredPlants { $0.lastWateredDate != nil }
+            ),
+            PlantStatsModel(
+                title: "Seeds Planted",
+                action: "Planted",
+                icon: .newPlant,
+                plants: filteredPlants { _ in true }
+            )
+        ]
     }
 
-    private var wateredPlants: [UserPlantModel] {
-        fetchPlants(for: selectedTimePeriod).filter {
-            $0.lastWateredDate != nil
-        }
-    }
-
-    private var seedsPlanted: [UserPlantModel] {
-        fetchPlants(for: selectedTimePeriod)
-    }
-
-    private func fetchPlants(for timePeriod: TimePeriod) -> [UserPlantModel] {
+    private func filteredPlants(_ predicate: (UserPlantModel) -> Bool) -> [UserPlantModel] {
         let today = Date()
         let startDate: Date
 
-        switch timePeriod {
+        switch selectedTimePeriod {
         case .daily:
             startDate = today.startOfDay
         case .weekly:
@@ -109,7 +90,7 @@ struct PlantStatsView: View {
 
         return allUserPlants
             .filter {
-                $0.plantDate >= startDate
+                $0.plantDate >= startDate && predicate($0)
             }
             .sorted {
                 // Sort by most recent day, ignoring time
@@ -118,7 +99,6 @@ struct PlantStatsView: View {
                         return firstDate > secondDate
                     }
                 }
-                
                 // Tiebreaker: sort alphabetically by species
                 return $0.basePlant.species < $1.basePlant.species
             }
