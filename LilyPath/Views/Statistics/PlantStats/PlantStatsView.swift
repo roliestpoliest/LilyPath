@@ -26,7 +26,7 @@ struct PlantStatsView: View {
 
                 Spacer()
 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack(spacing: 30) {
                         ForEach(plantStats, id: \.title) { stat in
                             NavigationLink(

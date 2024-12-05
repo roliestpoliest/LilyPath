@@ -28,7 +28,7 @@ struct HowToPlayView: View {
             Divider()
                 .padding(.bottom)
 
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(rules, id: \.self) { rule in
                         HStack(alignment: .top, spacing: 15) {

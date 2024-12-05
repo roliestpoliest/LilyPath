@@ -18,7 +18,7 @@ struct PlantStatsDetailView: View {
             VStack {
                 ViewTitle(title: title)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     if plants.isEmpty {
                         Text("No \(title.lowercased()) yet")
                             .foregroundColor(.gray)

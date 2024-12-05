@@ -28,7 +28,7 @@ struct FitnessStatsView: View {
                     .padding(.bottom, 20)
                     .customShadow()
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     ForEach(MetricType.allCases, id: \.self) { metric in
                         NavigationLink(
                             destination: ChartsView(

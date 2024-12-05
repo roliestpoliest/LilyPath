@@ -18,7 +18,7 @@ struct GardenView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack {
                     SubViewNavigationLink(
                         title: "Your Garden",
