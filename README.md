@@ -38,8 +38,6 @@ The Home tab is the primary feature where users interact with the plant they are
   
 - **Growth Stages**: The growth of the plant is split into distinct stages, each marked by a transformation in the plant’s appearance. To advance the plant to its next stage, users must water the plant by spending 1,000 water points at a time. After 10 waterings (10,000 steps), the plant advances to its next growth stage. These visual changes offer immediate feedback to users about their progress.
   
-- **Missed Watering**: Consistency is key. If users fail to water their plant for a day, it will regress to its previous growth stage, representing a temporary setback. If the plant is at its first stage and no watering occurs, it will wilt, symbolizing the importance of daily activity. Users are notified of any missed watering and given encouragement to re-engage.
-
 - **Rewards**: Upon successfully completing a plant's full growth cycle, users are rewarded with 1 gem. Gems serve as in-game currency to buy a variety of plants, offering additional incentives for staying active. A completed growth cycle provides not only visual satisfaction but also tangible rewards that can be used elsewhere in the app.
 
 ### Plant Sub-View: Daily Tasks
@@ -77,12 +75,25 @@ The Garden tab functions as a personal gallery and a visual archive of the user�
 
 ## Statistics Tab
 
-The Stats tab offers a comprehensive overview of the user’s fitness data, allowing them to see how their physical activity has contributed to their plant-growing journey. This section integrates directly with Apple HealthKit, making use of its data to track the user’s steps, flights climbed, and more.
+The Stats tab offers a comprehensive overview of the user’s progress, combining fitness data and plant-related milestones to showcase how their activities contribute to their plant-growing journey. This section integrates directly with Apple HealthKit to track fitness metrics and includes insights into plant growth achievements.
 
-- **Fitness Data**: The Stats tab aggregates fitness data across different time frames (weekly, monthly, yearly), such as total steps, flights climbed, etc., and presents it in easy-to-understand graphs.
+- **Plant Data**:  
+  The Stats tab provides aggregated data about the user’s plant-growing journey, broken down across different time frames (daily, weekly, monthly). This includes:  
+  - **Plants Completed Growth**: Total number of plants that have fully grown during the selected time frame.  
+  - **Plants Seeded**: Number of seeds planted that have not progressed in growth.  
+  - **Plants Watered**: The count of plants watered.  
 
+- **Fitness Data**:  
+  The Stats tab aggregates fitness data across different time frames (daily, weekly, monthly), such as:  
+  - Total steps taken  
+  - Flights climbed  
+  - Calories burned  
+  - Sleep duration  
+  - Walking/running distance  
+  This information is presented through easy-to-understand graphs and metrics, giving users a clear view of their physical activity.
+  
 ## Citations
 
-- “Cornucopia” by MizuJakkaru et al.  
+- “Cornucopia” by MizuJakkaru et al.  	
   Downloaded from [“Cornucopia - More Flowers” on Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/20290)  
   License: Assets used with permission, credit given to MizuJakkaru
