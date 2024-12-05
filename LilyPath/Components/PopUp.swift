@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-// TODO: disable view behind the pop
-// TODO: blur/darken background
-// TODO: add popup functionality
-
 // MARK: Generic view
 struct GenericPopUpView<Content: View>: View {
     @Binding var showPopUp: Bool
@@ -32,13 +28,15 @@ struct GenericPopUpView<Content: View>: View {
                 content()
                 Spacer()
             }
+            .font(.popupBody)
+            .foregroundColor(textColor)
             .frame(width: width, height: height)
             .padding()
-            .background(Color.mainBackground)
+            .background(.mainBackground)
             .cornerRadius(25)
             .overlay(
                 RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.customBrown, lineWidth: 5)
+                    .stroke(.customBrown, lineWidth: 5)
             )
         }
         .zIndex(1)
@@ -97,12 +95,8 @@ class PopUp {
                     VStack(spacing: 15) {
                         if hasEnoughGems {
                             Text(plantModel.species)
-                                .font(Font.popupBody)
-                                .foregroundColor(.customBrown)
                         } else {
                             Text("Not enough gems!")
-                                .font(Font.popupBody)
-                                .foregroundColor(.customBrown)
                         }
                         
                         actionButton(
@@ -115,10 +109,11 @@ class PopUp {
                                 showPopUp.wrappedValue = false
                                 print("Purchase button tapped")
                             } else {
-                                print("Attempted to purchase with insufficient gems")
+                                print(
+                                    "Attempted to purchase with insufficient gems"
+                                )
                             }
                         }
-                        .foregroundColor(.customBrown)
                     }
                 }
             }
@@ -141,8 +136,6 @@ class PopUp {
                             "\(plantModel.species) is locked!\nUnlock at level \(plantModel.requiredLevelToBuy)"
                         )
                         .multilineTextAlignment(.center)
-                        .font(Font.popupBody)
-                        .foregroundColor(.customBrown)
                     }
                 }
             }
@@ -164,8 +157,6 @@ class PopUp {
                     VStack(spacing: 15) {
                         Text("Your \(plantModel.species) is wilting!")
                             .multilineTextAlignment(.center)
-                            .font(Font.popupBody)
-                            .foregroundColor(.customBrown)
                         
                         actionButton(
                             text: "-1000", secondText: "Revive?",
@@ -186,7 +177,7 @@ class PopUp {
         onLevelUp: @escaping () -> Void
     ) -> some View {
         let isGrowing = currentPlant.status == .growing
-
+        
         return GenericPopUpView(
             showPopUp: showPopUp,
             headerText: isGrowing ? "Level Up!" : "CONGRATS!",
@@ -201,15 +192,18 @@ class PopUp {
                             : "You completed this \(currentPlant.basePlant.species)"
                         )
                         .multilineTextAlignment(.center)
-                        .font(Font.popupBody)
-                        .foregroundColor(.customBrown)
                         
                         actionButton(
-                            text: isGrowing ? "+1" : "+\(String(currentPlant.basePlant.gemReward))",
+                            text: isGrowing
+                            ? "+1"
+                            : "+\(String(currentPlant.basePlant.gemReward))",
                             icon: .gem
                         ) {
                             onLevelUp()
-                            print(isGrowing ? "Level up button tapped" : "Completed button tapped")
+                            print(
+                                isGrowing
+                                ? "Level up button tapped"
+                                : "Completed button tapped")
                         }
                     }
                     .frame(width: 175)
@@ -324,7 +318,6 @@ class PopUp {
                     }
                 }
                 .padding()
-                .foregroundColor(.customBrown)
             },
             width: 300, height: 215 + additionalHeight
         )
@@ -346,8 +339,6 @@ class PopUp {
                             "Switch from \(currentPlantModel.basePlant.species) to \(swappablePlantModel.basePlant.species)?"
                         )
                         .multilineTextAlignment(.center)
-                        .font(Font.popupBody)
-                        .foregroundColor(.customBrown)
                         
                         actionButton(text: "Yes") {
                             print("Swap button tapped")
@@ -356,6 +347,63 @@ class PopUp {
                     .frame(width: 175)
                 }
             }
+        )
+    }
+    
+    // MARK: add water points
+    static func addWaterPoints(
+        steps: Int,
+        showPopUp: Binding<Bool>
+    ) -> some View {
+        GenericPopUpView(
+            showPopUp: showPopUp,
+            headerText: "WATER POINTS",
+            content: {
+                VStack(spacing: 30) {
+                    ForEach(
+                        [
+                            (
+                                currency: "steps",
+                                text: "\(steps)",
+                                converting: Icon.steps,
+                                text2: "\(steps)",
+                                buttonText: "CONVERT"
+                            ),
+                            (
+                                currency: "gems", text: "1",
+                                converting: Icon.gem, text2: "3000",
+                                buttonText: "BUY"
+                            ),
+                        ], id: \.text
+                    ) { item in
+                        VStack {
+                            Text("Use \(item.currency):")
+                                .fontWeight(.bold)
+                            
+                            // Conversion rate
+                            HStack {
+                                Text(item.text)
+                                IconImage(
+                                    icon: item.converting, height: 20,
+                                    color: .waterBlue)
+                                Text("= \(item.text2)")
+                                IconImage(
+                                    icon: .waterDrop, height: 20,
+                                    color: .waterBlue)
+                            }
+                            
+                            actionButton(
+                                text: item.buttonText,
+                                action: {
+                                    print("\(item.buttonText) button tapped")
+                                }
+                            )
+                        }
+                    }
+                }
+            },
+            width: 270,
+            height: 320
         )
     }
     
@@ -398,9 +446,11 @@ class PopUp {
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 25)
-            .background(Color.customBrown)
+            .background(.customBrown)
             .clipShape(Capsule())
-            .colorMultiply(isDisabled ? .disabledLightGrey.opacity(0.6) : .white)
+            .colorMultiply(
+                isDisabled ? .disabledLightGrey.opacity(0.6) : .white
+            )
             .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
         }
         .disabled(isDisabled)
@@ -410,65 +460,74 @@ class PopUp {
 #Preview {
     ZStack {
         ScrollView(showsIndicators: false) {
-            VStack {
+            VStack(spacing: 20) {
                 let myPlant1 = UserPlantModel(
-                    basePlant: .peony, currentStage: 3, watersCollected: 24, status: .growing
+                    basePlant: .peony,
+                    currentStage: 3,
+                    watersCollected: 24,
+                    status: .growing
                 )
+                
                 let myPlant2 = UserPlantModel(
-                    basePlant: .lily, currentStage: 4, watersCollected: 24, status: .completed
+                    basePlant: .lily,
+                    currentStage: 4,
+                    watersCollected: 24,
+                    status: .completed
                 )
+                
+                PopUp.addWaterPoints(steps: 1000, showPopUp: .constant(true))
+                
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: true,
                     onPurchase: {}
                 )
-                .frame(height: 250)
+                
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: false,
                     onPurchase: {}
                 )
-                .frame(height: 250)
+                
                 PopUp.locked(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true)
                 )
-                .frame(height: 250)
+                
                 PopUp.wilt(
                     plantModel: BasePlantModel.lavender,
                     showPopUp: .constant(true)
                 )
-                .frame(height: 250)
+                
                 PopUp.levelUp(
                     currentPlant: myPlant1,
                     showPopUp: .constant(true),
                     onLevelUp: {}
                 )
-                .frame(height: 250)
+                
                 PopUp.levelUp(
                     currentPlant: myPlant2,
                     showPopUp: .constant(true),
                     onLevelUp: {}
                 )
-                .frame(height: 250)
+                
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true),
                     onSwap: {}
                 )
+                
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
                     showPopUp: .constant(true),
                     onSwap: {}
                 )
-                .frame(height: 275)
+                
                 PopUp.swapPlant(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true))
-                //                PopUp.fitnessStats(metricType: .steps, chartPeriod: .day)
-                //                GenericPopUpView./*fitnessStats(metricType: .steps, chartPeriod: .day)*/
             }
             .padding(.horizontal)
             .padding()
