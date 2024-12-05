@@ -83,7 +83,7 @@ class PopUp {
         plantModel: BasePlantModel,
         showPopUp: Binding<Bool>,
         hasEnoughGems: Bool,
-        onPurchase: @escaping (BasePlantModel) -> Void
+        onPurchase: @escaping () -> Void
     ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
@@ -105,7 +105,7 @@ class PopUp {
                             isDisabled: !hasEnoughGems
                         ) {
                             if hasEnoughGems {
-                                onPurchase(plantModel)
+                                onPurchase()
                                 showPopUp.wrappedValue = false
                                 print("Purchase button tapped")
                             } else {
@@ -217,7 +217,7 @@ class PopUp {
         currentPlantModel: UserPlantModel,
         swappablePlantModel: UserPlantModel,
         showPopUp: Binding<Bool>,
-        onSwap: @escaping (UserPlantModel) -> Void
+        onSwap: @escaping () -> Void
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swappablePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
@@ -309,7 +309,7 @@ class PopUp {
                         
                         if showSwapButton {
                             actionButton(text: "Swap") {
-                                onSwap(swappablePlantModel)
+                                onSwap()
                                 showPopUp.wrappedValue = false
                                 print("Swap button tapped")
                             }
@@ -353,10 +353,7 @@ class PopUp {
     // MARK: add water points
     static func addWaterPoints(
         steps: Int,
-        showPopUp: Binding<Bool>,
-        currencyModels: [CurrencyModel],
-        onConvert: @escaping ([CurrencyModel], Int) -> Void,
-        onBuy: @escaping ([CurrencyModel]) -> Void
+        showPopUp: Binding<Bool>
     ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
@@ -366,22 +363,16 @@ class PopUp {
                     ForEach(
                         [
                             (
-                                currency: "daily steps",
+                                currency: "steps",
                                 text: "\(steps)",
                                 converting: Icon.steps,
                                 text2: "\(steps)",
-                                buttonText: "Convert",
-                                onAction: { onConvert(currencyModels, steps) },
-                                isDisabled: steps < 1
+                                buttonText: "CONVERT"
                             ),
                             (
-                                currency: "gems",
-                                text: "1",
-                                converting: Icon.gem,
-                                text2: "3000",
-                                buttonText: "Buy",
-                                onAction: { onBuy(currencyModels) },
-                                isDisabled: currencyModels.first?.gems ?? 0 < 1
+                                currency: "gems", text: "1",
+                                converting: Icon.gem, text2: "3000",
+                                buttonText: "BUY"
                             ),
                         ], id: \.text
                     ) { item in
@@ -403,11 +394,8 @@ class PopUp {
                             
                             actionButton(
                                 text: item.buttonText,
-                                isDisabled: item.isDisabled,
                                 action: {
-                                    item.onAction()
-                                    showPopUp.wrappedValue = false
-                                    print("\(item.currency) button tapped")
+                                    print("\(item.buttonText) button tapped")
                                 }
                             )
                         }
@@ -487,26 +475,20 @@ class PopUp {
                     status: .completed
                 )
                 
-                PopUp.addWaterPoints(
-                    steps: 1000,
-                    showPopUp: .constant(true),
-                    currencyModels: [],
-                    onConvert: { _, _ in },
-                    onBuy: { _ in }
-                )
+                PopUp.addWaterPoints(steps: 1000, showPopUp: .constant(true))
                 
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: true,
-                    onPurchase: {_ in }
+                    onPurchase: {}
                 )
                 
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: false,
-                    onPurchase: {_ in }
+                    onPurchase: {}
                 )
                 
                 PopUp.locked(
@@ -534,13 +516,13 @@ class PopUp {
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true),
-                    onSwap: {_ in }
+                    onSwap: {}
                 )
                 
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
                     showPopUp: .constant(true),
-                    onSwap: {_ in }
+                    onSwap: {}
                 )
                 
                 PopUp.swapPlant(

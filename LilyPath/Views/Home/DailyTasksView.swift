@@ -11,19 +11,15 @@ import SwiftUI
 struct DailyTasksView: View {
     @Query(sort: [SortDescriptor(\TaskModel.timestamp, order: .forward)])
     var tasks: [TaskModel]
-    @Query private var currencyModels: [CurrencyModel]
-    
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var healthManager: HealthManager
-    
-    @State var showCurrencyPopUp: Bool = false
     @State private var lastGeneratedDate: Date =
         UserDefaults.standard.object(forKey: "lastGeneratedDate") as? Date
         ?? Date.distantPast
 
     var body: some View {
         VStack {
-            UserCurrencyBar(showPopUp: $showCurrencyPopUp)
+            UserCurrencyBar()
 
             ViewTitle(title: "Daily Tasks")
 
@@ -43,15 +39,6 @@ struct DailyTasksView: View {
                 await updateTaskProgress()
                 generateTasksIfNeeded()
             }
-        }
-        .popUpOverlay(isVisible: $showCurrencyPopUp) {
-            PopUp.addWaterPoints(
-                steps: 100,
-                showPopUp: $showCurrencyPopUp,
-                currencyModels: currencyModels,
-                onConvert: onConvert,
-                onBuy: onBuy
-            )
         }
     }
 

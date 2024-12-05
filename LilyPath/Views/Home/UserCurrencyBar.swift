@@ -10,21 +10,20 @@ import SwiftUI
 
 struct UserCurrencyBar: View {
     @Query private var currency: [CurrencyModel]
-    @Binding var showPopUp: Bool
-
+    
     var body: some View {
         VStack {
             HStack(spacing: 20) {
                 Spacer()
                 
                 if let currentCurrency = currency.first {
-                    ovalCurrencyDisplay(
+                    OvalCurrencyDisplay(
                         icon: .waterDrop,
                         value: currentCurrency.waterPoints,
                         canAdd: true
                     )
                     
-                    ovalCurrencyDisplay(
+                    OvalCurrencyDisplay(
                         icon: .gem,
                         value: currentCurrency.gems
                     )
@@ -36,8 +35,20 @@ struct UserCurrencyBar: View {
             }
         }
     }
+}
+
+struct OvalCurrencyDisplay: View {
+    let icon: Icon
+    let value: Int
+    let canAdd: Bool
     
-    private func ovalCurrencyDisplay(icon: Icon, value: Int, canAdd: Bool = false) -> some View {
+    init(icon: Icon, value: Int, canAdd: Bool = false) {
+        self.icon = icon
+        self.value = value
+        self.canAdd = canAdd
+    }
+    
+    var body: some View {
         ZStack(alignment: .trailing) {
             HStack(spacing: 8) {
                 IconImage(icon: icon, height: 20, color: .waterBlue)
@@ -65,22 +76,13 @@ struct UserCurrencyBar: View {
             )
             
             if canAdd {
-                addWaterPointsButton()
-            }
-        }
-    }
-
-    private func addWaterPointsButton() -> some View {
-        Button {
-            showPopUp = true
-            print("Tapped add water points")
-        } label: {
-            ZStack {
-                Circle()
-                    .fill(Color.white)
-                    .frame(width: 39, height: 39)
-                
-                IconImage(icon: .plus, height: 40, color: .customPink)
+                Button {
+                    print("Tapped add water points")
+                } label: {
+                    IconImage(icon: .plus, height: 40, color: .customPink)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                }
             }
         }
     }
@@ -92,27 +94,9 @@ struct UserCurrencyBar: View {
     }
 }
 
-func onConvert(currencyModels: [CurrencyModel], steps: Int) {
-    guard let currencyModel = currencyModels.first else {
-        print("No CurrencyModel found.")
-        return
-    }
-    
-    // TODO: keep track of how many daily steps were converted
-    currencyModel.waterPoints += steps
-}
-
-func onBuy(currencyModels: [CurrencyModel]) {
-    guard let currencyModel = currencyModels.first else {
-        print("No CurrencyModel found.")
-        return
-    }
-    
-    currencyModel.gems -= 1
-    currencyModel.waterPoints += 3000
-}
-
-#Preview {
-    UserCurrencyBar(showPopUp: .constant(false))
-        .modelContainer(for: [CurrencyModel.self])
-}
+//#Preview {
+//    let mockCurrency = CurrencyModel(waterPoints: 1200, gems: 45)
+//    
+//    UserCurrencyBar()
+//        .modelContainer(for: [CurrencyModel.self])
+//}

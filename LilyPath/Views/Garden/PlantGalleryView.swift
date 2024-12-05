@@ -32,8 +32,10 @@ struct PlantGalleryView: View {
                         ForEach(userPlants) { plant in
                             PlantGalleryCard(userPlantModel: plant)
                                 .onTapGesture {
-                                    selectedPlant = plant
-                                    showPopUp = true
+                                    withAnimation {
+                                        selectedPlant = plant
+                                        showPopUp = true
+                                    }
                                 }
                         }
                     }
@@ -42,17 +44,25 @@ struct PlantGalleryView: View {
                     radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
             }
             .background(Color.mainBackground)
-            .popUpOverlay(isVisible: $showPopUp) {
-                if let selectedPlant = selectedPlant,
-                   let currentPlant = userPlants.first(where: { $0.isCurrent })
-                {
-                    PopUp.plantStats(
-                        currentPlantModel: currentPlant,
-                        swappablePlantModel: selectedPlant,
-                        showPopUp: $showPopUp,
-                        onSwap: handleSwap
-                    )
+            
+            if let plant = selectedPlant, showPopUp {
+                Color.mainBackground.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        dismissPopup()
+                    }
+                
+                PopUp.plantStats(
+                    currentPlantModel: userPlants.first(where: { $0.isCurrent }
+                                                       )!,
+                    swappablePlantModel: plant,
+                    showPopUp: $showPopUp
+                ) {
+                    handleSwap(with: plant)
                 }
+                
+                .frame(width: 300, height: 250)
+                .transition(.scale)
             }
         }
         .animation(.easeInOut, value: showPopUp)
