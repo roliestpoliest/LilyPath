@@ -63,9 +63,7 @@ struct UserCurrencyBar: View {
                             .inset(by: 2.5)
                             .stroke(Color.customPink, lineWidth: 5)
                     )
-                    .shadow(
-                        radius: ShadowConstants.radius,
-                        y: ShadowConstants.yOffset)
+                    .customShadow()
             )
             
             if canAdd {

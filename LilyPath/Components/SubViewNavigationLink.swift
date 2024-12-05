@@ -40,6 +40,7 @@ struct SubViewNavigationLink<Destination: View, Content: View>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 content()
+                    .customShadow()
             }
         }
         .onAppear {

@@ -40,6 +40,7 @@ struct GardenView: View {
                         
                         CurrentPlantView(
                             currentPlant: userPlants.first(where: { $0.isCurrent }))
+                        .customShadow()
                     }
                     .onTapGesture {
                         if let currentPlant = userPlants.first(where: {

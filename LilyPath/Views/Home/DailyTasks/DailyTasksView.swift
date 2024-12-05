@@ -34,7 +34,7 @@ struct DailyTasksView: View {
                         .padding(.vertical, 8)
                 }
             }
-            .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+            .darkCustomShadow()
 
             Spacer()
         }

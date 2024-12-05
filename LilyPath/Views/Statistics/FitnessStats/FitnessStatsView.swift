@@ -26,9 +26,7 @@ struct FitnessStatsView: View {
                 
                 TimePeriodPicker(selectedTimePeriod: $selectedTimePeriod)
                     .padding(.bottom, 20)
-                    .shadow(
-                        radius: ShadowConstants.radius,
-                        y: ShadowConstants.yOffset)
+                    .customShadow()
                 
                 ScrollView {
                     ForEach(MetricType.allCases, id: \.self) { metric in
@@ -44,6 +42,7 @@ struct FitnessStatsView: View {
                                     metricType: metric,
                                     value: displayMetricValue(for: metric)),
                                 timePeriod: selectedTimePeriod)
+                            .darkCustomShadow()
                         }
                         .padding(.vertical, 10)
                     }

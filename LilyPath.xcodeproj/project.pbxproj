@@ -21,7 +21,6 @@
 		239A0EB52D01D45A0065FEAF /* ImageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EAC2D01D45A0065FEAF /* ImageModifier.swift */; };
 		239A0EB62D01D45A0065FEAF /* MetricType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EAD2D01D45A0065FEAF /* MetricType.swift */; };
 		239A0EB72D01D45A0065FEAF /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EAE2D01D45A0065FEAF /* NumberFormatter.swift */; };
-		239A0EB82D01D45A0065FEAF /* ShadowConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EAF2D01D45A0065FEAF /* ShadowConstants.swift */; };
 		239A0EB92D01D45A0065FEAF /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EB02D01D45A0065FEAF /* Tabs.swift */; };
 		239A0EC42D01D45D0065FEAF /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EBA2D01D45D0065FEAF /* CircularProgressBar.swift */; };
 		239A0EC52D01D45D0065FEAF /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EBB2D01D45D0065FEAF /* IconImage.swift */; };
@@ -33,6 +32,7 @@
 		239A0ECB2D01D45D0065FEAF /* TimePeriodPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EC12D01D45D0065FEAF /* TimePeriodPicker.swift */; };
 		239A0ECC2D01D45D0065FEAF /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EC22D01D45D0065FEAF /* ViewTitle.swift */; };
 		239A0ECE2D01DF2B0065FEAF /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ECD2D01DF2B0065FEAF /* StatsCard.swift */; };
+		239A0ED02D01ED7A0065FEAF /* ShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ECF2D01ED7A0065FEAF /* ShadowModifier.swift */; };
 		23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */; };
 		23B5E67F2CFEBFC3002874F5 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */; };
 		23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */; };
@@ -95,7 +95,6 @@
 		239A0EAC2D01D45A0065FEAF /* ImageModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModifier.swift; sourceTree = "<group>"; };
 		239A0EAD2D01D45A0065FEAF /* MetricType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricType.swift; sourceTree = "<group>"; };
 		239A0EAE2D01D45A0065FEAF /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
-		239A0EAF2D01D45A0065FEAF /* ShadowConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowConstants.swift; sourceTree = "<group>"; };
 		239A0EB02D01D45A0065FEAF /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		239A0EBA2D01D45D0065FEAF /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
 		239A0EBB2D01D45D0065FEAF /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
@@ -107,6 +106,7 @@
 		239A0EC12D01D45D0065FEAF /* TimePeriodPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodPicker.swift; sourceTree = "<group>"; };
 		239A0EC22D01D45D0065FEAF /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
 		239A0ECD2D01DF2B0065FEAF /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		239A0ECF2D01ED7A0065FEAF /* ShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowModifier.swift; sourceTree = "<group>"; };
 		23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
 		23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsModel.swift; sourceTree = "<group>"; };
@@ -223,7 +223,6 @@
 				239A0EAC2D01D45A0065FEAF /* ImageModifier.swift */,
 				239A0EAD2D01D45A0065FEAF /* MetricType.swift */,
 				239A0EAE2D01D45A0065FEAF /* NumberFormatter.swift */,
-				239A0EAF2D01D45A0065FEAF /* ShadowConstants.swift */,
 				239A0EB02D01D45A0065FEAF /* Tabs.swift */,
 			);
 			path = Utilities;
@@ -237,6 +236,7 @@
 				239A0EBC2D01D45D0065FEAF /* PopUp.swift */,
 				239A0EBD2D01D45D0065FEAF /* PopUpOverlayModifier.swift */,
 				239A0EBE2D01D45D0065FEAF /* ProgressBar.swift */,
+				239A0ECF2D01ED7A0065FEAF /* ShadowModifier.swift */,
 				239A0EBF2D01D45D0065FEAF /* SubViewNavigationLink.swift */,
 				239A0EC02D01D45D0065FEAF /* TabBar.swift */,
 				239A0EC12D01D45D0065FEAF /* TimePeriodPicker.swift */,
@@ -513,6 +513,7 @@
 				8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */,
+				239A0ED02D01ED7A0065FEAF /* ShadowModifier.swift in Sources */,
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,
 				23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */,
 				8280FF232CC63B4D00455EC4 /* ActivityModel.swift in Sources */,
@@ -546,7 +547,6 @@
 				239A0EB52D01D45A0065FEAF /* ImageModifier.swift in Sources */,
 				239A0EB62D01D45A0065FEAF /* MetricType.swift in Sources */,
 				239A0EB72D01D45A0065FEAF /* NumberFormatter.swift in Sources */,
-				239A0EB82D01D45A0065FEAF /* ShadowConstants.swift in Sources */,
 				239A0EB92D01D45A0065FEAF /* Tabs.swift in Sources */,
 				239A0E7D2D01D0CD0065FEAF /* CurrencyModel.swift in Sources */,
 				23F44A882CC8F14500721D6E /* FitnessStatsCard.swift in Sources */,

@@ -32,6 +32,7 @@ struct PlantStatsDetailView: View {
                                     plant: plant,
                                     action: action
                                 )
+                                .darkCustomShadow()
                             }
                         }
                     }

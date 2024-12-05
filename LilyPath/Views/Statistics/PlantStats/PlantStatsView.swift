@@ -22,10 +22,7 @@ struct PlantStatsView: View {
 
                 TimePeriodPicker(selectedTimePeriod: $selectedTimePeriod)
                     .padding(.bottom, 20)
-                    .shadow(
-                        radius: ShadowConstants.radius,
-                        y: ShadowConstants.yOffset
-                    )
+                    .customShadow()
 
                 Spacer()
 
@@ -43,6 +40,7 @@ struct PlantStatsView: View {
                                 value: completedPlants.count,
                                 icon: .garden
                             )
+                            .darkCustomShadow()
                         }
 
                         NavigationLink(
@@ -57,6 +55,7 @@ struct PlantStatsView: View {
                                 value: wateredPlants.count,
                                 icon: .waterDrop
                             )
+                            .darkCustomShadow()
                         }
 
                         NavigationLink(
@@ -71,6 +70,7 @@ struct PlantStatsView: View {
                                 value: seedsPlanted.count,
                                 icon: .newPlant
                             )
+                            .darkCustomShadow()
                         }
                     }
                 }

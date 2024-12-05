@@ -19,10 +19,7 @@ struct CircularProgressBar: View {
                     Color.lightGreen,
                     lineWidth: lineWidth
                 )
-                .shadow(
-                    radius: ShadowConstants.radius,
-                    y: ShadowConstants.yOffset
-                )
+                .customShadow()
 
             Circle()
                 .trim(from: 0, to: (value / total))

@@ -54,7 +54,7 @@ struct GenericPopUpView<Content: View>: View {
                 bottomTrailingRadius: 0, topTrailingRadius: 17
             )
             .fill(headerColor)
-            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
+            .customShadow()
             .frame(height: 50)
             
             ZStack {
@@ -466,7 +466,7 @@ class PopUp {
             .colorMultiply(
                 isDisabled ? .disabledLightGrey.opacity(0.6) : .white
             )
-            .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 3)
+            .customShadow()
         }
         .disabled(isDisabled)
     }

@@ -44,7 +44,7 @@ struct PlantShopView: View {
                         }
                     }
                 }
-                .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+                .darkCustomShadow()
             }
             .background(Color.mainBackground)
             .popUpOverlay(isVisible: $showPopUp) {
