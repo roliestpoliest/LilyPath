@@ -70,9 +70,9 @@ struct OvalCurrencyDisplay: View {
                             .inset(by: 2.5)
                             .stroke(Color.customPink, lineWidth: 5)
                     )
-                    .shadow(
-                        radius: ShadowConstants.radius,
-                        y: ShadowConstants.yOffset)
+//                    .shadow(
+//                        radius: ShadowConstants.radius,
+//                        y: ShadowConstants.yOffset)
             )
             
             if canAdd {
