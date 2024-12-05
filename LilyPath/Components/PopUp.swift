@@ -215,8 +215,8 @@ class PopUp {
         )
     }
     
-    // MARK: stats
-    static func plantStats(
+    // MARK: plant info
+    static func plantInfo(
         currentPlantModel: UserPlantModel,
         swappablePlantModel: UserPlantModel,
         showPopUp: Binding<Bool>,
@@ -228,7 +228,7 @@ class PopUp {
         func gridRow(label: String, value: String) -> some View {
             GridRow {
                 Text(label)
-                    .frame(width: 150, alignment: .leading) // Hardcoded width
+                    .frame(width: 150, alignment: .leading)
                     .font(.statsBodyBold)
                 Text(value)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -297,16 +297,18 @@ class PopUp {
                             } ?? "N/A"
                         )
                         gridRow(
-                            label: "Species",
-                            value: swappablePlantModel.basePlant.species
+                            label: "Last Watered",
+                            value: swappablePlantModel.lastWateredDate.map {
+                                $0.formatted(.dateTime.month(.abbreviated).day(.twoDigits).year())
+                            } ?? "N/A"
+                        )
+                        gridRow(
+                            label: "Waterings Left",
+                            value: formatNumberWithCommas((swappablePlantModel.basePlant.overallStepGoal - swappablePlantModel.stepsCollected) / 1000)
                         )
                         gridRow(
                             label: "Overall Progress",
                             value: "\(Int((swappablePlantModel.overallProgress) * 100))%"
-                        )
-                        gridRow(
-                            label: "Steps Left",
-                            value: formatNumberWithCommas(swappablePlantModel.basePlant.overallStepGoal - swappablePlantModel.stepsCollected)
                         )
                     }
 
@@ -490,13 +492,13 @@ class PopUp {
                     status: .completed
                 )
                 
-                PopUp.plantStats(
+                PopUp.plantInfo(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true),
                     onSwap: {_ in }
                 )
                 
-                PopUp.plantStats(
+                PopUp.plantInfo(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
                     showPopUp: .constant(true),
                     onSwap: {_ in }

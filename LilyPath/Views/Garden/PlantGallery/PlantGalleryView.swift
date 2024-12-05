@@ -45,7 +45,7 @@ struct PlantGalleryView: View {
                 if let selectedPlant = selectedPlant,
                    let currentPlant = userPlants.first(where: { $0.isCurrent })
                 {
-                    PopUp.plantStats(
+                    PopUp.plantInfo(
                         currentPlantModel: currentPlant,
                         swappablePlantModel: selectedPlant,
                         showPopUp: $showPopUp,

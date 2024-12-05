@@ -23,7 +23,6 @@ class UserPlantModel {
     var lastWateredDate: Date?
     var currentStage: Int
     var watersCollected: Int
-    var numberOfRevives: Int
     var status: PlantStatus
     var isCurrent: Bool
     
@@ -35,7 +34,6 @@ class UserPlantModel {
         currentStage: Int = 1,
         watersCollected: Int = 0,
         lastWateredDate: Date? = nil,
-        numberOfRevives: Int = 0,
         isCurrent: Bool = true,
         status: PlantStatus = .growing
     ) {
@@ -46,7 +44,6 @@ class UserPlantModel {
         self.currentStage = currentStage
         self.watersCollected = watersCollected
         self.lastWateredDate = lastWateredDate
-        self.numberOfRevives = numberOfRevives
         self.isCurrent = isCurrent
         self.status = status
     }

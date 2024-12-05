@@ -57,7 +57,7 @@ struct GardenView: View {
             .background(Color.mainBackground)
             .popUpOverlay(isVisible: $showPopUp) {
                 if let plant = currentPlant, showPopUp {
-                    PopUp.plantStats(
+                    PopUp.plantInfo(
                         currentPlantModel: plant,
                         swappablePlantModel: plant,
                         showPopUp: $showPopUp,

@@ -26,7 +26,7 @@ struct TaskCard: View {
         //         more waterpoints and gems to test watering plants and its features (e.g., plant level-up, plant completion).
         // NOTE: Uncommenting will disrupt the task progress display. To fix this, regenerate new tasks on the DailyTasksView,
         //       then comment out the `overlay` line and rebuild to restore task progress buttons.
-        //.overlay(simulateButton, alignment: .bottomTrailing) // Simulate progress button
+        .overlay(simulateButton, alignment: .bottomTrailing) // Simulate progress button
     }
     
     var taskAndProgress: some View {
