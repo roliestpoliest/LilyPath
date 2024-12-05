@@ -35,15 +35,6 @@ struct PlantGalleryCard: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 45, height: 65)
-                            
-//                            if userPlantModel.isCurrent {
-//                                Image(systemName: "righttriangle.fill")
-//                                    .foregroundColor(.darkGreen)
-//                                    .font(Font.statsCard)
-//                                    .rotationEffect(.degrees(180))
-//                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-//                                    .offset(x: 8, y: 8)
-//                            }
                         }
                         .frame(width: 125, height: 125)
                         .padding(.top, 5)
