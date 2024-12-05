@@ -22,7 +22,7 @@ struct TaskCard: View {
         .frame(height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
-//        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
+//        .overlay(simulateButton, alignment: .bottomTrailing) // Simulate progress button
     }
     
     var taskAndProgress: some View {
@@ -86,14 +86,14 @@ struct TaskCard: View {
         }
     }
     
-    var debugButton: some View {
+    var simulateButton: some View {
         Group {
             if task.status == .inProgress {
                 Button(action: incrementProgress) {
-                    Text("Debug: +\(task.goal / 2)")
-                        .font(.caption)
+                    Text("Simulate: +\(task.goal / 2)")
+                        .font(.caption2)
                         .padding(5)
-                        .background(Color.orange)
+                        .background(.customPink)
                         .foregroundColor(.white)
                         .cornerRadius(5)
                 }

@@ -5,8 +5,8 @@
 //  Created by Carolyn Heron on 9/29/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct HomeView: View {
     @Query(
@@ -19,7 +19,8 @@ struct HomeView: View {
     @Query private var currencyModels: [CurrencyModel]
     
     @State var showPopUp: Bool = false
-
+    @State var showCurrencyPopUp: Bool = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -29,7 +30,7 @@ struct HomeView: View {
                 VStack {
                     HStack {
                         HowToPlayButton()
-                        UserCurrencyBar()
+                        UserCurrencyBar(showPopUp: $showCurrencyPopUp)
                     }
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
@@ -54,36 +55,42 @@ struct HomeView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.modelContext, AppModelContainer.shared.container.mainContext)
-        .overlay(
-            ZStack {
-                if showPopUp {
-                    Color.mainBackground.opacity(0.4)
-                        .ignoresSafeArea()
-
-                    if let currentPlant = currentPlants.first {
-                        PopUp.levelUp(currentPlant: currentPlant, showPopUp: $showPopUp) {
-                                onLevelUp()
-                        }
-                    }
-                }
-            }.animation(.easeInOut, value: showPopUp)
+        .environment(
+            \.modelContext, AppModelContainer.shared.container.mainContext
         )
+        .popUpOverlay(isVisible: $showPopUp) {
+            if let currentPlant = currentPlants.first {
+                PopUp.levelUp(
+                    currentPlant: currentPlant, showPopUp: $showPopUp
+                ) {
+                    onLevelUp()
+                }
+            }
+        }
+        .popUpOverlay(isVisible: $showCurrencyPopUp) {
+            PopUp.addWaterPoints(
+                steps: 100,
+                showPopUp: $showCurrencyPopUp,
+                currencyModels: currencyModels,
+                onConvert: onConvert,
+                onBuy: onBuy
+            )
+        }
     }
     
     func onLevelUp() {
         showPopUp = false
-
+        
         guard let currentPlant = currentPlants.first else {
             print("No current plant found.")
             return
         }
-
+        
         guard let currencyModel = currencyModels.first else {
             print("No CurrencyModel found.")
             return
         }
-
+        
         if currentPlant.status == .growing {
             currencyModel.gems += 1
         } else if currentPlant.status == .completed {
@@ -135,7 +142,7 @@ struct CurrentPlantDisplay: View {
     private var currentPlants: [UserPlantModel]
     
     let lineThickness: CGFloat = 18
-
+    
     var body: some View {
         if let currentPlant = currentPlants.first {
             VStack {
@@ -269,7 +276,8 @@ struct HomeViewActions: View {
         guard canWater() else { return }
         
         guard let currencyModel = currencyModels.first,
-              let currentPlant = currentPlant else { return }
+              let currentPlant = currentPlant
+        else { return }
         
         // Perform watering and deduct water points
         let isNextStage = currentPlant.waterPlant()
@@ -279,7 +287,9 @@ struct HomeViewActions: View {
         
         do {
             try context.save()
-            print("Watered plant. Remaining water points: \(currencyModel.waterPoints)")
+            print(
+                "Watered plant. Remaining water points: \(currencyModel.waterPoints)"
+            )
         } catch {
             print("Failed to save updated water points: \(error)")
         }

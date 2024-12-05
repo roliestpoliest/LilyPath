@@ -353,7 +353,10 @@ class PopUp {
     // MARK: add water points
     static func addWaterPoints(
         steps: Int,
-        showPopUp: Binding<Bool>
+        showPopUp: Binding<Bool>,
+        currencyModels: [CurrencyModel],
+        onConvert: @escaping ([CurrencyModel], Int) -> Void,
+        onBuy: @escaping ([CurrencyModel]) -> Void
     ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
@@ -363,16 +366,22 @@ class PopUp {
                     ForEach(
                         [
                             (
-                                currency: "steps",
+                                currency: "daily steps",
                                 text: "\(steps)",
                                 converting: Icon.steps,
                                 text2: "\(steps)",
-                                buttonText: "CONVERT"
+                                buttonText: "Convert",
+                                onAction: { onConvert(currencyModels, steps) },
+                                isDisabled: steps < 1
                             ),
                             (
-                                currency: "gems", text: "1",
-                                converting: Icon.gem, text2: "3000",
-                                buttonText: "BUY"
+                                currency: "gems",
+                                text: "1",
+                                converting: Icon.gem,
+                                text2: "3000",
+                                buttonText: "Buy",
+                                onAction: { onBuy(currencyModels) },
+                                isDisabled: currencyModels.first?.gems ?? 0 < 1
                             ),
                         ], id: \.text
                     ) { item in
@@ -394,8 +403,11 @@ class PopUp {
                             
                             actionButton(
                                 text: item.buttonText,
+                                isDisabled: item.isDisabled,
                                 action: {
-                                    print("\(item.buttonText) button tapped")
+                                    item.onAction()
+                                    showPopUp.wrappedValue = false
+                                    print("\(item.currency) button tapped")
                                 }
                             )
                         }
@@ -475,7 +487,13 @@ class PopUp {
                     status: .completed
                 )
                 
-                PopUp.addWaterPoints(steps: 1000, showPopUp: .constant(true))
+                PopUp.addWaterPoints(
+                    steps: 1000,
+                    showPopUp: .constant(true),
+                    currencyModels: [],
+                    onConvert: { _, _ in },
+                    onBuy: { _ in }
+                )
                 
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
