@@ -38,7 +38,6 @@
 		239A0ED62D021E8A0065FEAF /* PlantStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ED52D021E820065FEAF /* PlantStatsModel.swift */; };
 		23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */; };
 		23B5E67F2CFEBFC3002874F5 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */; };
-		23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */; };
 		23F44A882CC8F14500721D6E /* FitnessStatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A872CC8F14500721D6E /* FitnessStatsCard.swift */; };
 		23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */; };
 		23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */; };
@@ -112,7 +111,6 @@
 		239A0ED52D021E820065FEAF /* PlantStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsModel.swift; sourceTree = "<group>"; };
 		23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
-		23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsModel.swift; sourceTree = "<group>"; };
 		23F44A872CC8F14500721D6E /* FitnessStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsCard.swift; sourceTree = "<group>"; };
 		23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsDetailView.swift; sourceTree = "<group>"; };
 		23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrencyBar.swift; sourceTree = "<group>"; };
@@ -251,7 +249,6 @@
 			children = (
 				239A0E742D01B7840065FEAF /* MetricStatsModel.swift */,
 				23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */,
-				23F44A832CC77A0E00721D6E /* FitnessStatsModel.swift */,
 				239A0ED52D021E820065FEAF /* PlantStatsModel.swift */,
 				238719932CB0634A00305DFA /* TaskModel.swift */,
 				822FF6FE2CB1154000F8F5DC /* UserPlantModel.swift */,
@@ -510,7 +507,6 @@
 				8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */,
 				238719942CB0635200305DFA /* TaskModel.swift in Sources */,
 				2353BDA92CC61B2F0019412C /* PlantStatsView.swift in Sources */,
-				23F44A842CC77A0E00721D6E /* FitnessStatsModel.swift in Sources */,
 				827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */,
 				823A18802CC9B20E00289917 /* ChartsView.swift in Sources */,
 				828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */,
