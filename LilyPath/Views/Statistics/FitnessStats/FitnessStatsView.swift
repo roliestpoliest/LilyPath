@@ -37,12 +37,17 @@ struct FitnessStatsView: View {
                             )
                             .environmentObject(healthManager)
                         ) {
-                            FitnessStatsCard(
-                                stat: MetricStatsModel(
-                                    metricType: metric,
-                                    value: displayMetricValue(for: metric)),
-                                timePeriod: selectedTimePeriod)
-                            .darkCustomShadow()
+                            let metricStat = MetricStatsModel(
+                                metricType: metric,
+                                value: displayMetricValue(for: metric)
+                            )
+                            
+                            GenericStatsCard(
+                                title: metricStat.fluentDisplayName,
+                                value: metricStat.value,
+                                icon: metricStat.icon,
+                                showChevron: true
+                            )
                         }
                         .padding(.vertical, 10)
                     }

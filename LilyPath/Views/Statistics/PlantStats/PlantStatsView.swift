@@ -36,10 +36,11 @@ struct PlantStatsView: View {
                                     plants: stat.plants
                                 )
                             ) {
-                                PlantStatsCard(
-                                    stat: stat.title,
-                                    value: stat.plants.count,
-                                    icon: stat.icon
+                                GenericStatsCard(
+                                    title: stat.title,
+                                    value: "\(stat.plants.count)",
+                                    icon: stat.icon,
+                                    showChevron: true
                                 )
                                 .darkCustomShadow()
                             }
