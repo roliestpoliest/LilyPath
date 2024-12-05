@@ -16,7 +16,6 @@ struct PlantGalleryCard: View {
                 ZStack {
                     Rectangle()
                         .fill(Color.customBrown)
-                        .cornerRadius(15)
                     
                     Spacer()
                     
@@ -37,13 +36,14 @@ struct PlantGalleryCard: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 45, height: 65)
                             
-                            if userPlantModel.isCurrent {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.darkGreen)
-                                    .font(Font.statsCard)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                    .offset(x: 8, y: 8)
-                            }
+//                            if userPlantModel.isCurrent {
+//                                Image(systemName: "righttriangle.fill")
+//                                    .foregroundColor(.darkGreen)
+//                                    .font(Font.statsCard)
+//                                    .rotationEffect(.degrees(180))
+//                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+//                                    .offset(x: 8, y: 8)
+//                            }
                         }
                         .frame(width: 125, height: 125)
                         .padding(.top, 5)
@@ -77,11 +77,19 @@ struct PlantGalleryCard: View {
                         
                         Spacer()
                     }
+                    if userPlantModel.isCurrent {
+                        Image(systemName: "righttriangle.fill")
+                            .foregroundColor(.darkGreen)
+                            .font(.system(size: 50))
+                            .rotationEffect(.degrees(178))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                            .offset(x: -10, y: -5)
+                    }
                 }
                 .frame(width: 150, height: 210)
             }
         }
-        .contentShape(Rectangle())
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
 
