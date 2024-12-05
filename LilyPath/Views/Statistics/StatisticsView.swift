@@ -23,7 +23,7 @@ struct StatisticsView: View {
                     destination: PlantStatsView()
                 ) {
                     StatsCard(
-                        title: plantsWithStage5.count == 1 ? "Plant Completed" : "Plants Completed",
+                        title: "Completed Since Start",
                         value: String(plantsWithStage5.count),
                         icon: .garden
                     )
@@ -40,7 +40,7 @@ struct StatisticsView: View {
                     }
                 ) {
                     StatsCard(
-                        title: "steps today",
+                        title: "Steps Today",
                         value: formatNumberWithCommas(Int(countSteps)),
                         icon: .steps
                     )
@@ -71,4 +71,5 @@ struct StatisticsView: View {
 #Preview {
     StatisticsView()
         .environmentObject(HealthManager())
+        .padding(20)
 }

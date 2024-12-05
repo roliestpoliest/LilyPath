@@ -24,8 +24,10 @@ struct StatsCard: View {
             
             VStack(alignment: .leading) {
                 Text("\(value) \(title.lowercased())")
-                    .font(.currentPlant)
+                    .font(.statsCard)
+                    .fontWeight(.bold)
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
             }
             .padding(.leading, 10)
             
