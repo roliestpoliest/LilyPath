@@ -83,7 +83,7 @@ class PopUp {
         plantModel: BasePlantModel,
         showPopUp: Binding<Bool>,
         hasEnoughGems: Bool,
-        onPurchase: @escaping () -> Void
+        onPurchase: @escaping (BasePlantModel) -> Void
     ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
@@ -105,7 +105,7 @@ class PopUp {
                             isDisabled: !hasEnoughGems
                         ) {
                             if hasEnoughGems {
-                                onPurchase()
+                                onPurchase(plantModel)
                                 showPopUp.wrappedValue = false
                                 print("Purchase button tapped")
                             } else {
@@ -217,7 +217,7 @@ class PopUp {
         currentPlantModel: UserPlantModel,
         swappablePlantModel: UserPlantModel,
         showPopUp: Binding<Bool>,
-        onSwap: @escaping () -> Void
+        onSwap: @escaping (UserPlantModel) -> Void
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swappablePlantModel.id
         let additionalHeight: CGFloat = showSwapButton ? 20 : 0
@@ -309,7 +309,7 @@ class PopUp {
                         
                         if showSwapButton {
                             actionButton(text: "Swap") {
-                                onSwap()
+                                onSwap(swappablePlantModel)
                                 showPopUp.wrappedValue = false
                                 print("Swap button tapped")
                             }
@@ -499,14 +499,14 @@ class PopUp {
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: true,
-                    onPurchase: {}
+                    onPurchase: {_ in }
                 )
                 
                 PopUp.purchase(
                     plantModel: BasePlantModel.delphinium,
                     showPopUp: .constant(true),
                     hasEnoughGems: false,
-                    onPurchase: {}
+                    onPurchase: {_ in }
                 )
                 
                 PopUp.locked(
@@ -534,13 +534,13 @@ class PopUp {
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
                     showPopUp: .constant(true),
-                    onSwap: {}
+                    onSwap: {_ in }
                 )
                 
                 PopUp.plantStats(
                     currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
                     showPopUp: .constant(true),
-                    onSwap: {}
+                    onSwap: {_ in }
                 )
                 
                 PopUp.swapPlant(

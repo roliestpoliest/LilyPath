@@ -53,10 +53,9 @@ struct PlantShopView: View {
                     PopUp.purchase(
                         plantModel: selectedPlant!,
                         showPopUp: $showPopUp,
-                        hasEnoughGems: hasEnoughGems
-                    ) {
-                        handlePlantPurchase(selectedPlant!)
-                    }
+                        hasEnoughGems: hasEnoughGems,
+                        onPurchase: handlePlantPurchase
+                    )
                 }
             }
             .popUpOverlay(isVisible: $showCurrencyPopUp) {
@@ -69,7 +68,7 @@ struct PlantShopView: View {
                 )
             }
         }
-        .animation(.easeInOut, value: showPopUp)
+//        .animation(.easeInOut, value: showPopUp)
     }
     
     // MARK: - Helper Functions

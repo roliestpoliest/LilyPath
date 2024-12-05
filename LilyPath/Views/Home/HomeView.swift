@@ -61,10 +61,10 @@ struct HomeView: View {
         .popUpOverlay(isVisible: $showPopUp) {
             if let currentPlant = currentPlants.first {
                 PopUp.levelUp(
-                    currentPlant: currentPlant, showPopUp: $showPopUp
-                ) {
-                    onLevelUp()
-                }
+                    currentPlant: currentPlant,
+                    showPopUp: $showPopUp,
+                    onLevelUp: onLevelUp
+                )
             }
         }
         .popUpOverlay(isVisible: $showCurrencyPopUp) {
