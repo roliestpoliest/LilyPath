@@ -9,8 +9,10 @@ import SwiftData
 import SwiftUI
 
 struct PlantStatsView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query var allUserPlants: [UserPlantModel]
+
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var selectedTimePeriod: TimePeriod = .daily
 
     var body: some View {
@@ -32,39 +34,42 @@ struct PlantStatsView: View {
                         NavigationLink(
                             destination: PlantStatsDetailView(
                                 title: "Plants Completed",
+                                action: "Completed",
                                 plants: completedPlants
                             )
                         ) {
                             PlantStatsCard(
                                 stat: "Plants Completed",
                                 value: completedPlants.count,
-                                icon: "checkmark.circle.fill"  // Represents completion
+                                icon: .garden
                             )
                         }
 
                         NavigationLink(
                             destination: PlantStatsDetailView(
                                 title: "Plants Watered",
+                                action: "Last watered",
                                 plants: wateredPlants
                             )
                         ) {
                             PlantStatsCard(
                                 stat: "Plants Watered",
                                 value: wateredPlants.count,
-                                icon: "drop.fill"  // Represents water
+                                icon: .waterDrop
                             )
                         }
 
                         NavigationLink(
                             destination: PlantStatsDetailView(
                                 title: "Seeds Planted",
+                                action: "Planted",
                                 plants: seedsPlanted
                             )
                         ) {
                             PlantStatsCard(
                                 stat: "Seeds Planted",
                                 value: seedsPlanted.count,
-                                icon: "leaf.fill"  // Represents growth and planting
+                                icon: .newPlant
                             )
                         }
                     }
@@ -74,10 +79,6 @@ struct PlantStatsView: View {
         }
     }
 
-    init() {
-        _allUserPlants = Query(filter: nil)
-    }
-
     // MARK: - Filtered Plants
     private var completedPlants: [UserPlantModel] {
         fetchPlants(for: selectedTimePeriod).filter { $0.currentStage == 5 }
@@ -85,12 +86,12 @@ struct PlantStatsView: View {
 
     private var wateredPlants: [UserPlantModel] {
         fetchPlants(for: selectedTimePeriod).filter {
-            $0.lastWateredDate != nil && $0.currentStage != 5
+            $0.lastWateredDate != nil
         }
     }
 
     private var seedsPlanted: [UserPlantModel] {
-        fetchPlants(for: selectedTimePeriod).filter { $0.currentStage == 1 }
+        fetchPlants(for: selectedTimePeriod)
     }
 
     private func fetchPlants(for timePeriod: TimePeriod) -> [UserPlantModel] {
@@ -106,13 +107,25 @@ struct PlantStatsView: View {
             startDate = today.startOfMonth
         }
 
-        return allUserPlants.filter {
-            $0.plantDate >= startDate
-        }
+        return allUserPlants
+            .filter {
+                $0.plantDate >= startDate
+            }
+            .sorted {
+                // Sort by most recent day, ignoring time
+                if let firstDate = $0.lastWateredDate?.startOfDay, let secondDate = $1.lastWateredDate?.startOfDay {
+                    if firstDate != secondDate {
+                        return firstDate > secondDate
+                    }
+                }
+                
+                // Tiebreaker: sort alphabetically by species
+                return $0.basePlant.species < $1.basePlant.species
+            }
     }
 }
-// MARK: - Supporting Models and Extensions
 
+// MARK: - Date Extensions
 extension Date {
     var startOfDay: Date {
         Calendar.current.startOfDay(for: self)
@@ -130,8 +143,6 @@ extension Date {
             ?? self
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     PlantStatsView()

@@ -46,7 +46,7 @@ struct UserCurrencyBar: View {
             HStack(spacing: 8) {
                 IconImage(icon: icon, height: 20, color: .waterBlue)
                 
-                Text("\(formatNumber(value))")
+                Text("\(formatNumberWithCommas(value))")
                     .foregroundColor(.white)
                     .font(.customBody)
                     .lineLimit(1)
@@ -91,12 +91,6 @@ struct UserCurrencyBar: View {
                 IconImage(icon: .plus, height: 40, color: .customPink)
             }
         }
-    }
-    
-    private func formatNumber(_ value: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
     }
 }
 

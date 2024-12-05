@@ -1,5 +1,5 @@
 //
-//  StatsCard 2.swift
+//  PlantStatsCard.swift
 //  LilyPath
 //
 //  Created by Carolyn Heron on 12/4/24.
@@ -12,10 +12,10 @@ struct PlantStatsCard: View {
     let stat: String
     let value: Int
     let timePeriod: TimePeriod?
-    let icon: String
+    let icon: Icon
     let showChevron: Bool
     
-    init(stat: String, value: Int, timePeriod: TimePeriod? = nil, icon: String = "leaf", showChevron: Bool = true) {
+    init(stat: String, value: Int, timePeriod: TimePeriod? = nil, icon: Icon, showChevron: Bool = true) {
         self.stat = stat
         self.value = value
         self.timePeriod = timePeriod
@@ -26,30 +26,19 @@ struct PlantStatsCard: View {
     var body: some View {
         HStack {
             ZStack {
-                if UIImage(systemName: icon) != nil { // Check if the icon is an SF Symbol
-                    Image(systemName: icon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.darkerBlue)
-                } else { // Use a custom asset image if not an SF Symbol
-                    Image(icon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                }
+                IconImage(icon: icon, font: .statsIcon, color: .darkerBlue)
             }
             .frame(width: 55, height: 55)
             .background(Color.lightBlue)
             .cornerRadius(10)
             
-            Text("\(stat): \(value)")
+            Text("\(value) \(stat.lowercased())")
                 .font(.statsCard)
                 .foregroundColor(.white)
             
             Spacer()
             
-            if showChevron { // Conditionally show the chevron
+            if showChevron {
                 Image(systemName: "chevron.right")
                     .font(.statsCard)
                     .foregroundColor(.white)

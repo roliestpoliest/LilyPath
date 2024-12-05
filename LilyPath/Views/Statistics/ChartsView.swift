@@ -16,7 +16,7 @@ struct ChartsView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                ViewTitle(title: metricType.displayName)
+                ViewTitle(title: metricType.fluentDisplayName.capitalized)
                     .padding(.top, 10)
 
                 Grid {
@@ -144,6 +144,7 @@ struct ChartsView: View {
             return dateFormatter.string(from: startOfMonth)
         }
     }
+
     private func fetchMetricDataForSelectedTypeAndPeriod() async {
         switch selectedChartPeriod {
         case .day:

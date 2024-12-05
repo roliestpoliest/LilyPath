@@ -10,7 +10,7 @@ import SwiftUI
 struct StatsCard: View {
     let stat: MetricStatsModel
     let timePeriod: TimePeriod
-    let showChevron: Bool  // Determines if the chevron is visible
+    let showChevron: Bool
 
     init(
         stat: MetricStatsModel, timePeriod: TimePeriod, showChevron: Bool = true
@@ -29,13 +29,13 @@ struct StatsCard: View {
             .background(Color.lightBlue)
             .cornerRadius(10)
 
-            Text("\(stat.value) \(stat.fluentDisplayName)")
+            Text("\((stat.value)) \(stat.fluentDisplayName.lowercased())")
                 .font(.statsCard)
                 .foregroundColor(.white)
 
             Spacer()
 
-            if showChevron {  // Conditionally show the chevron
+            if showChevron {
                 Image(systemName: "chevron.right")
                     .font(.statsCard)
                     .foregroundColor(.white)
@@ -45,28 +45,5 @@ struct StatsCard: View {
         .frame(maxWidth: .infinity, maxHeight: 80)
         .background(Color.customBrown)
         .cornerRadius(20)
-    }
-}
-
-struct MetricStatsModel {
-    var metricType: MetricType
-    var value: String
-
-    var icon: Icon {
-        switch metricType {
-        case .steps: return .steps
-        case .calories: return .calories
-        case .flightsClimbed: return .climbed
-        case .sleep: return .slept
-        case .walkingRunningDistance: return .distance
-        }
-    }
-
-    var displayName: String {
-        return metricType.displayName
-    }
-
-    var fluentDisplayName: String {
-        return metricType.fluentDisplayName
     }
 }

@@ -25,6 +25,7 @@
 		2387199D2CB0709600305DFA /* TaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199C2CB0709600305DFA /* TaskCard.swift */; };
 		2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199E2CB0715A00305DFA /* ViewTitle.swift */; };
 		239A0E6F2D018BD80065FEAF /* PopUpOverlayModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0E6E2D018BD80065FEAF /* PopUpOverlayModifier.swift */; };
+		239A0E752D01B7840065FEAF /* MetricStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0E742D01B7840065FEAF /* MetricStatsModel.swift */; };
 		23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */; };
 		23B5E67F2CFEBFC3002874F5 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */; };
 		23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A812CC7619300721D6E /* NumberFormatter.swift */; };
@@ -105,6 +106,7 @@
 		2387199C2CB0709600305DFA /* TaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCard.swift; sourceTree = "<group>"; };
 		2387199E2CB0715A00305DFA /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
 		239A0E6E2D018BD80065FEAF /* PopUpOverlayModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpOverlayModifier.swift; sourceTree = "<group>"; };
+		239A0E742D01B7840065FEAF /* MetricStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricStatsModel.swift; sourceTree = "<group>"; };
 		23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
 		23F44A812CC7619300721D6E /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				239A0E742D01B7840065FEAF /* MetricStatsModel.swift */,
 				23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */,
 				23F44A932CC9C05F00721D6E /* UserModel.swift */,
 				23F44A852CC8C08D00721D6E /* PlantStatsModel.swift */,
@@ -544,6 +547,7 @@
 				822FF7022CB118EC00F8F5DC /* PopUp.swift in Sources */,
 				23F44A882CC8F14500721D6E /* StatsCard.swift in Sources */,
 				23F44A922CC8FD9F00721D6E /* UserPlantManager.swift in Sources */,
+				239A0E752D01B7840065FEAF /* MetricStatsModel.swift in Sources */,
 				231E92012CAEFEBD00964175 /* FontSizes.swift in Sources */,
 				23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */,
 				23F44A902CC8FD7C00721D6E /* TaskManager.swift in Sources */,
@@ -719,13 +723,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
-				DEVELOPMENT_TEAM = 8VNFX56NRK;
+				DEVELOPMENT_TEAM = FR25N7MR4F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LilyPath/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This app wants to read your health data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LilyPath uses your health data, like steps, calories, and sleep, to help track your fitness progress and grow your virtual plants. Your data is private and used only within the app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -736,7 +741,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kikilala.LilyPath;
+				PRODUCT_BUNDLE_IDENTIFIER = kilala.LilyPath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -756,13 +761,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LilyPath/Preview Content\"";
-				DEVELOPMENT_TEAM = 8VNFX56NRK;
+				DEVELOPMENT_TEAM = FR25N7MR4F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LilyPath/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "This app wants to read your health data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LilyPath uses your health data, like steps, calories, and sleep, to help track your fitness progress and grow your virtual plants. Your data is private and used only within the app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -773,7 +779,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kikilala.LilyPath;
+				PRODUCT_BUNDLE_IDENTIFIER = kilala.LilyPath;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

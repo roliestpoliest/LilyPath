@@ -92,11 +92,11 @@ struct FitnessStatsView: View {
     private func displayMetricValue(for metric: MetricType) -> String {
         switch metric {
         case .steps:
-            return "\(Int(countSteps))"
+            return formatNumberWithCommas(Int(countSteps))
         case .calories:
-            return "\(Int(countCalories))"
+            return formatNumberWithCommas(Int(countCalories))
         case .flightsClimbed:
-            return "\(Int(countFlightsClimbed))"
+            return formatNumberWithCommas(Int(countFlightsClimbed))
         case .sleep:
             return String(format: "%.2f", countSleep)
         case .walkingRunningDistance:

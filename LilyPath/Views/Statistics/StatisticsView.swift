@@ -25,8 +25,11 @@ struct StatisticsView: View {
 
                 NavigationLink(destination: PlantStatsView()) {
                     PlantStatsCard(
-                        stat: "Plants Completed", value: plantsWithStage5.count,
-                        showChevron: false)
+                        stat: "Plants Completed",
+                        value: plantsWithStage5.count,
+                        icon: .garden,
+                        showChevron: false
+                    )
                 }
 
                 GardenNavigationLink(
@@ -41,7 +44,7 @@ struct StatisticsView: View {
                     StatsCard(
                         stat: MetricStatsModel(
                             metricType: .steps,
-                            value: "\(Int(countSteps))"
+                            value: formatNumberWithCommas(Int(countSteps))
                         ),
                         timePeriod: .daily,
                         showChevron: false
