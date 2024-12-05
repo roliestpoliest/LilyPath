@@ -93,53 +93,6 @@ struct UserCurrencyBar: View {
     }
 }
 
-// MARK: functions related to adding more water points
-func onConvert(currencyModels: [CurrencyModel], steps: Int) {
-    guard let currencyModel = currencyModels.first else {
-        print("No CurrencyModel found.")
-        return
-    }
-        
-    currencyModel.waterPoints += steps
-    currencyModel.convertedDailySteps += steps
-}
-
-func getUnconvertedUserDailySteps(currencyModels: [CurrencyModel], healthManager: HealthManager) async -> Int {
-    guard let currencyModel = currencyModels.first else {
-        print("No CurrencyModel found.")
-        return 0
-    }
-
-    let startDate = Calendar.current.startOfDay(for: Date())
-    
-    do {
-        let dailySteps = try await fetchDailySteps(from: startDate, healthManager: healthManager)
-        return dailySteps - currencyModel.convertedDailySteps
-    } catch {
-        print("Failed to fetch daily steps: \(error)")
-        return 0
-    }
-}
-
-func fetchDailySteps(from startDate: Date, healthManager: HealthManager) async throws -> Int {
-    return try await withCheckedThrowingContinuation { continuation in
-        healthManager.fetchHourlySteps(for: startDate) { dataPoints in
-            let totalSteps = dataPoints.reduce(0) { $0 + Int($1.value) }
-            continuation.resume(returning: totalSteps)
-        }
-    }
-}
-
-func onBuy(currencyModels: [CurrencyModel]) {
-    guard let currencyModel = currencyModels.first else {
-        print("No CurrencyModel found.")
-        return
-    }
-    
-    currencyModel.gems -= 1
-    currencyModel.waterPoints += 3000
-}
-
 #Preview {
     UserCurrencyBar(showPopUp: .constant(false), unconvertedSteps: .constant(10))
         .modelContainer(for: [CurrencyModel.self])

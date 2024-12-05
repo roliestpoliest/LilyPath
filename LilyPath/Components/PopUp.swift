@@ -338,7 +338,7 @@ class PopUp {
         showPopUp: Binding<Bool>,
         currencyModels: [CurrencyModel],
         onConvert: @escaping ([CurrencyModel], Int) -> Void,
-        onBuy: @escaping ([CurrencyModel]) -> Void
+        onBuy: @escaping ([CurrencyModel], Int) -> Void
     ) -> some View {
         GenericPopUpView(
             showPopUp: showPopUp,
@@ -360,9 +360,9 @@ class PopUp {
                                 currency: "gems",
                                 text: "1",
                                 converting: Icon.gem,
-                                text2: "3000",
+                                text2: "\(WaterPointConversion.usingGems)",
                                 buttonText: "Buy",
-                                onAction: { onBuy(currencyModels) },
+                                onAction: { onBuy(currencyModels, 1) },
                                 isDisabled: currencyModels.first?.gems ?? 0 < 1
                             ),
                         ], id: \.text
@@ -371,7 +371,7 @@ class PopUp {
                             Text("Use \(item.currency):")
                                 .fontWeight(.bold)
                             
-                            // Conversion rate
+                            // Gem conversion rate
                             HStack {
                                 Text(item.text)
                                 IconImage(
@@ -486,7 +486,7 @@ class PopUp {
                     showPopUp: .constant(true),
                     currencyModels: [],
                     onConvert: { _, _ in },
-                    onBuy: { _ in }
+                    onBuy: { _, _  in }
                 )
                 
                 PopUp.purchase(
