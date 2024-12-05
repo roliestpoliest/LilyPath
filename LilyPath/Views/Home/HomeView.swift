@@ -58,11 +58,6 @@ struct HomeView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .onAppear {
-            Task {
-                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
-            }
-        }
         .popUpOverlay(isVisible: $showPopUp) {
             if let currentPlant = currentPlants.first {
                 PopUp.levelUp(
@@ -73,7 +68,9 @@ struct HomeView: View {
             }
         }
         .popUpOverlay(isVisible: $showCurrencyPopUp) {
-            PopUp.addWaterPoints(
+            print("Overlay unconverted steps: \(unconvertedSteps)")
+            
+            return PopUp.addWaterPoints(
                 steps: unconvertedSteps,
                 showPopUp: $showCurrencyPopUp,
                 currencyModels: currencyModels,

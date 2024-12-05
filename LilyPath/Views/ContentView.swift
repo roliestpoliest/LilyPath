@@ -32,11 +32,6 @@ struct ContentView: View {
             TabBar(selectedTab: $selectedTab)
                 .background(Color.mainBackground)
         }
-        .onAppear {
-            Task {
-                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
-            }
-        }
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
     }
