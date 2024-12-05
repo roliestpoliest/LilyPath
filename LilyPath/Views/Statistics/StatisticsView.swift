@@ -28,7 +28,7 @@ struct StatisticsView: View {
                         icon: .garden
                     )
                 }
-                .padding(.bottom, 30)
+                .padding(.bottom, 15)
 
                 SubViewNavigationLink(
                     title: "Fitness Stats",
