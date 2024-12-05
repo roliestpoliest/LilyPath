@@ -244,7 +244,7 @@ class PopUp {
                     PlantInfoView(currentPlant: swappablePlantModel)
                         .padding(.bottom, 20)
 
-                    Grid {
+                    Grid(verticalSpacing: 2) {
                         gridRow(
                             label: "Plant Date",
                             value: swappablePlantModel.plantDate.formatted(
@@ -279,13 +279,13 @@ class PopUp {
                             showPopUp.wrappedValue = false
                             print("Swap button tapped")
                         }
-                        .padding(.top, 10)
+                        .padding(.top, 15)
                     }
                 }
                 .padding()
             },
             width: 300,
-            height: 290 + additionalHeight
+            height: 310 + additionalHeight
         )
     }
     
