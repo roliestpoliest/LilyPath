@@ -193,6 +193,25 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		239A0E7E2D01D1E80065FEAF /* Fitness Stats */ = {
+			isa = PBXGroup;
+			children = (
+				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
+				823A187F2CC9B20E00289917 /* ChartsView.swift */,
+			);
+			path = "Fitness Stats";
+			sourceTree = "<group>";
+		};
+		239A0E7F2D01D1F60065FEAF /* Plant Stats */ = {
+			isa = PBXGroup;
+			children = (
+				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
+				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
+				8284012B2D015A520006F8DA /* PlantStatsCard.swift */,
+			);
+			path = "Plant Stats";
+			sourceTree = "<group>";
+		};
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,13 +338,10 @@
 		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
+				239A0E7F2D01D1F60065FEAF /* Plant Stats */,
+				239A0E7E2D01D1E80065FEAF /* Fitness Stats */,
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
-				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
-				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
-				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
 				23F44A872CC8F14500721D6E /* StatsCard.swift */,
-				8284012B2D015A520006F8DA /* PlantStatsCard.swift */,
-				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";

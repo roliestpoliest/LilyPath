@@ -22,7 +22,7 @@ struct PlantStatsDetailView: View {
                     if plants.isEmpty {
                         Text("No \(title.lowercased()) yet")
                             .foregroundColor(.gray)
-                            .font(.customBody) // Use your custom font
+                            .font(.customBody)
                             .multilineTextAlignment(.center)
                             .padding()
                     } else {
