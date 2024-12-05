@@ -1,24 +1,26 @@
 //
-//  PlantStatsCard.swift
+//  GenericStatsCard.swift
 //  LilyPath
 //
-//  Created by Carolyn Heron on 12/4/24.
+//  Created by Chelsea Nguyen on 12/5/24.
 //
-
 
 import SwiftUI
 
-struct PlantStatsCard: View {
-    let stat: String
-    let value: Int
-    let timePeriod: TimePeriod?
+struct GenericStatsCard: View {
+    let title: String
+    let value: String
     let icon: Icon
     let showChevron: Bool
     
-    init(stat: String, value: Int, timePeriod: TimePeriod? = nil, icon: Icon, showChevron: Bool = true) {
-        self.stat = stat
+    init(
+        title: String,
+        value: String,
+        icon: Icon,
+        showChevron: Bool = false
+    ) {
+        self.title = title
         self.value = value
-        self.timePeriod = timePeriod
         self.icon = icon
         self.showChevron = showChevron
     }
@@ -32,9 +34,12 @@ struct PlantStatsCard: View {
             .background(Color.lightBlue)
             .cornerRadius(10)
             
-            Text("\(value) \(stat.lowercased())")
-                .font(.statsCard)
-                .foregroundColor(.white)
+            VStack(alignment: .leading) {
+                Text("\(value) \(title.lowercased())")
+                    .font(.statsCard)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
+            }
             
             Spacer()
             
@@ -47,6 +52,16 @@ struct PlantStatsCard: View {
         .padding(12)
         .frame(maxWidth: .infinity, maxHeight: 80)
         .background(Color.customBrown)
-        .cornerRadius(20)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
+
+#Preview {
+    GenericStatsCard(
+        title: "Steps",
+        value: "10,000",
+        icon: .steps,
+        showChevron: true
+    )
+}
+

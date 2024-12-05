@@ -22,7 +22,7 @@ struct StatisticsView: View {
                     title: "Plant Stats",
                     destination: PlantStatsView()
                 ) {
-                    StatsCard(
+                    StatisticsCard(
                         title: "Completed Since Start",
                         value: String(plantsWithStage5.count),
                         icon: .garden
@@ -39,7 +39,7 @@ struct StatisticsView: View {
                         }
                     }
                 ) {
-                    StatsCard(
+                    StatisticsCard(
                         title: "Steps Today",
                         value: formatNumberWithCommas(Int(countSteps)),
                         icon: .steps

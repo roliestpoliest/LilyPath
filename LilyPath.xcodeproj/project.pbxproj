@@ -31,14 +31,14 @@
 		239A0ECA2D01D45D0065FEAF /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EC02D01D45D0065FEAF /* TabBar.swift */; };
 		239A0ECB2D01D45D0065FEAF /* TimePeriodPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EC12D01D45D0065FEAF /* TimePeriodPicker.swift */; };
 		239A0ECC2D01D45D0065FEAF /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0EC22D01D45D0065FEAF /* ViewTitle.swift */; };
-		239A0ECE2D01DF2B0065FEAF /* StatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ECD2D01DF2B0065FEAF /* StatsCard.swift */; };
+		239A0ECE2D01DF2B0065FEAF /* StatisticsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ECD2D01DF2B0065FEAF /* StatisticsCard.swift */; };
 		239A0ED02D01ED7A0065FEAF /* ShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ECF2D01ED7A0065FEAF /* ShadowModifier.swift */; };
 		239A0ED22D0206210065FEAF /* PlantInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ED12D0206210065FEAF /* PlantInfoView.swift */; };
 		239A0ED42D0218BD0065FEAF /* WaterPointConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ED32D0218AC0065FEAF /* WaterPointConversion.swift */; };
 		239A0ED62D021E8A0065FEAF /* PlantStatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0ED52D021E820065FEAF /* PlantStatsModel.swift */; };
+		239A0F312D0244FC0065FEAF /* GenericStatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0F302D0244FC0065FEAF /* GenericStatsCard.swift */; };
 		23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */; };
 		23B5E67F2CFEBFC3002874F5 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */; };
-		23F44A882CC8F14500721D6E /* FitnessStatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A872CC8F14500721D6E /* FitnessStatsCard.swift */; };
 		23F44A8A2CC8F9DD00721D6E /* PlantStatsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */; };
 		23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */; };
 		822948AD2CB26525003BD934 /* PlantGalleryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822948AC2CB26525003BD934 /* PlantGalleryCard.swift */; };
@@ -48,7 +48,6 @@
 		827C6D5D2CAE0B4D00F29BE5 /* PlantShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */; };
 		8280FF212CC62BC900455EC4 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF202CC62BC900455EC4 /* HealthManager.swift */; };
 		8280FF232CC63B4D00455EC4 /* ActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8280FF222CC63B4D00455EC4 /* ActivityModel.swift */; };
-		8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8284012B2D015A520006F8DA /* PlantStatsCard.swift */; };
 		828897652CAE40D10089C5DD /* PlantShopCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828897642CAE40D10089C5DD /* PlantShopCard.swift */; };
 		8298A0E62CA9F65B0062563F /* LilyPathApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E52CA9F65B0062563F /* LilyPathApp.swift */; };
 		8298A0E82CA9F65B0062563F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298A0E72CA9F65B0062563F /* ContentView.swift */; };
@@ -104,14 +103,14 @@
 		239A0EC02D01D45D0065FEAF /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		239A0EC12D01D45D0065FEAF /* TimePeriodPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodPicker.swift; sourceTree = "<group>"; };
 		239A0EC22D01D45D0065FEAF /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
-		239A0ECD2D01DF2B0065FEAF /* StatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCard.swift; sourceTree = "<group>"; };
+		239A0ECD2D01DF2B0065FEAF /* StatisticsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCard.swift; sourceTree = "<group>"; };
 		239A0ECF2D01ED7A0065FEAF /* ShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowModifier.swift; sourceTree = "<group>"; };
 		239A0ED12D0206210065FEAF /* PlantInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoView.swift; sourceTree = "<group>"; };
 		239A0ED32D0218AC0065FEAF /* WaterPointConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterPointConversion.swift; sourceTree = "<group>"; };
 		239A0ED52D021E820065FEAF /* PlantStatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsModel.swift; sourceTree = "<group>"; };
+		239A0F302D0244FC0065FEAF /* GenericStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericStatsCard.swift; sourceTree = "<group>"; };
 		23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
-		23F44A872CC8F14500721D6E /* FitnessStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessStatsCard.swift; sourceTree = "<group>"; };
 		23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsDetailView.swift; sourceTree = "<group>"; };
 		23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrencyBar.swift; sourceTree = "<group>"; };
 		820667702CC60ADF00D2CC47 /* LilyPath.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LilyPath.entitlements; sourceTree = "<group>"; };
@@ -123,7 +122,6 @@
 		8280FF1F2CC60EA000455EC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8280FF202CC62BC900455EC4 /* HealthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		8280FF222CC63B4D00455EC4 /* ActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModel.swift; sourceTree = "<group>"; };
-		8284012B2D015A520006F8DA /* PlantStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantStatsCard.swift; sourceTree = "<group>"; };
 		828897642CAE40D10089C5DD /* PlantShopCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantShopCard.swift; sourceTree = "<group>"; };
 		8298A0E22CA9F65B0062563F /* LilyPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LilyPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8298A0E52CA9F65B0062563F /* LilyPathApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LilyPathApp.swift; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
-				23F44A872CC8F14500721D6E /* FitnessStatsCard.swift */,
 				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 			);
 			path = FitnessStats;
@@ -179,7 +176,6 @@
 			isa = PBXGroup;
 			children = (
 				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
-				8284012B2D015A520006F8DA /* PlantStatsCard.swift */,
 				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
 			);
 			path = PlantStats;
@@ -350,7 +346,8 @@
 			isa = PBXGroup;
 			children = (
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
-				239A0ECD2D01DF2B0065FEAF /* StatsCard.swift */,
+				239A0ECD2D01DF2B0065FEAF /* StatisticsCard.swift */,
+				239A0F302D0244FC0065FEAF /* GenericStatsCard.swift */,
 				239A0E7F2D01D1F60065FEAF /* PlantStats */,
 				239A0E7E2D01D1E80065FEAF /* FitnessStats */,
 			);
@@ -492,7 +489,6 @@
 				239A0ED42D0218BD0065FEAF /* WaterPointConversion.swift in Sources */,
 				23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */,
 				2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */,
-				8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */,
 				239A0ED02D01ED7A0065FEAF /* ShadowModifier.swift in Sources */,
@@ -517,7 +513,8 @@
 				239A0EC62D01D45D0065FEAF /* PopUp.swift in Sources */,
 				239A0EC72D01D45D0065FEAF /* PopUpOverlayModifier.swift in Sources */,
 				239A0EC82D01D45D0065FEAF /* ProgressBar.swift in Sources */,
-				239A0ECE2D01DF2B0065FEAF /* StatsCard.swift in Sources */,
+				239A0F312D0244FC0065FEAF /* GenericStatsCard.swift in Sources */,
+				239A0ECE2D01DF2B0065FEAF /* StatisticsCard.swift in Sources */,
 				239A0EC92D01D45D0065FEAF /* SubViewNavigationLink.swift in Sources */,
 				239A0ECA2D01D45D0065FEAF /* TabBar.swift in Sources */,
 				239A0ECB2D01D45D0065FEAF /* TimePeriodPicker.swift in Sources */,
@@ -532,7 +529,6 @@
 				239A0EB72D01D45A0065FEAF /* NumberFormatter.swift in Sources */,
 				239A0EB92D01D45A0065FEAF /* Tabs.swift in Sources */,
 				239A0E7D2D01D0CD0065FEAF /* CurrencyModel.swift in Sources */,
-				23F44A882CC8F14500721D6E /* FitnessStatsCard.swift in Sources */,
 				239A0E752D01B7840065FEAF /* MetricStatsModel.swift in Sources */,
 				82DDA1832CB379A2008585EE /* PlantGalleryView.swift in Sources */,
 				8298A11B2CAA04B10062563F /* SplashScreenView.swift in Sources */,
