@@ -14,97 +14,108 @@ struct ChartsView: View {
     var selectedChartPeriod: ChartPeriod
 
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                ViewTitle(title: metricType.fluentDisplayName.capitalized)
-                    .padding(.top, 10)
-
-                Grid {
-                    GridRow {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(chartPeriodDisplay())
-                                .font(.statsBodyBold)
-                            Text("Total \(metricType.displayName)")
-                                .font(.statsBodyBold)
-                            Text("Average \(metricType.displayName)")
-                                .font(.statsBodyBold)
-                        }
-
-                        Spacer(minLength: 5)
-
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(chartPeriodDateRange())
-                                .font(.statsBodyBold)
-                            Text("\(Int(totalMetricCount()))")
-                                .font(.statsBodyBold)
-                            Text(
-                                "\(String(format: "%.1f", averageMetricCountPerPeriod()))/\(selectedChartPeriod == .day ? "hour" : selectedChartPeriod == .week ? "day" : "week")"
-                            )
-                            .font(.statsBodyBold)
-                        }
-                    }
+        VStack {
+            ViewTitle(title: metricType.fluentDisplayName.capitalized)
+            
+            Grid(verticalSpacing: 10) {
+                GridRow {
+                    Text(chartPeriodDisplay())
+                        .font(.statsBodyBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(chartPeriodDateRange())
+                        .font(.statsBodyBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .foregroundColor(.customBrown)
-                .frame(maxWidth: geometry.size.width * 0.8)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.vertical, 20)
-
-                // Chart section
-                if selectedChartData().isEmpty {
-                    Text("Loading chart data...")
-                } else {
-                    Chart(selectedChartData()) { dataPoint in
-                        BarMark(
-                            x: .value(
-                                "Date", dataPoint.date, unit: chartUnit()),
-                            y: .value("Value", dataPoint.value)
-                        )
-                        .foregroundStyle(getBarColor(for: dataPoint.date))
-                        .cornerRadius(1)
-                    }
-                    .chartXAxis {
-                        AxisMarks(values: xAxisValues()) { value in
-                            AxisGridLine()
-                                .foregroundStyle(.black)
-                            AxisValueLabel {
-                                if let dateValue = value.as(Date.self) {
-                                    Text(formatXAxisLabel(for: dateValue))
-                                        .foregroundColor(.customBrown)
-                                        .layoutPriority(1)
-                                        .font(.chartAxisLabels)
-                                }
-                            }
-                        }
-                    }
-                    .chartYAxis {
-                        AxisMarks { value in
-                            AxisGridLine()
-                                .foregroundStyle(.black)
-                            AxisValueLabel {
-                                if let yValue = value.as(Double.self) {
-                                    Text(formatYValue(yValue))
-                                        .foregroundColor(.customBrown)
-                                        .font(.chartAxisLabels)
-                                }
-                            }
-                        }
-                    }
-                    .chartYScale(domain: 0...maxYValue())
-                    .frame(
-                        width: max(geometry.size.width - 20, 300), height: 300
+                
+                GridRow {
+                    Text("Total \(metricType.displayName)")
+                        .font(.statsBodyBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("\(Int(totalMetricCount()))")
+                        .font(.statsBodyBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                GridRow {
+                    Text("Average \(metricType.displayName)")
+                        .font(.statsBodyBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(
+                        "\(String(format: "%.1f", averageMetricCountPerPeriod()))/\(selectedChartPeriod == .day ? "hour" : selectedChartPeriod == .week ? "day" : "week")"
                     )
-                    .padding(.horizontal, 10)
-                    .padding(.top, 10)
+                    .font(.statsBodyBold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-
-                Spacer()
             }
-            .onAppear {
-                Task {
-                    await fetchMetricDataForSelectedTypeAndPeriod()
+            .foregroundColor(.customBrown)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.bottom, 20)
+            
+            // Chart section
+            if selectedChartData().isEmpty {
+                Text("Loading chart data...")
+            } else {
+                Chart(selectedChartData()) { dataPoint in
+                    BarMark(
+                        x: .value(
+                            "Date", dataPoint.date, unit: chartUnit()),
+                        y: .value("Value", dataPoint.value)
+                    )
+                    .foregroundStyle(getBarColor(for: dataPoint.date))
+                    .cornerRadius(1)
                 }
+                .chartXAxis {
+                    AxisMarks(values: xAxisValues()) { value in
+                        AxisGridLine()
+                            .foregroundStyle(.black)
+                        AxisValueLabel {
+                            if let dateValue = value.as(Date.self) {
+                                Text(formatXAxisLabel(for: dateValue))
+                                    .foregroundColor(.customBrown)
+                                    .layoutPriority(1)
+                                    .font(.chartAxisLabels)
+                            }
+                        }
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(.black)
+                        AxisValueLabel {
+                            if let yValue = value.as(Double.self) {
+                                Text(formatYValue(yValue))
+                                    .foregroundColor(.customBrown)
+                                    .font(.chartAxisLabels)
+                            }
+                        }
+                    }
+                }
+                .chartYScale(domain: 0...maxYValue())
+                .frame(
+                    maxWidth: .infinity, maxHeight: 280
+                )
+                .padding(15)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.white.opacity(0.8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .inset(by: 3)
+                                .stroke(Color.lightBlue, lineWidth: 6)
+                        )
+                )
+                
+            }
+            
+            Spacer()
+        }
+        .onAppear {
+            Task {
+                await fetchMetricDataForSelectedTypeAndPeriod()
             }
         }
+        
         .background(Color.mainBackground)
     }
 
@@ -272,4 +283,9 @@ struct ChartsView: View {
             return String(format: "%.1f", value)
         }
     }
+}
+
+#Preview {
+    ChartsView(metricType: .steps, selectedChartPeriod: .day)
+        .environmentObject(HealthManager())
 }
