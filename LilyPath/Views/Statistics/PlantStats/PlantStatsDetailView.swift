@@ -26,17 +26,20 @@ struct PlantStatsDetailView: View {
                             .multilineTextAlignment(.center)
                             .padding()
                     } else {
-                        VStack(spacing: 20) {
+                        VStack() {
                             ForEach(plants, id: \.id) { plant in
                                 PlantRowView(
                                     plant: plant,
                                     action: action
                                 )
+                                .padding(.vertical, 8)
                                 .darkCustomShadow()
                             }
                         }
                     }
                 }
+                
+                Spacer()
             }
             .background(Color.mainBackground)
         }
@@ -99,4 +102,8 @@ struct PlantRowView: View {
         formatter.dateStyle = .medium
         return formatter.string(from: date)
     }
+}
+
+#Preview {
+    PlantStatsDetailView(title: "Plants", action: "planted", plants: [])
 }

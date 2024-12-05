@@ -35,9 +35,10 @@ struct PlantShopView: View {
                 ViewTitle(title: "Plant Shop")
                 
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 40) {
+                    LazyVGrid(columns: columns, spacing: 25) {
                         ForEach(plants) { plant in
                             PlantShopCard(plantModel: plant)
+                                .padding(.bottom, 25)
                                 .onTapGesture {
                                     handlePlantSelection(plant)
                                 }

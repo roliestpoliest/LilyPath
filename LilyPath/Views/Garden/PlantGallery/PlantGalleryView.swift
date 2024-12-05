@@ -28,9 +28,10 @@ struct PlantGalleryView: View {
                 ViewTitle(title: "Plant Gallery")
                 
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 40) {
+                    LazyVGrid(columns: columns, spacing: 25) {
                         ForEach(userPlants) { plant in
                             PlantGalleryCard(userPlantModel: plant)
+                                .padding(.bottom, 25)
                                 .onTapGesture {
                                     selectedPlant = plant
                                     showPopUp = true
