@@ -5,7 +5,6 @@
 //  Created by Carolyn Heron on 10/23/24.
 //
 
-
 enum MetricType: String, CaseIterable, Identifiable {
     case steps
     case calories

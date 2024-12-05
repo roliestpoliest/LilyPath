@@ -193,50 +193,50 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		239A0E7E2D01D1E80065FEAF /* Fitness Stats */ = {
+		239A0E7E2D01D1E80065FEAF /* FitnessStats */ = {
 			isa = PBXGroup;
 			children = (
 				2353BDAA2CC61B600019412C /* FitnessStatsView.swift */,
 				823A187F2CC9B20E00289917 /* ChartsView.swift */,
 			);
-			path = "Fitness Stats";
+			path = FitnessStats;
 			sourceTree = "<group>";
 		};
-		239A0E7F2D01D1F60065FEAF /* Plant Stats */ = {
+		239A0E7F2D01D1F60065FEAF /* PlantStats */ = {
 			isa = PBXGroup;
 			children = (
 				2353BDA82CC61B2F0019412C /* PlantStatsView.swift */,
 				23F44A892CC8F9DD00721D6E /* PlantStatsDetailView.swift */,
 				8284012B2D015A520006F8DA /* PlantStatsCard.swift */,
 			);
-			path = "Plant Stats";
+			path = PlantStats;
 			sourceTree = "<group>";
 		};
-		239A0E802D01D2AC0065FEAF /* Gallery */ = {
+		239A0E802D01D2AC0065FEAF /* PlantGallery */ = {
 			isa = PBXGroup;
 			children = (
 				82DDA1822CB379A2008585EE /* PlantGalleryView.swift */,
 				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
 			);
-			path = Gallery;
+			path = PlantGallery;
 			sourceTree = "<group>";
 		};
-		239A0E812D01D2CA0065FEAF /* Plant Shop */ = {
+		239A0E812D01D2CA0065FEAF /* PlantShop */ = {
 			isa = PBXGroup;
 			children = (
 				827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */,
 				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
 			);
-			path = "Plant Shop";
+			path = PlantShop;
 			sourceTree = "<group>";
 		};
-		239A0E822D01D2D70065FEAF /* Daily Tasks */ = {
+		239A0E822D01D2D70065FEAF /* DailyTasks */ = {
 			isa = PBXGroup;
 			children = (
 				238719482CAF172A00305DFA /* DailyTasksView.swift */,
 				2387199C2CB0709600305DFA /* TaskCard.swift */,
 			);
-			path = "Daily Tasks";
+			path = DailyTasks;
 			sourceTree = "<group>";
 		};
 		23BE23812CAB250700D1D961 /* Models */ = {
@@ -344,8 +344,8 @@
 				8298A1142CAA03D40062563F /* HomeView.swift */,
 				23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */,
 				23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */,
-				239A0E822D01D2D70065FEAF /* Daily Tasks */,
-				239A0E812D01D2CA0065FEAF /* Plant Shop */,
+				239A0E822D01D2D70065FEAF /* DailyTasks */,
+				239A0E812D01D2CA0065FEAF /* PlantShop */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -354,7 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				8298A1162CAA04340062563F /* GardenView.swift */,
-				239A0E802D01D2AC0065FEAF /* Gallery */,
+				239A0E802D01D2AC0065FEAF /* PlantGallery */,
 			);
 			path = Garden;
 			sourceTree = "<group>";
@@ -364,8 +364,8 @@
 			children = (
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
 				23F44A872CC8F14500721D6E /* StatsCard.swift */,
-				239A0E7F2D01D1F60065FEAF /* Plant Stats */,
-				239A0E7E2D01D1E80065FEAF /* Fitness Stats */,
+				239A0E7F2D01D1F60065FEAF /* PlantStats */,
+				239A0E7E2D01D1E80065FEAF /* FitnessStats */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
