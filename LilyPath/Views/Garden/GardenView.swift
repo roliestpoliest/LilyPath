@@ -19,23 +19,16 @@ struct GardenView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 30) {
-                    GardenNavigationLink(
+                VStack {
+                    SubViewNavigationLink(
                         title: "Your Garden",
                         destination: PlantGalleryView()
-                    )
-                    
-                    YourGardenView(userPlants: userPlants)
-                        .padding(.bottom, 30)
-                    
-                    Button(action: {
-                        if let currentPlant = userPlants.first(where: {
-                            $0.isCurrent
-                        }) {
-                            self.currentPlant = currentPlant
-                            showPopUp = true
-                        }
-                    }) {
+                    ) {
+                        YourGardenView(userPlants: userPlants)
+                    }
+                    .padding(.bottom, 30)
+
+                    VStack {
                         HStack {
                             Text("Current Plant")
                             Spacer()
@@ -44,10 +37,18 @@ struct GardenView: View {
                         .font(.viewTitle)
                         .foregroundColor(.customBrown)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        CurrentPlantView(
+                            currentPlant: userPlants.first(where: { $0.isCurrent }))
                     }
-                    
-                    CurrentPlantView(
-                        currentPlant: userPlants.first(where: { $0.isCurrent }))
+                    .onTapGesture {
+                        if let currentPlant = userPlants.first(where: {
+                            $0.isCurrent
+                        }) {
+                            self.currentPlant = currentPlant
+                            showPopUp = true
+                        }
+                    }
                     
                     Spacer()
                 }
@@ -171,25 +172,6 @@ struct CurrentPlantView: View {
                             .stroke(Color.customPink, lineWidth: 6)
                     )
             )
-        }
-    }
-}
-
-struct GardenNavigationLink<Destination: View>: View {
-    let title: String
-    let destination: Destination
-    
-    var body: some View {
-        NavigationLink(destination: destination) {
-            HStack {
-                ViewTitle(title: title)
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .font(.viewTitle)
-                    .foregroundColor(Color.customBrown)
-            }
         }
     }
 }

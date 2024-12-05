@@ -39,7 +39,7 @@ struct FitnessStatsView: View {
                             )
                             .environmentObject(healthManager)
                         ) {
-                            StatsCard(
+                            FitnessStatsCard(
                                 stat: MetricStatsModel(
                                     metricType: metric,
                                     value: displayMetricValue(for: metric)),

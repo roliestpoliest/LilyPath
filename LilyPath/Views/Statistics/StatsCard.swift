@@ -2,48 +2,45 @@
 //  StatsCard.swift
 //  LilyPath
 //
-//  Created by Chelsea Nguyen on 10/23/24.
+//  Created by Chelsea Nguyen on 12/5/24.
 //
 
 import SwiftUI
 
 struct StatsCard: View {
-    let stat: MetricStatsModel
-    let timePeriod: TimePeriod
-    let showChevron: Bool
-
-    init(
-        stat: MetricStatsModel, timePeriod: TimePeriod, showChevron: Bool = true
-    ) {
-        self.stat = stat
-        self.timePeriod = timePeriod
-        self.showChevron = showChevron
-    }
-
+    let title: String
+    let value: String
+    let icon: Icon
+    
     var body: some View {
         HStack {
             ZStack {
-                IconImage(icon: stat.icon, font: .statsIcon, color: .darkerBlue)
+                IconImage(icon: icon, font: .statsIcon, color: .darkerBlue)
             }
             .frame(width: 55, height: 55)
             .background(Color.lightBlue)
             .cornerRadius(10)
-
-            Text("\((stat.value)) \(stat.fluentDisplayName.lowercased())")
-                .font(.statsCard)
-                .foregroundColor(.white)
-
-            Spacer()
-
-            if showChevron {
-                Image(systemName: "chevron.right")
-                    .font(.statsCard)
+            .padding(.leading, 10)
+            
+            VStack(alignment: .leading) {
+                Text("\(value) \(title.lowercased())")
+                    .font(.currentPlant)
                     .foregroundColor(.white)
             }
+            .padding(.leading, 10)
+            
+            Spacer()
         }
-        .padding(12)
-        .frame(maxWidth: .infinity, maxHeight: 80)
-        .background(Color.customBrown)
-        .cornerRadius(20)
+        .padding(20)
+        .frame(maxWidth: .infinity, minHeight: 110)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.customBrown)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .inset(by: 3)
+                        .stroke(Color.darkerBlue, lineWidth: 6)
+                )
+        )
     }
 }

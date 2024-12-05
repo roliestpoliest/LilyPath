@@ -18,42 +18,32 @@ struct StatisticsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                GardenNavigationLink(
+                SubViewNavigationLink(
                     title: "Plant Stats",
                     destination: PlantStatsView()
-                )
-
-                NavigationLink(destination: PlantStatsView()) {
-                    PlantStatsCard(
-                        stat: "Plants Completed",
-                        value: plantsWithStage5.count,
-                        icon: .garden,
-                        showChevron: false
-                    )
-                }
-
-                GardenNavigationLink(
-                    title: "Fitness Stats",
-                    destination: FitnessStatsView()
-                )
-
-                NavigationLink(
-                    destination: FitnessStatsView().environmentObject(
-                        healthManager)
                 ) {
                     StatsCard(
-                        stat: MetricStatsModel(
-                            metricType: .steps,
-                            value: formatNumberWithCommas(Int(countSteps))
-                        ),
-                        timePeriod: .daily,
-                        showChevron: false
+                        title: plantsWithStage5.count == 1 ? "Plant Completed" : "Plants Completed",
+                        value: String(plantsWithStage5.count),
+                        icon: .garden
                     )
                 }
-                .onAppear {
-                    Task {
-                        await fetchDailySteps()
+                .padding(.bottom, 30)
+
+                SubViewNavigationLink(
+                    title: "Fitness Stats",
+                    destination: FitnessStatsView(),
+                    onAppearAction: {
+                        Task {
+                            await fetchDailySteps()
+                        }
                     }
+                ) {
+                    StatsCard(
+                        title: "steps today",
+                        value: formatNumberWithCommas(Int(countSteps)),
+                        icon: .steps
+                    )
                 }
 
                 Spacer()
@@ -63,7 +53,6 @@ struct StatisticsView: View {
     }
 
     init() {
-        // Query to fetch only plants where currentStage == 5
         _plantsWithStage5 = Query(filter: #Predicate { $0.currentStage == 5 })
     }
 
@@ -77,4 +66,9 @@ struct StatisticsView: View {
             }
         }
     }
+}
+
+#Preview {
+    StatisticsView()
+        .environmentObject(HealthManager())
 }
