@@ -22,7 +22,11 @@ struct TaskCard: View {
         .frame(height: 100)
         .background(Color.customBrown)
         .cornerRadius(20)
-        .overlay(debugButton, alignment: .bottomTrailing) // Add the debug button
+        // FOR TA: Uncomment the following `overlay` line to add a progress simulation button. This will allow you to collect
+        //         more waterpoints and gems to test watering plants and its features (e.g., plant level-up, plant completion).
+        // NOTE: Uncommenting will disrupt the task progress display. To fix this, regenerate new tasks on the DailyTasksView,
+        //       then comment out the `overlay` line and rebuild to restore task progress buttons.
+        //.overlay(simulateButton, alignment: .bottomTrailing) // Simulate progress button
     }
     
     var taskAndProgress: some View {
@@ -86,14 +90,14 @@ struct TaskCard: View {
         }
     }
     
-    var debugButton: some View {
+    var simulateButton: some View {
         Group {
             if task.status == .inProgress {
                 Button(action: incrementProgress) {
-                    Text("Debug: +\(task.goal / 2)")
-                        .font(.caption)
+                    Text("Simulate: +\(task.goal / 2)")
+                        .font(.caption2)
                         .padding(5)
-                        .background(Color.orange)
+                        .background(.customPink)
                         .foregroundColor(.white)
                         .cornerRadius(5)
                 }

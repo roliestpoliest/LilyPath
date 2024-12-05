@@ -62,6 +62,10 @@ struct DailyTasksView: View {
         if Calendar.current.isDate(lastGeneratedDate, inSameDayAs: currentDate)
         {
             print("Tasks already generated for today.")
+            // FOR TA: Comment out the following `return` line to generate new tasks each time the view appears. This will allow you to
+            //         collect more waterpoints and gems to test watering plants and its features (e.g., plant level-up, plant completion).
+            // NOTE: Commenting this line will disrupt the daily task progress display. To fix this, make sure to generate new tasks,
+            //       uncomment the `return` line, and rebuild the app to restore task progress bar functionality.
             return
         }
 
