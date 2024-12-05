@@ -19,7 +19,8 @@ struct HomeView: View {
     @Query private var currencyModels: [CurrencyModel]
     
     @State var showPopUp: Bool = false
-
+    @State var showCurrencyPopUp: Bool = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -54,21 +55,29 @@ struct HomeView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.modelContext, AppModelContainer.shared.container.mainContext)
-        .overlay(
-            ZStack {
-                if showPopUp {
-                    Color.mainBackground.opacity(0.4)
-                        .ignoresSafeArea()
-
-                    if let currentPlant = currentPlants.first {
-                        PopUp.levelUp(currentPlant: currentPlant, showPopUp: $showPopUp) {
-                                onLevelUp()
-                        }
-                    }
-                }
-            }.animation(.easeInOut, value: showPopUp)
-        )
+        .onAppear {
+            Task {
+                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
+            }
+        }
+        .popUpOverlay(isVisible: $showPopUp) {
+            if let currentPlant = currentPlants.first {
+                PopUp.levelUp(
+                    currentPlant: currentPlant,
+                    showPopUp: $showPopUp,
+                    onLevelUp: onLevelUp
+                )
+            }
+        }
+        .popUpOverlay(isVisible: $showCurrencyPopUp) {
+            PopUp.addWaterPoints(
+                steps: unconvertedSteps,
+                showPopUp: $showCurrencyPopUp,
+                currencyModels: currencyModels,
+                onConvert: onConvert,
+                onBuy: onBuy
+            )
+        }
     }
     
     func onLevelUp() {

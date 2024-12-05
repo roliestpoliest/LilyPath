@@ -24,6 +24,7 @@
 		238719962CB06AB000305DFA /* GenerateRandomTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238719952CB06A9D00305DFA /* GenerateRandomTasks.swift */; };
 		2387199D2CB0709600305DFA /* TaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199C2CB0709600305DFA /* TaskCard.swift */; };
 		2387199F2CB0715A00305DFA /* ViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387199E2CB0715A00305DFA /* ViewTitle.swift */; };
+		239A0E6F2D018BD80065FEAF /* PopUpOverlayModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A0E6E2D018BD80065FEAF /* PopUpOverlayModifier.swift */; };
 		23B2E1222CCA1CCD0042A60A /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */; };
 		23B5E67F2CFEBFC3002874F5 /* AppModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */; };
 		23F44A822CC761A100721D6E /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F44A812CC7619300721D6E /* NumberFormatter.swift */; };
@@ -103,6 +104,7 @@
 		238719952CB06A9D00305DFA /* GenerateRandomTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRandomTasks.swift; sourceTree = "<group>"; };
 		2387199C2CB0709600305DFA /* TaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCard.swift; sourceTree = "<group>"; };
 		2387199E2CB0715A00305DFA /* ViewTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTitle.swift; sourceTree = "<group>"; };
+		239A0E6E2D018BD80065FEAF /* PopUpOverlayModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpOverlayModifier.swift; sourceTree = "<group>"; };
 		23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		23B5E67E2CFEBFC3002874F5 /* AppModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelContainer.swift; sourceTree = "<group>"; };
 		23F44A812CC7619300721D6E /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 		238719992CB0707B00305DFA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				239A0E6E2D018BD80065FEAF /* PopUpOverlayModifier.swift */,
 				2353BDAC2CC7183F0019412C /* TimePeriodPicker.swift */,
 				231DE6552CB49914008EFABA /* CircularProgressBar.swift */,
 				231DE64D2CB3AD6F008EFABA /* TabBar.swift */,
@@ -503,6 +506,7 @@
 				2353BDAB2CC61B600019412C /* FitnessStatsView.swift in Sources */,
 				8284012C2D015A520006F8DA /* PlantStatsCard.swift in Sources */,
 				2353BDAD2CC7183F0019412C /* TimePeriodPicker.swift in Sources */,
+				239A0E6F2D018BD80065FEAF /* PopUpOverlayModifier.swift in Sources */,
 				2387199D2CB0709600305DFA /* TaskCard.swift in Sources */,
 				23F44A962CC9C7E300721D6E /* UserCurrencyBar.swift in Sources */,
 				238719492CAF172A00305DFA /* DailyTasksView.swift in Sources */,

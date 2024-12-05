@@ -13,7 +13,7 @@ struct GardenView: View {
     @Query(sort: [SortDescriptor(\UserPlantModel.plantDate, order: .reverse)])
     private var userPlants: [UserPlantModel]
     
-    @State private var selectedPlant: UserPlantModel? = nil
+    @State private var currentPlant: UserPlantModel? = nil
     @State private var showPopUp: Bool = false
     
     var body: some View {
@@ -29,13 +29,11 @@ struct GardenView: View {
                         .padding(.bottom, 30)
                     
                     Button(action: {
-                        withAnimation {
-                            if let currentPlant = userPlants.first(where: {
-                                $0.isCurrent
-                            }) {
-                                selectedPlant = currentPlant
-                                showPopUp = true
-                            }
+                        if let currentPlant = userPlants.first(where: {
+                            $0.isCurrent
+                        }) {
+                            self.currentPlant = currentPlant
+                            showPopUp = true
                         }
                     }) {
                         HStack {
@@ -55,34 +53,18 @@ struct GardenView: View {
                 }
             }
             .background(Color.mainBackground)
-            .overlay(
-                ZStack {
-                    if let plant = selectedPlant, showPopUp {
-                        Color.mainBackground.opacity(0.4)
-                            .ignoresSafeArea()
-                            .onTapGesture {
-                                dismissStatPopup()
-                            }
-                        
-                        PopUp.plantStats(
-                            currentPlantModel: plant,
-                            swappablePlantModel: plant,
-                            showPopUp: $showPopUp
-                        ) {}
-                            .frame(width: 300, height: 250)
-                            .transition(.scale)
-                    }
+            .popUpOverlay(isVisible: $showPopUp) {
+                if let plant = currentPlant, showPopUp {
+                    PopUp.plantStats(
+                        currentPlantModel: plant,
+                        swappablePlantModel: plant,
+                        showPopUp: $showPopUp,
+                        onSwap: { _ in }
+                    )
                 }
-            )
+            }
         }
         .animation(.easeInOut, value: showPopUp)
-    }
-    
-    private func dismissStatPopup() {
-        withAnimation {
-            showPopUp = false
-            selectedPlant = nil
-        }
     }
 }
 

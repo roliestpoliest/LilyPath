@@ -13,6 +13,9 @@ struct DailyTasksView: View {
     var tasks: [TaskModel]
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var healthManager: HealthManager
+    
+    @Binding var unconvertedSteps: Int
+    @State var showCurrencyPopUp: Bool = false
     @State private var lastGeneratedDate: Date =
         UserDefaults.standard.object(forKey: "lastGeneratedDate") as? Date
         ?? Date.distantPast
@@ -39,6 +42,15 @@ struct DailyTasksView: View {
                 await updateTaskProgress()
                 generateTasksIfNeeded()
             }
+        }
+        .popUpOverlay(isVisible: $showCurrencyPopUp) {
+            PopUp.addWaterPoints(
+                steps: unconvertedSteps,
+                showPopUp: $showCurrencyPopUp,
+                currencyModels: currencyModels,
+                onConvert: onConvert,
+                onBuy: onBuy
+            )
         }
     }
 
@@ -167,6 +179,6 @@ struct DailyTasksView: View {
 }
 
 #Preview {
-    return DailyTasksView()
+    DailyTasksView(unconvertedSteps: .constant(0))
         .padding(.horizontal, 30)
 }

@@ -14,14 +14,16 @@ struct PlantShopView: View {
     
     @Query private var currencyModels: [CurrencyModel]
     
+    @Environment(\.modelContext) private var modelContext
+    
+    @State var selectedPlant: BasePlantModel? = nil
+    @State var showPopUp: Bool = false
+    @State var showCurrencyPopUp: Bool = false
+        
     let columns = [
         GridItem(.flexible(), spacing: 40),
         GridItem(.flexible(), spacing: 40),
     ]
-    
-    @State var selectedPlant: BasePlantModel? = nil
-    @State var showPopUp: Bool = false
-    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         ZStack {
@@ -43,17 +45,26 @@ struct PlantShopView: View {
                 .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
             }
             .background(Color.mainBackground)
-            
-            if let plant = selectedPlant, showPopUp {
-                Color.mainBackground.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        dismissPopup()
-                    }
-                
-                getPopup(for: plant)
-                    .frame(height: 250)
-                    .transition(.scale)
+            .popUpOverlay(isVisible: $showPopUp) {
+                if let currencyModel = getCurrencyModel(), let plant = selectedPlant {
+                    let hasEnoughGems = currencyModel.gems >= plant.price
+                    
+                    PopUp.purchase(
+                        plantModel: selectedPlant!,
+                        showPopUp: $showPopUp,
+                        hasEnoughGems: hasEnoughGems,
+                        onPurchase: handlePlantPurchase
+                    )
+                }
+            }
+            .popUpOverlay(isVisible: $showCurrencyPopUp) {
+                PopUp.addWaterPoints(
+                    steps: unconvertedSteps,
+                    showPopUp: $showCurrencyPopUp,
+                    currencyModels: currencyModels,
+                    onConvert: onConvert,
+                    onBuy: onBuy
+                )
             }
         }
         .animation(.easeInOut, value: showPopUp)
@@ -66,20 +77,6 @@ struct PlantShopView: View {
             showPopUp = true
             print("\(plant.species) card tapped")
         }
-    }
-    
-    private func getPopup(for plant: BasePlantModel) -> some View {
-        guard let currencyModel = getCurrencyModel() else {
-            return EmptyView().eraseToAnyView()
-        }
-        
-        let hasEnoughGems = currencyModel.gems >= plant.price
-        
-        print("Plant price: \(plant.price), User gems: \(currencyModel.gems), Has enough gems: \(hasEnoughGems)")
-        
-        return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp, hasEnoughGems: hasEnoughGems) {
-            handlePlantPurchase(plant)
-        }.eraseToAnyView()
     }
     
     private func handlePlantPurchase(_ plant: BasePlantModel) {
