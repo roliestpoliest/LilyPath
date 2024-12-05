@@ -212,6 +212,33 @@
 			path = "Plant Stats";
 			sourceTree = "<group>";
 		};
+		239A0E802D01D2AC0065FEAF /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				82DDA1822CB379A2008585EE /* PlantGalleryView.swift */,
+				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
+			);
+			path = Gallery;
+			sourceTree = "<group>";
+		};
+		239A0E812D01D2CA0065FEAF /* Plant Shop */ = {
+			isa = PBXGroup;
+			children = (
+				827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */,
+				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
+			);
+			path = "Plant Shop";
+			sourceTree = "<group>";
+		};
+		239A0E822D01D2D70065FEAF /* Daily Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				238719482CAF172A00305DFA /* DailyTasksView.swift */,
+				2387199C2CB0709600305DFA /* TaskCard.swift */,
+			);
+			path = "Daily Tasks";
+			sourceTree = "<group>";
+		};
 		23BE23812CAB250700D1D961 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,11 +343,9 @@
 			children = (
 				8298A1142CAA03D40062563F /* HomeView.swift */,
 				23B2E1212CCA1CCC0042A60A /* HowToPlayView.swift */,
-				238719482CAF172A00305DFA /* DailyTasksView.swift */,
-				2387199C2CB0709600305DFA /* TaskCard.swift */,
-				827C6D5C2CAE0B4D00F29BE5 /* PlantShopView.swift */,
-				828897642CAE40D10089C5DD /* PlantShopCard.swift */,
 				23F44A952CC9C7E300721D6E /* UserCurrencyBar.swift */,
+				239A0E822D01D2D70065FEAF /* Daily Tasks */,
+				239A0E812D01D2CA0065FEAF /* Plant Shop */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -329,8 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				8298A1162CAA04340062563F /* GardenView.swift */,
-				82DDA1822CB379A2008585EE /* PlantGalleryView.swift */,
-				822948AC2CB26525003BD934 /* PlantGalleryCard.swift */,
+				239A0E802D01D2AC0065FEAF /* Gallery */,
 			);
 			path = Garden;
 			sourceTree = "<group>";
@@ -338,10 +362,10 @@
 		8298A1132CAA03870062563F /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
-				239A0E7F2D01D1F60065FEAF /* Plant Stats */,
-				239A0E7E2D01D1E80065FEAF /* Fitness Stats */,
 				8298A1182CAA04430062563F /* StatisticsView.swift */,
 				23F44A872CC8F14500721D6E /* StatsCard.swift */,
+				239A0E7F2D01D1F60065FEAF /* Plant Stats */,
+				239A0E7E2D01D1E80065FEAF /* Fitness Stats */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
