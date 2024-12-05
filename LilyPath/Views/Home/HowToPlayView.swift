@@ -52,14 +52,13 @@ struct HowToPlayView: View {
 
     private var rules: [String] {
         [
-            "Take walks to grow your plant – every step can help it grow!",
-            "For every step, you earn one water point.",
-            "Collect 1,000 water points to earn a water for your plant.",
-            "Water your plant 10 times to unlock its next growth stage!",
-            "Miss a day of watering, and your plant will start to wilt. Don’t let it wilt!",
-            "Looking for a new plant? Use gems to buy one or head to your garden's plant gallery to swap it out.",
-            "Earn XP by watering and completing your plant. Level up to earn more gems and unlock new plants!",
-            "Complete daily tasks to earn extra water points and gems – keep the rewards coming!"
+            "Take walks to grow your plant – every step counts!",
+            "Convert your steps into water points – 1 step equals 1 water point.",
+            "Collect 1,000 water points to water your plant.",
+            "Keep watering your plant to unlock its next growth stage.",
+            "Looking for a new plant? Use gems to buy one or visit your garden's plant gallery to swap it out.",
+            "Earn gems by watering and completing your plant. Level up your plant to earn even more gems and unlock new plants!",
+            "Complete daily tasks to earn bonus water points and gems. Keep the rewards coming!"
         ]
     }
 }
