@@ -5,8 +5,8 @@
 //  Created by Carolyn Heron on 10/2/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PlantShopView: View {
     @Query(sort: [SortDescriptor(\BasePlantModel.id, order: .forward)])
@@ -14,19 +14,21 @@ struct PlantShopView: View {
     
     @Query private var currencyModels: [CurrencyModel]
     
+    @Environment(\.modelContext) private var modelContext
+    
+    @State var selectedPlant: BasePlantModel? = nil
+    @State var showPopUp: Bool = false
+    @State var showCurrencyPopUp: Bool = false
+        
     let columns = [
         GridItem(.flexible(), spacing: 40),
         GridItem(.flexible(), spacing: 40),
     ]
     
-    @State var selectedPlant: BasePlantModel? = nil
-    @State var showPopUp: Bool = false
-    @Environment(\.modelContext) private var modelContext
-    
     var body: some View {
         ZStack {
             VStack {
-                UserCurrencyBar()
+                UserCurrencyBar(showPopUp: $showCurrencyPopUp)
                 
                 ViewTitle(title: "Plant Shop")
                 
@@ -40,20 +42,30 @@ struct PlantShopView: View {
                         }
                     }
                 }
-                .shadow(radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
+                .shadow(
+                    radius: ShadowConstants.radius, y: ShadowConstants.yOffset)
             }
             .background(Color.mainBackground)
-            
-            if let plant = selectedPlant, showPopUp {
-                Color.mainBackground.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        dismissPopup()
-                    }
-                
-                getPopup(for: plant)
-                    .frame(height: 250)
-                    .transition(.scale)
+            .popUpOverlay(isVisible: $showPopUp) {
+                if let currencyModel = getCurrencyModel(), let plant = selectedPlant {
+                    let hasEnoughGems = currencyModel.gems >= plant.price
+                    
+                    PopUp.purchase(
+                        plantModel: selectedPlant!,
+                        showPopUp: $showPopUp,
+                        hasEnoughGems: hasEnoughGems,
+                        onPurchase: handlePlantPurchase
+                    )
+                }
+            }
+            .popUpOverlay(isVisible: $showCurrencyPopUp) {
+                PopUp.addWaterPoints(
+                    steps: 100,
+                    showPopUp: $showCurrencyPopUp,
+                    currencyModels: currencyModels,
+                    onConvert: onConvert,
+                    onBuy: onBuy
+                )
             }
         }
         .animation(.easeInOut, value: showPopUp)
@@ -68,20 +80,6 @@ struct PlantShopView: View {
         }
     }
     
-    private func getPopup(for plant: BasePlantModel) -> some View {
-        guard let currencyModel = getCurrencyModel() else {
-            return EmptyView().eraseToAnyView()
-        }
-        
-        let hasEnoughGems = currencyModel.gems >= plant.price
-        
-        print("Plant price: \(plant.price), User gems: \(currencyModel.gems), Has enough gems: \(hasEnoughGems)")
-        
-        return PopUp.purchase(plantModel: plant, showPopUp: $showPopUp, hasEnoughGems: hasEnoughGems) {
-            handlePlantPurchase(plant)
-        }.eraseToAnyView()
-    }
-    
     private func handlePlantPurchase(_ plant: BasePlantModel) {
         guard let currencyModel = getCurrencyModel() else {
             return
@@ -91,13 +89,13 @@ struct PlantShopView: View {
             print("Not enough gems to purchase \(plant.species).")
             return
         }
-                
+        
         currencyModel.gems -= plant.price
-
+        
         if let currentPlant = fetchCurrentPlant() {
             currentPlant.isCurrent = false
         }
-
+        
         let newPlant = UserPlantModel(
             basePlant: plant,
             plantDate: Date(),
@@ -108,7 +106,7 @@ struct PlantShopView: View {
             status: .growing
         )
         modelContext.insert(newPlant)
-
+        
         do {
             try modelContext.save()
             print("Added and set new plant: \(newPlant.basePlant.species)")
@@ -130,13 +128,6 @@ struct PlantShopView: View {
             predicate: #Predicate { $0.isCurrent == true }
         )
         return try? modelContext.fetch(fetchDescriptor).first
-    }
-    
-    private func dismissPopup() {
-        withAnimation {
-            showPopUp = false
-            selectedPlant = nil
-        }
     }
 }
 
