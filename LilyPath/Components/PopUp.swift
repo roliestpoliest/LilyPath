@@ -24,8 +24,11 @@ struct GenericPopUpView<Content: View>: View {
                 header(
                     text: headerText, headerColor: headerColor,
                     textColor: textColor, x_color: x_color)
+                
                 Spacer()
+                
                 content()
+                
                 Spacer()
             }
             .font(.popupBody)
@@ -220,109 +223,106 @@ class PopUp {
         onSwap: @escaping (UserPlantModel) -> Void
     ) -> some View {
         let showSwapButton = currentPlantModel.id != swappablePlantModel.id
-        let additionalHeight: CGFloat = showSwapButton ? 20 : 0
-        
+        let additionalHeight: CGFloat = showSwapButton ? 50 : 0
+
+        func gridRow(label: String, value: String) -> some View {
+            GridRow {
+                Text(label)
+                    .frame(width: 150, alignment: .leading) // Hardcoded width
+                    .font(.statsBodyBold)
+                Text(value)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.statsBody)
+            }
+        }
+
         return GenericPopUpView(
             showPopUp: showPopUp,
-            headerText: swappablePlantModel.basePlant.species,
+            headerText: "PLANT INFO",
             content: {
                 VStack {
-                    Grid {
-                        let width: CGFloat = 135
-                        GridRow {
-                            Text("Plant Date")
-                                .frame(width: width, alignment: .leading)
-                                .font(.statsBodyBold)
-                            
-                            Text(
-                                swappablePlantModel.plantDate.formatted(
-                                    .dateTime.month(.abbreviated).day(
-                                        .twoDigits
-                                    )
-                                    .year())
-                            )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.statsBody)
-                            
-                        }
-                        GridRow {
-                            Text("Completion Date")
-                                .frame(width: width, alignment: .leading)
-                                .font(.statsBodyBold)
-                            
-                            Text(
-                                swappablePlantModel.completionDate.map {
-                                    $0.formatted(
-                                        .dateTime.month(.abbreviated).day(
-                                            .twoDigits
-                                        ).year())
-                                } ?? "N/A"
-                            )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.statsBody)
-                            
-                        }
-                        GridRow {
-                            Text("Species")
-                                .frame(width: width, alignment: .leading)
-                                .font(.statsBodyBold)
-                            Text(swappablePlantModel.basePlant.species)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.statsBody)
-                            
-                        }
-                        GridRow {
-                            Text("Overall Progress")
-                                .frame(width: width, alignment: .leading)
-                                .font(.statsBodyBold)
-                            
-                            Text(
-                                "\(Int((swappablePlantModel.overallProgress) * 100))%"
-                            )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.statsBody)
-                            
-                        }
-                        GridRow {
-                            Text("Steps Left")
-                                .frame(width: width, alignment: .leading)
-                                .font(.statsBodyBold)
-                            Text(
-                                "\(swappablePlantModel.basePlant.overallStepGoal - swappablePlantModel.stepsCollected)"
-                            )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.statsBody)
-                        }
-                    }
-                    
                     HStack {
-                        Text("Stage \(swappablePlantModel.currentStage)")
-                            .font(.stageLabel)
-                            .layoutPriority(1)
-                        
-                        let stageProgress: Double = swappablePlantModel.currentStage == 5
-                            ? 1 // Mark as full progress for final stage 5
-                            : Double(swappablePlantModel.stepsInCurrentStage)
-                        
-                        ProgressBar(
-                            value: stageProgress,
-                            total: Double(swappablePlantModel.currentStageGoal)
-                        )
-                        .frame(maxWidth: .infinity)
-                        
-                        if showSwapButton {
-                            actionButton(text: "Swap") {
-                                onSwap(swappablePlantModel)
-                                showPopUp.wrappedValue = false
-                                print("Swap button tapped")
+                        Image(swappablePlantModel.currentImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40)
+                            .padding(.leading, 10)
+
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(swappablePlantModel.basePlant.species)
+                                    .font(.currentPlant)
                             }
-                            .layoutPriority(2)
+
+                            Text("Stage \(swappablePlantModel.currentStage)")
+                                .font(.stageLabel)
+
+                            HStack {
+                                let stepsInCurrentStage: Double = swappablePlantModel.currentStage == 5
+                                    ? 1 // Mark as full steps for final stage 5
+                                    : Double(swappablePlantModel.stepsInCurrentStage)
+
+                                ProgressBar(
+                                    value: stepsInCurrentStage,
+                                    total: Double(swappablePlantModel.currentStageGoal),
+                                    frameHeight: 16
+                                )
+
+                                let stageProgress = swappablePlantModel.currentStage == 5
+                                    ? 100 // Mark as full progress for final stage 5
+                                    : (swappablePlantModel.stageProgress * 100)
+
+                                Text("\(Int(stageProgress))%")
+                                    .font(Font.label)
+                                    .frame(width: 35)
+                            }
                         }
+                        .padding(.leading, 10)
+
+                        Spacer()
+                    }
+                    .padding(.bottom, 20)
+
+                    Grid {
+                        gridRow(
+                            label: "Plant Date",
+                            value: swappablePlantModel.plantDate.formatted(
+                                .dateTime.month(.abbreviated).day(.twoDigits).year()
+                            )
+                        )
+                        gridRow(
+                            label: "Completion Date",
+                            value: swappablePlantModel.completionDate.map {
+                                $0.formatted(.dateTime.month(.abbreviated).day(.twoDigits).year())
+                            } ?? "N/A"
+                        )
+                        gridRow(
+                            label: "Species",
+                            value: swappablePlantModel.basePlant.species
+                        )
+                        gridRow(
+                            label: "Overall Progress",
+                            value: "\(Int((swappablePlantModel.overallProgress) * 100))%"
+                        )
+                        gridRow(
+                            label: "Steps Left",
+                            value: formatNumberWithCommas(swappablePlantModel.basePlant.overallStepGoal - swappablePlantModel.stepsCollected)
+                        )
+                    }
+
+                    if showSwapButton {
+                        actionButton(text: "Swap to Current") {
+                            onSwap(swappablePlantModel)
+                            showPopUp.wrappedValue = false
+                            print("Swap button tapped")
+                        }
+                        .padding(.top, 10)
                     }
                 }
                 .padding()
             },
-            width: 300, height: 215 + additionalHeight
+            width: 300,
+            height: 290 + additionalHeight
         )
     }
     
@@ -490,6 +490,18 @@ class PopUp {
                     status: .completed
                 )
                 
+                PopUp.plantStats(
+                    currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
+                    showPopUp: .constant(true),
+                    onSwap: {_ in }
+                )
+                
+                PopUp.plantStats(
+                    currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
+                    showPopUp: .constant(true),
+                    onSwap: {_ in }
+                )
+                
                 PopUp.addWaterPoints(
                     steps: 1000,
                     showPopUp: .constant(true),
@@ -532,18 +544,6 @@ class PopUp {
                     currentPlant: myPlant2,
                     showPopUp: .constant(true),
                     onLevelUp: {}
-                )
-                
-                PopUp.plantStats(
-                    currentPlantModel: myPlant1, swappablePlantModel: myPlant2,
-                    showPopUp: .constant(true),
-                    onSwap: {_ in }
-                )
-                
-                PopUp.plantStats(
-                    currentPlantModel: myPlant1, swappablePlantModel: myPlant1,
-                    showPopUp: .constant(true),
-                    onSwap: {_ in }
                 )
                 
                 PopUp.swapPlant(
