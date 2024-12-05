@@ -30,18 +30,16 @@ struct ProgressBar: View {
                         y: applyShadow ? ShadowConstants.yOffset : 0)
                 
                 // Foreground bar
-                ZStack {
-                    RoundedRectangle(cornerRadius: (frameHeight - padding) / 2)
-                        .fill(foregroundColor)
-                        .frame(
-                            width: max(0, min(
-                                geometry.size.width * CGFloat(value / max(total, 1)),
-                                geometry.size.width
-                            )),
-                            height: frameHeight - padding
-                        )
-                }
-                .padding(padding / 2)
+                RoundedRectangle(cornerRadius: (frameHeight - padding) / 2)
+                    .fill(foregroundColor)
+                    .frame(
+                        width: max(0, min(
+                            geometry.size.width * CGFloat(value / max(total, 1)),
+                            geometry.size.width - padding // Account for padding
+                        )),
+                        height: frameHeight - padding
+                    )
+                    .padding(.leading, padding / 2)
             }
         }
         .frame(height: frameHeight)
@@ -58,6 +56,7 @@ struct ProgressBar: View {
             backgroundColor: .lightBlue)
         ProgressBar(value: 50, total: 100)
         ProgressBar(value: 75, total: 100)
+        ProgressBar(value: 100, total: 100)
         ProgressBar(value: 1, total: 1)
         ProgressBar(value: 2, total: 1)
     }
