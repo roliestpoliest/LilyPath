@@ -445,7 +445,7 @@ class PopUp {
             .colorMultiply(
                 isDisabled ? .disabledLightGrey.opacity(0.6) : .white
             )
-            .customShadow()
+            .darkCustomShadow()
         }
         .disabled(isDisabled)
     }
