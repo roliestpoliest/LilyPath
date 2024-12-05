@@ -68,7 +68,7 @@ struct PlantShopView: View {
                 )
             }
         }
-//        .animation(.easeInOut, value: showPopUp)
+        .animation(.easeInOut, value: showPopUp)
     }
     
     // MARK: - Helper Functions
