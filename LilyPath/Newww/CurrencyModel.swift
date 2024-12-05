@@ -14,6 +14,7 @@ class CurrencyModel: Identifiable {
     var id: String
     var waterPoints: Int
     var gems: Int
+    var convertedDailySteps: Int = 0
     
     init(waterPoints: Int = 0, gems: Int = 0) {
         self.id = UUID().uuidString

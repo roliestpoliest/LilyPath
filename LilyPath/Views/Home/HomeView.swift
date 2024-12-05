@@ -18,6 +18,9 @@ struct HomeView: View {
     
     @Query private var currencyModels: [CurrencyModel]
     
+    @EnvironmentObject var healthManager: HealthManager
+
+    @Binding var unconvertedSteps: Int
     @State var showPopUp: Bool = false
     @State var showCurrencyPopUp: Bool = false
     
@@ -30,7 +33,7 @@ struct HomeView: View {
                 VStack {
                     HStack {
                         HowToPlayButton()
-                        UserCurrencyBar()
+                        UserCurrencyBar(showPopUp: $showCurrencyPopUp, unconvertedSteps: $unconvertedSteps)
                     }
                     .padding(.top, 20)
                     .padding(.horizontal, 5)
@@ -44,7 +47,7 @@ struct HomeView: View {
                         CurrentPlantDisplay()
                             .padding(.horizontal)
                         
-                        HomeViewActions(showPopUp: $showPopUp)
+                        HomeViewActions(unconvertedSteps: $unconvertedSteps, showPopUp: $showPopUp)
                             .offset(y: -50)
                     }
                     .padding(.top, 20)
@@ -82,17 +85,17 @@ struct HomeView: View {
     
     func onLevelUp() {
         showPopUp = false
-
+        
         guard let currentPlant = currentPlants.first else {
             print("No current plant found.")
             return
         }
-
+        
         guard let currencyModel = currencyModels.first else {
             print("No CurrencyModel found.")
             return
         }
-
+        
         if currentPlant.status == .growing {
             currencyModel.gems += 1
         } else if currentPlant.status == .completed {
@@ -144,7 +147,7 @@ struct CurrentPlantDisplay: View {
     private var currentPlants: [UserPlantModel]
     
     let lineThickness: CGFloat = 18
-
+    
     var body: some View {
         if let currentPlant = currentPlants.first {
             VStack {
@@ -204,6 +207,7 @@ struct HomeViewActions: View {
     @Query private var currencyModels: [CurrencyModel]
     @Query private var basePlants: [BasePlantModel]
     
+    @Binding var unconvertedSteps: Int
     @Binding var showPopUp: Bool
     @State var canWaterPlant: Bool = false
     
@@ -217,7 +221,7 @@ struct HomeViewActions: View {
     var body: some View {
         HStack(alignment: .bottom, spacing: 60) {
             NavigationLink(
-                destination: PlantShopView()
+                destination: PlantShopView(unconvertedSteps: $unconvertedSteps)
             ) {
                 IconWithText(
                     icon: .newPlant,
@@ -238,7 +242,7 @@ struct HomeViewActions: View {
             .disabled(!canWater())
             
             NavigationLink(
-                destination: DailyTasksView()
+                destination: DailyTasksView(unconvertedSteps: $unconvertedSteps)
             ) {
                 IconWithText(
                     icon: .dailyTask,
@@ -321,7 +325,7 @@ struct IconWithText: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(unconvertedSteps: .constant(10))
         .padding(.horizontal, 30)
         .background(Color.mainBackground)
 }

@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query private var currencyModels: [CurrencyModel]
+    
     @EnvironmentObject var healthManager: HealthManager
+    
     @State private var selectedTab: Tabs = .home
+    @State var unconvertedSteps: Int = 0
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -17,7 +22,7 @@ struct ContentView: View {
                 GardenView()
                     .tag(Tabs.garden)
                 
-                HomeView()
+                HomeView(unconvertedSteps: $unconvertedSteps)
                     .tag(Tabs.home)
                 
                 StatisticsView()
@@ -26,6 +31,11 @@ struct ContentView: View {
             }
             TabBar(selectedTab: $selectedTab)
                 .background(Color.mainBackground)
+        }
+        .onAppear {
+            Task {
+                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
+            }
         }
         .padding(.horizontal, 30)
         .background(Color.mainBackground)

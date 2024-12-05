@@ -16,6 +16,8 @@ struct PlantShopView: View {
     
     @Environment(\.modelContext) private var modelContext
     
+    @Binding var unconvertedSteps: Int
+
     @State var selectedPlant: BasePlantModel? = nil
     @State var showPopUp: Bool = false
     @State var showCurrencyPopUp: Bool = false
@@ -28,7 +30,7 @@ struct PlantShopView: View {
     var body: some View {
         ZStack {
             VStack {
-                UserCurrencyBar()
+                UserCurrencyBar(showPopUp: $showCurrencyPopUp, unconvertedSteps: $unconvertedSteps)
                 
                 ViewTitle(title: "Plant Shop")
                 
@@ -88,13 +90,13 @@ struct PlantShopView: View {
             print("Not enough gems to purchase \(plant.species).")
             return
         }
-                
+        
         currencyModel.gems -= plant.price
-
+        
         if let currentPlant = fetchCurrentPlant() {
             currentPlant.isCurrent = false
         }
-
+        
         let newPlant = UserPlantModel(
             basePlant: plant,
             plantDate: Date(),
@@ -105,7 +107,7 @@ struct PlantShopView: View {
             status: .growing
         )
         modelContext.insert(newPlant)
-
+        
         do {
             try modelContext.save()
             print("Added and set new plant: \(newPlant.basePlant.species)")
@@ -128,23 +130,9 @@ struct PlantShopView: View {
         )
         return try? modelContext.fetch(fetchDescriptor).first
     }
-    
-    private func dismissPopup() {
-        withAnimation {
-            showPopUp = false
-            selectedPlant = nil
-        }
-    }
-}
-
-// MARK: - Utility Extension for AnyView
-extension View {
-    func eraseToAnyView() -> AnyView {
-        AnyView(self)
-    }
 }
 
 #Preview {
-    PlantShopView()
+    PlantShopView(unconvertedSteps: .constant(10))
         .padding(.horizontal, 30)
 }

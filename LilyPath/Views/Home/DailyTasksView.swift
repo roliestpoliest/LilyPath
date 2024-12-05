@@ -11,6 +11,8 @@ import SwiftUI
 struct DailyTasksView: View {
     @Query(sort: [SortDescriptor(\TaskModel.timestamp, order: .forward)])
     var tasks: [TaskModel]
+    @Query private var currencyModels: [CurrencyModel]
+    
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var healthManager: HealthManager
     
@@ -22,7 +24,7 @@ struct DailyTasksView: View {
 
     var body: some View {
         VStack {
-            UserCurrencyBar()
+            UserCurrencyBar(showPopUp: $showCurrencyPopUp, unconvertedSteps: $unconvertedSteps)
 
             ViewTitle(title: "Daily Tasks")
 

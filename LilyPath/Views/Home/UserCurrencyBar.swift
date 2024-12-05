@@ -9,21 +9,26 @@ import SwiftData
 import SwiftUI
 
 struct UserCurrencyBar: View {
-    @Query private var currency: [CurrencyModel]
+    @Query private var currencyModels: [CurrencyModel]
     
+    @EnvironmentObject var healthManager: HealthManager
+
+    @Binding var showPopUp: Bool
+    @Binding var unconvertedSteps: Int
+
     var body: some View {
         VStack {
             HStack(spacing: 20) {
                 Spacer()
                 
-                if let currentCurrency = currency.first {
-                    OvalCurrencyDisplay(
+                if let currentCurrency = currencyModels.first {
+                    ovalCurrencyDisplay(
                         icon: .waterDrop,
                         value: currentCurrency.waterPoints,
                         canAdd: true
                     )
                     
-                    OvalCurrencyDisplay(
+                    ovalCurrencyDisplay(
                         icon: .gem,
                         value: currentCurrency.gems
                     )
@@ -35,20 +40,8 @@ struct UserCurrencyBar: View {
             }
         }
     }
-}
-
-struct OvalCurrencyDisplay: View {
-    let icon: Icon
-    let value: Int
-    let canAdd: Bool
     
-    init(icon: Icon, value: Int, canAdd: Bool = false) {
-        self.icon = icon
-        self.value = value
-        self.canAdd = canAdd
-    }
-    
-    var body: some View {
+    private func ovalCurrencyDisplay(icon: Icon, value: Int, canAdd: Bool = false) -> some View {
         ZStack(alignment: .trailing) {
             HStack(spacing: 8) {
                 IconImage(icon: icon, height: 20, color: .waterBlue)
@@ -70,19 +63,31 @@ struct OvalCurrencyDisplay: View {
                             .inset(by: 2.5)
                             .stroke(Color.customPink, lineWidth: 5)
                     )
-//                    .shadow(
-//                        radius: ShadowConstants.radius,
-//                        y: ShadowConstants.yOffset)
+                    .shadow(
+                        radius: ShadowConstants.radius,
+                        y: ShadowConstants.yOffset)
             )
             
             if canAdd {
-                Button {
-                    print("Tapped add water points")
-                } label: {
-                    IconImage(icon: .plus, height: 40, color: .customPink)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                }
+                addWaterPointsButton()
+            }
+        }
+    }
+
+    private func addWaterPointsButton() -> some View {
+        Button {
+            Task {
+                unconvertedSteps = await getUnconvertedUserDailySteps(currencyModels: currencyModels, healthManager: healthManager)
+                showPopUp = true
+                print("Tapped add water points \(unconvertedSteps)")
+            }
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 39, height: 39)
+                
+                IconImage(icon: .plus, height: 40, color: .customPink)
             }
         }
     }
@@ -94,9 +99,54 @@ struct OvalCurrencyDisplay: View {
     }
 }
 
-//#Preview {
-//    let mockCurrency = CurrencyModel(waterPoints: 1200, gems: 45)
-//    
-//    UserCurrencyBar()
-//        .modelContainer(for: [CurrencyModel.self])
-//}
+// MARK: functions related to adding more water points
+func onConvert(currencyModels: [CurrencyModel], steps: Int) {
+    guard let currencyModel = currencyModels.first else {
+        print("No CurrencyModel found.")
+        return
+    }
+        
+    currencyModel.waterPoints += steps
+    currencyModel.convertedDailySteps += steps
+}
+
+func getUnconvertedUserDailySteps(currencyModels: [CurrencyModel], healthManager: HealthManager) async -> Int {
+    guard let currencyModel = currencyModels.first else {
+        print("No CurrencyModel found.")
+        return 0
+    }
+
+    let startDate = Calendar.current.startOfDay(for: Date())
+    
+    do {
+        let dailySteps = try await fetchDailySteps(from: startDate, healthManager: healthManager)
+        return dailySteps - currencyModel.convertedDailySteps
+    } catch {
+        print("Failed to fetch daily steps: \(error)")
+        return 0
+    }
+}
+
+func fetchDailySteps(from startDate: Date, healthManager: HealthManager) async throws -> Int {
+    return try await withCheckedThrowingContinuation { continuation in
+        healthManager.fetchHourlySteps(for: startDate) { dataPoints in
+            let totalSteps = dataPoints.reduce(0) { $0 + Int($1.value) }
+            continuation.resume(returning: totalSteps)
+        }
+    }
+}
+
+func onBuy(currencyModels: [CurrencyModel]) {
+    guard let currencyModel = currencyModels.first else {
+        print("No CurrencyModel found.")
+        return
+    }
+    
+    currencyModel.gems -= 1
+    currencyModel.waterPoints += 3000
+}
+
+#Preview {
+    UserCurrencyBar(showPopUp: .constant(false), unconvertedSteps: .constant(10))
+        .modelContainer(for: [CurrencyModel.self])
+}
