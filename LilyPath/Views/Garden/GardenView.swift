@@ -116,66 +116,24 @@ struct CurrentPlantView: View {
     
     var body: some View {
         if let currentPlant = currentPlant {
-            HStack {
-                Image(currentPlant.currentImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40)
-                    .padding(.leading, 10)
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text(currentPlant.basePlant.species)
-                            .font(.currentPlant)
-                            .foregroundColor(.white)
-                    }
-                    
-                    HStack {
-                        Image(
-                            systemName:
-                                "\(currentPlant.currentStage).circle.fill"
+            PlantInfoView(currentPlant: currentPlant)
+                .foregroundColor(.white)
+                .padding(20)
+                .frame(maxWidth: .infinity, minHeight: 120)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.customBrown)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .inset(by: 3)
+                                .stroke(Color.customPink, lineWidth: 6)
                         )
-                        .foregroundColor(.lightGreen)
-                        .bold()
-                        
-                        let stepsInCurrentStage: Double = currentPlant.currentStage == 5
-                            ? 1 // Mark as full steps for final stage 5
-                            : Double(currentPlant.stepsInCurrentStage)
-                        
-                        ProgressBar(
-                            value: stepsInCurrentStage,
-                            total: Double(currentPlant.currentStageGoal),
-                            frameHeight: 16
-                        )
-                        
-                        let stageProgress = currentPlant.currentStage == 5
-                            ? 100 // Mark as full progress for final stage 5
-                            : (currentPlant.stageProgress * 100)
-                        
-                        Text("\(Int(stageProgress))%")
-                            .font(Font.label)
-                            .foregroundColor(.white)
-                            .frame(width: 35)
-                    }
-                }
-                .padding(.leading, 10)
-                
-                Spacer()
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, minHeight: 120)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.customBrown)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .inset(by: 3)
-                            .stroke(Color.customPink, lineWidth: 6)
-                    )
-            )
+                )
         }
     }
 }
+
+
 
 #Preview {
     GardenView()

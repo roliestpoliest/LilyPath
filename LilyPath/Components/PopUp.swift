@@ -241,47 +241,8 @@ class PopUp {
             headerText: "PLANT INFO",
             content: {
                 VStack {
-                    HStack {
-                        Image(swappablePlantModel.currentImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40)
-                            .padding(.leading, 10)
-
-                        VStack(alignment: .leading) {
-                            HStack {
-                                Text(swappablePlantModel.basePlant.species)
-                                    .font(.currentPlant)
-                            }
-
-                            Text("Stage \(swappablePlantModel.currentStage)")
-                                .font(.stageLabel)
-
-                            HStack {
-                                let stepsInCurrentStage: Double = swappablePlantModel.currentStage == 5
-                                    ? 1 // Mark as full steps for final stage 5
-                                    : Double(swappablePlantModel.stepsInCurrentStage)
-
-                                ProgressBar(
-                                    value: stepsInCurrentStage,
-                                    total: Double(swappablePlantModel.currentStageGoal),
-                                    frameHeight: 16
-                                )
-
-                                let stageProgress = swappablePlantModel.currentStage == 5
-                                    ? 100 // Mark as full progress for final stage 5
-                                    : (swappablePlantModel.stageProgress * 100)
-
-                                Text("\(Int(stageProgress))%")
-                                    .font(Font.label)
-                                    .frame(width: 35)
-                            }
-                        }
-                        .padding(.leading, 10)
-
-                        Spacer()
-                    }
-                    .padding(.bottom, 20)
+                    PlantInfoView(currentPlant: swappablePlantModel)
+                        .padding(.bottom, 20)
 
                     Grid {
                         gridRow(
